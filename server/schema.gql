@@ -1,0 +1,59 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  _id: String!
+
+  """User Avator"""
+  avator: String!
+
+  """User NickName"""
+  nickname: String!
+
+  """User Wallet Address"""
+  address: String!
+
+  """User role"""
+  role: String!
+}
+
+type Query {
+  users: [User!]!
+  user(_id: Float!): User!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(_id: Float!): User!
+}
+
+input CreateUserInput {
+  """User Avator"""
+  avator: String!
+
+  """User NickName"""
+  nickname: String!
+
+  """User Wallet Address"""
+  address: String!
+
+  """role of the user"""
+  role: String!
+}
+
+input UpdateUserInput {
+  """User Avator"""
+  avator: String
+
+  """User NickName"""
+  nickname: String
+
+  """User Wallet Address"""
+  address: String
+
+  """role of the user"""
+  role: String
+  _id: Float!
+}
