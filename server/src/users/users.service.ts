@@ -19,7 +19,7 @@ export class UsersService {
     return this.userModel.find().exec();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const user = await this.userModel.findOne({ _id: id }).exec();
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
@@ -38,7 +38,7 @@ export class UsersService {
     return existringUser;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const user = await this.findOne(id);
     return user.remove();
   }

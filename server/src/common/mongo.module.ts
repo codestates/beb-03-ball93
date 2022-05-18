@@ -9,7 +9,7 @@ const pw = process.env.Mongo_PW;
   imports: [
     MongooseModule.forRootAsync({
       useFactory: async () => ({
-        uri: `mongodb+srv://${id}:${pw}@dottodb.ktqew.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+        uri: `mongodb+srv://${id}:${pw}@dottodb.ktqew.mongodb.net/dOtto?retryWrites=true&w=majority`,
       }),
       inject: [ConfigService],
     }),
