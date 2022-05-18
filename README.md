@@ -37,7 +37,7 @@ npm install
 After the installation is completed, write env file.
 
 ```
-cp env.example env.local
+cp .env.example .env.local
 ```
 
 And Then we can run the app by:
