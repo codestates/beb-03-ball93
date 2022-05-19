@@ -25,7 +25,7 @@ const Layout: TNextLayout<TBasicLayout> = ({ children }): JSX.Element => {
           <Banner />
           <Countdown />
           {children}
-          <div className='absolute inset-y-1/2 bg-[url(/hero.png)] w-full h-3/5 bg-no-repeat bg-contain'></div>
+          {/* <div className='absolute inset-y-1/2 bg-[url(/hero.png)] w-full h-3/5 bg-no-repeat bg-contain'></div> */}
         </div>
       </main>
       <Footer />
