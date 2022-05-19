@@ -1,7 +1,7 @@
 import { useState, useEffect, MouseEvent } from 'react'
 import type { NextPage } from 'next'
 import { StdFee, Coin } from '@cosmjs/amino'
-
+import { calculateFee, GasPrice } from '@cosmjs/stargate'
 import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
 import {
@@ -9,6 +9,7 @@ import {
   convertFromMicroDenom,
   convertDenomToMicroDenom,
 } from 'utils/conversion'
+import { string } from 'yup'
 
 const PUBLIC_CHAIN_NAME = process.env.NEXT_PUBLIC_CHAIN_NAME
 const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'uconst'
@@ -23,6 +24,7 @@ const PUBLIC_CONTRACT_ADDRESS =
 const Send: NextPage = () => {
   const { walletAddress, signingClient } = useSigningClient()
   const [balance, setBalance] = useState('')
+  const [lotteryBalance, setLotteryBalance] = useState('')
   const [loadedAt, setLoadedAt] = useState(new Date())
   const [loading, setLoading] = useState(false)
   const [recipientAddress, setRecipientAddress] = useState(
@@ -41,7 +43,6 @@ const Send: NextPage = () => {
     }
     setError('')
     setSuccess('')
-
     signingClient
       .getBalance(walletAddress, PUBLIC_STAKING_DENOM)
       .then((response: any) => {
@@ -49,47 +50,73 @@ const Send: NextPage = () => {
         setBalance(
           `${convertMicroDenomToDenom(amount)} ${convertFromMicroDenom(denom)}`
         )
+        console.log(balance)
       })
       .catch((error) => {
         setError(`Error! ${error.message}`)
         console.log('Error signingClient.getBalance(): ', error)
       })
+
+    signingClient
+      .getBalance(contractAddress, PUBLIC_STAKING_DENOM)
+      .then((response: any) => {
+        const { amount, denom }: { amount: number; denom: string } = response
+        setLotteryBalance(
+          `${convertMicroDenomToDenom(amount)} ${convertFromMicroDenom(denom)}`
+        )
+        console.log(lotteryBalance)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+
+    const qeury_msg: Record<string, unknown> = {
+      combination: {
+        lottery_id: 1,
+        address: walletAddress,
+      },
+    }
+
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg)
+      .then((response: any) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+
+    // queryContractSmart(address: string, queryMsg: Record<string, unknown>): Promise<JsonObject>;
   }, [signingClient, walletAddress, loadedAt])
 
-  const handleSend = (event: MouseEvent<HTMLElement>) => {
+  const handleSend = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault()
     setError('')
     setSuccess('')
     setLoading(true)
+    const entrypoint = {
+      register: {
+        address: walletAddress,
+        combination: ['456789', '341235', '123456', '453216', '987654','123456','123455'],
+      },
+    }
+    const setamount: string = (
+      entrypoint.register.combination.length * 1000
+    ).toString()
+    const gasPrice = GasPrice.fromString('0.002uconst')
+    const txFee = calculateFee(400000, gasPrice)
+
     const amount: Coin[] = [
       {
-        amount: convertDenomToMicroDenom(sendAmount),
         denom: PUBLIC_STAKING_DENOM,
-      },
-    ]
-    const amount2: Coin[] = [
-      {
-        amount: '1000000',
-        denom: PUBLIC_STAKING_DENOM,
+        amount: setamount,
       },
     ]
     // queryContractSmart(address: string, queryMsg: Record<string, unknown>): Promise<any>
-    signingClient
-      ?.queryContractSmart(contractAddress, {
-        config: {},
-      })
-      // ?.execute(
-      //   walletAddress,
-      //   contractAddress,
-      //   {
-      //     register: {
-      //       address: walletAddress,
-      //       combination: ['123456'],
-      //     },
-      //   },
-      //   '동규님 안녕하세요',
-      //   amount2
-      // )
+    await signingClient
+      ?.execute(walletAddress, contractAddress, entrypoint, txFee, '', amount)
       // execute(senderAddress: string, contractAddress: string, msg: Record<string, unknown>, memo?: string, funds?: readonly Coin[]): Promise<ExecuteResult>;
       // ?.sendTokens(walletAddress, recipientAddress, amount)
       .then((resp) => {
@@ -107,7 +134,7 @@ const Send: NextPage = () => {
       .catch((error) => {
         setLoading(false)
         setError(`Error! ${error.message}`)
-        console.log('Error네용ㅠㅠ ', error)
+        console.log('Error:', error)
         // console.log('Error: signingClinet.execute(): ', error)
       })
   }
@@ -147,7 +174,7 @@ const Send: NextPage = () => {
           </span>
         </div> */}
       <button
-        className='mt-4 md:mt-0 btn btn-primary font-semibold hover:text-base-100 text-md rounded-lg flex-grow'
+        className="mt-4 md:mt-0 btn btn-primary font-semibold hover:text-base-100 text-md rounded-lg flex-grow"
         onClick={handleSend}
       >
         Buy LotteryTicket now with TORII
