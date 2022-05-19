@@ -20,12 +20,11 @@ const Layout: TNextLayout<TBasicLayout> = ({ children }): JSX.Element => {
       </Head>
 
       <Header />
-      <main className='flex flex-1 p-2 justify-center w-full text-center font-normal tracking-normal bg-[url(/background.png)] bg-no-repeat bg-cover'>
-        <div className='relative max-w-3xl sm:w-full max-h-screen mt-12'>
+      <main className='flex flex-1 justify-center w-full text-center font-normal tracking-normal bg-[url(/background.png)] bg-no-repeat bg:auto 2xl:bg-cover'>
+        <div className='flex flex-col max-w-3xl sm:w-full max-h-screen mt-12'>
           <Banner />
-          <Countdown />
           {children}
-          {/* <div className='absolute inset-y-1/2 bg-[url(/hero.png)] w-full h-3/5 bg-no-repeat bg-contain'></div> */}
+          {/* <div className='bg-[url(/hero.png)] w-full bg-no-repeat bg-contain'></div> */}
         </div>
       </main>
       <Footer />

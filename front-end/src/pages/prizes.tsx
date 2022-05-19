@@ -1,16 +1,16 @@
-import { Box, Typography } from '@mui/material'
+// import { Box, Typography } from '@mui/material'
 
 import WinningsTable from 'components/WinningsTable'
 
 const GameRule = () => {
   return (
-    <Box marginTop={'2rem'}>
+    <div>
       {' '}
-      <Typography component={'h2'} variant={'h4'}>
-        Prize Table
-      </Typography>
+      {/* <Typography component={'h2'} variant={'h4'}> */}
+      Prize Table
+      {/* </Typography> */}
       {<WinningsTable />}
-    </Box>
+    </div>
   )
 }
 

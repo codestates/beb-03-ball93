@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 
-import classes from './NumberBox.module.css'
-const numberArray10 = Array.from({ length: 10 }, (_, i) => i + 1)
+const numberArray10 = Array.from({ length: 10 }, (_, i) => i)
 
 interface NumberBoxProps {
   lotteryNumber: number[]
@@ -20,25 +19,21 @@ const NumberBox = ({
 }: NumberBoxProps) => {
   const selectNumberHandler = (numberInput: number) => {
     const currentNumber = [...lotteryNumber]
-    const exitedNumberIndex = currentNumber.findIndex(
-      (number) => number === numberInput
-    )
-    const exitedNumber = currentNumber[exitedNumberIndex]
+    // 같은 숫자 중복으로 못고르게 하기
+    // const exitedNumberIndex = currentNumber.findIndex(
+    //   (number) => number === numberInput
+    // )
+    // const exitedNumber = currentNumber[exitedNumberIndex]
     let updatedNumber: number[]
-    if (exitedNumber) {
-      currentNumber.splice(exitedNumberIndex, 1)
-      updatedNumber = [...currentNumber]
-      setLotteryNumber(updatedNumber)
-    } else {
-      updatedNumber = [...currentNumber, numberInput]
-      setLotteryNumber(updatedNumber)
-    }
+    // if (exitedNumber) {
+    //   currentNumber.splice(exitedNumberIndex, 1)
+    //   updatedNumber = [...currentNumber]
+    //   setLotteryNumber(updatedNumber)
+    // } else {
+    updatedNumber = [...currentNumber, numberInput]
+    setLotteryNumber(updatedNumber)
+    // }
   }
-
-  const numberClasses = (number: number) =>
-    `${classes.number} ${
-      lotteryNumber.find((n1) => n1 === number) ? classes.active : ''
-    } ${maxNumber ? classes.disable : ''}`
 
   useEffect(() => {
     if (lotteryNumber.length === 6) {
@@ -53,16 +48,16 @@ const NumberBox = ({
   }, [lotteryNumber, maxTickets, setMaxNumber])
 
   return (
-    <div className={classes.numberBox}>
-      <div className={classes.label}>
-        <span>Select numbers</span>
+    <div className=''>
+      <div className=''>
+        <span>Select numbers Manually</span>
       </div>
-      <div className={classes.numberGird}>
+      <div className='grid grid-flow-col'>
         {numberArray10.map((number) => (
           <div
             key={`number_${number}`}
             onClick={() => selectNumberHandler(number)}
-            className={numberClasses(number)}
+            className={''}
           >
             {number}
           </div>
