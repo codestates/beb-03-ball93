@@ -369,7 +369,7 @@ pub fn execute_claim(
     Ok(res)
 }
 
-//복권 등록 (수정해야함. 배열로 들어올거임.)
+//복권 등록
 pub fn execute_register(
     deps: DepsMut,
     info: MessageInfo,
