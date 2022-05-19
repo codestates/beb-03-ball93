@@ -58,7 +58,7 @@ const Send: NextPage = () => {
         setError(`Error! ${error.message}`)
         console.log('Error signingClient.getBalance(): ', error)
       })
-
+    // 여기서부터 TEST CASE 입니다!!
     // Get Contract Balance (컨트랙트 누적금액)
     signingClient
       .getBalance(contractAddress, PUBLIC_STAKING_DENOM)
