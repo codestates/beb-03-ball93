@@ -43,6 +43,7 @@ const Send: NextPage = () => {
     }
     setError('')
     setSuccess('')
+    // Get MyWallet Balance (내지갑 잔액)
     signingClient
       .getBalance(walletAddress, PUBLIC_STAKING_DENOM)
       .then((response: any) => {
@@ -50,6 +51,7 @@ const Send: NextPage = () => {
         setBalance(
           `${convertMicroDenomToDenom(amount)} ${convertFromMicroDenom(denom)}`
         )
+        console.log('--------- Get MyWallet Balance ---------')
         console.log(balance)
       })
       .catch((error) => {
@@ -57,6 +59,7 @@ const Send: NextPage = () => {
         console.log('Error signingClient.getBalance(): ', error)
       })
 
+    // Get Contract Balance (컨트랙트 누적금액)
     signingClient
       .getBalance(contractAddress, PUBLIC_STAKING_DENOM)
       .then((response: any) => {
@@ -64,6 +67,7 @@ const Send: NextPage = () => {
         setLotteryBalance(
           `${convertMicroDenomToDenom(amount)} ${convertFromMicroDenom(denom)}`
         )
+        console.log('--------- Get Contract Balance ---------')
         console.log(lotteryBalance)
       })
       .catch((error) => {
@@ -71,16 +75,114 @@ const Send: NextPage = () => {
         console.log('Error signingClient.getBalance(): ', error)
       })
 
-    const qeury_msg: Record<string, unknown> = {
+    // Test Query Message!!!!
+    // combination ( 유저가 구매한 로또 번호들)
+    const qeury_msg1: Record<string, unknown> = {
       combination: {
         lottery_id: 1,
         address: walletAddress,
       },
     }
-
     signingClient
-      .queryContractSmart(contractAddress, qeury_msg)
+      .queryContractSmart(contractAddress, qeury_msg1)
       .then((response: any) => {
+        console.log('--------- Combination ---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+    // Balance (회차당 총상금)
+    const qeury_msg2: Record<string, unknown> = {
+      balance: {
+        lottery_id: 1,
+      },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg2)
+      .then((response: any) => {
+        console.log('--------- Balance ---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+    // Winner (해당 회차 당첨자)
+    const qeury_msg3: Record<string, unknown> = {
+      winner: {
+        lottery_id: 1,
+      },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg3)
+      .then((response: any) => {
+        console.log('--------- Winner ---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+    // Jackpot Balance (해당 회차 등수별 받아야할 액수)
+    const qeury_msg4: Record<string, unknown> = {
+      jackpot_balance: {
+        lottery_id: 1,
+      },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg4)
+      .then((response: any) => {
+        console.log('--------- Jackpot Balance ---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+    // Jackpot Count (해당회차 랭킹별 당첨자수)
+    const qeury_msg5: Record<string, unknown> = {
+      jackpot_count: {
+        lottery_id: 1,
+      },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg5)
+      .then((response: any) => {
+        console.log('--------- Jackpot Count ---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+    // Count Ticket (해당회차 누적 티켓수)
+    const qeury_msg6: Record<string, unknown> = {
+      count_ticket: {
+        lottery_id: 1,
+      },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg6)
+      .then((response: any) => {
+        console.log('--------- Count Ticket ---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+    // Count User (해당회차 참여자수)
+    const qeury_msg7: Record<string, unknown> = {
+      count_user: {
+        lottery_id: 1,
+      },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg7)
+      .then((response: any) => {
+        console.log('--------- Count User ---------')
         console.log(response)
       })
       .catch((error) => {
@@ -99,7 +201,15 @@ const Send: NextPage = () => {
     const entrypoint = {
       register: {
         address: walletAddress,
-        combination: ['456789', '341235', '123456', '453216', '987654','123456','123455'],
+        combination: [
+          '456789',
+          '341235',
+          '123456',
+          '453216',
+          '987654',
+          '123456',
+          '123455',
+        ],
       },
     }
     const setamount: string = (
