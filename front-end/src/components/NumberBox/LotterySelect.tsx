@@ -1,20 +1,16 @@
 import React, { useState } from 'react'
-
-import { Box, Button } from '@mui/material'
-import ShuffleOnIcon from '@mui/icons-material/ShuffleOn'
-
 import { useDispatch, useSelector } from 'react-redux'
-
 import { v4 as uuidv4 } from 'uuid'
-
 import generateLottery from 'utils/generateLottery'
 import { RootState } from 'store/store'
 import NumberBox from 'components/NumberBox/NumberBox'
 import { addLotteryTicket } from 'actions/lotteryAction'
 import lotteryModel from 'models/lotteryModels'
 import PairNumberBox from 'components/NumberBox/PairNumberBox'
+import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import Link from 'next/link'
 import Send from 'components/Send'
+import clsx from 'clsx'
 
 interface LotterySelectProps {
   payHandler: () => void
@@ -68,75 +64,42 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
 
   return (
     <div>
-      <div className='flex flex-row space-x-10'>
-        <div className='outline outline-offset-4 outline-pink-500 rounded-full w-8'>
+      <div className='flex flex-row justify-center items-center space-x-6 font-bold text-slate-700 text-3xl'>
+        <span className='border-2 border-pink-300 outline outline-pink-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
           {lotteryNumber[0]}
-        </div>
-        <div className='outline outline-offset-4 outline-orange-500 rounded-full w-8'>
+        </span>
+        <span className='border-2 border-orange-300 outline outline-orange-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
           {lotteryNumber[1]}
-        </div>
-        <div className='outline outline-offset-4 outline-lime-500 rounded-full w-8'>
+        </span>
+        <span className='border-2 border-lime-300 outline outline-lime-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
           {lotteryNumber[2]}
-        </div>
-        <div className='outline outline-offset-4 outline-green-500 rounded-full w-8'>
+        </span>
+        <span className='border-2 border-green-300 outline outline-green-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
           {lotteryNumber[3]}
-        </div>
-        <div className='outline outline-offset-4 outline-blue-500 rounded-full w-8'>
+        </span>
+        <span className='border-2 border-blue-300 outline outline-blue-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
           {lotteryNumber[4]}
-        </div>
-        <div className='outline outline-offset-4 outline-cyan-500 rounded-full w-8'>
+        </span>
+        <span className='border-2 border-cyan-300 outline outline-cyan-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
           {lotteryNumber[5]}
-        </div>
+        </span>
       </div>
-      <Box padding='2rem'>
-        <form onSubmit={sumbitHandler}>
-          <NumberBox
-            lotteryNumber={lotteryNumber}
-            setLotteryNumber={setLotteryNumber}
-            maxNumber={maxNumber}
-            setMaxNumber={setMaxNumber}
-            maxTickets={maxTickets}
-          />
-          {/* <PairNumberBox
-          pairNumber={pairNumber}
-          setPairNumber={setPairNumber}
-          maxPairNumber={maxPairNumber}
-          setMaxPairNumber={setMaxPairNumber}
+      <form onSubmit={sumbitHandler}>
+        <NumberBox
+          lotteryNumber={lotteryNumber}
+          setLotteryNumber={setLotteryNumber}
+          maxNumber={maxNumber}
+          setMaxNumber={setMaxNumber}
           maxTickets={maxTickets}
-        /> */}
-          <Box
-            sx={{
-              display: 'flex',
-              margin: '0 1rem 2rem',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Button
-              onClick={randomTicketHandler}
-              disabled={maxTickets}
-              variant='outlined'
-              type='button'
-              color='secondary'
-            >
-              <ShuffleOnIcon />
-            </Button>
+        />
+        <button onClick={randomTicketHandler}></button>
+      </form>
 
-            <Button
-              variant='outlined'
-              type='submit'
-              color='secondary'
-              disabled={!isDisableButton}
-            >
-              Add Ticket
-            </Button>
-          </Box>
-        </form>
-
-        {maxTickets && (
-          <p style={{ textAlign: 'center' }}>You can only purchase up to 5.</p>
-        )}
-        <Send />
-      </Box>
+      {maxTickets && (
+        <p style={{ textAlign: 'center' }}>You can only purchase up to 5.</p>
+      )}
+      <LotteryTicketList />
+      <Send />
     </div>
   )
 }

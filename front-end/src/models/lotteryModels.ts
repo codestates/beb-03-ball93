@@ -1,6 +1,6 @@
 interface lotteryModel {
   number: number[]
-  pairNumber: number[]
+  // pairNumber: number[]
   id: string
 }
 

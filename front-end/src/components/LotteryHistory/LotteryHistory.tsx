@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import lotteryGameModel from 'models/lotteryGameModels'
-import GameDetails from './LotteryDetails'
+import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 
-import Paper from '@mui/material/Paper'
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  Box,
-} from '@mui/material'
+// import Paper from '@mui/material/Paper'
+// import {
+//   FormControl,
+//   InputLabel,
+//   Select,
+//   MenuItem,
+//   SelectChangeEvent,
+//   Box,
+// } from '@mui/material'
 
 interface LotteryHistoryProps {
   lotteryHistory: lotteryGameModel[]
@@ -21,9 +21,9 @@ const LotteryHistory = ({ lotteryHistory }: LotteryHistoryProps) => {
 
   const [sortBy, setSortBy] = useState('new')
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setSortBy(event.target.value as string)
-  }
+  // const handleChange = (event: SelectChangeEvent) => {
+  //   setSortBy(event.target.value as string)
+  // }
 
   if (sortBy === 'old') {
     sortedLottery = [...lotteryHistory].sort(function (a, b) {
@@ -39,7 +39,7 @@ const LotteryHistory = ({ lotteryHistory }: LotteryHistoryProps) => {
   return (
     <div>
       <h2>Your Game Hisotry</h2>
-      <Paper
+      {/* <Paper
         elevation={16}
         sx={{
           backgroundColor: 'rgb(231, 235, 240)',
@@ -63,12 +63,12 @@ const LotteryHistory = ({ lotteryHistory }: LotteryHistoryProps) => {
           </FormControl>
         </Box>
         {sortedLottery.map((lotteryGame) => (
-          <GameDetails
+          <LotteryDetails
             key={lotteryGame.createdAt.toString()}
             lotteryGame={lotteryGame}
           />
         ))}
-      </Paper>
+      </Paper> */}
     </div>
   )
 }

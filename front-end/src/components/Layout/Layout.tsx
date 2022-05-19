@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Header from 'components/Layout/Header'
 import Banner from 'components/Layout/Banner'
 import Footer from 'components/Layout/Footer'
+import Countdown from 'components/Countdown'
 
 type TBasicLayout = {
   children: React.ReactNode

@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 
-import classes from './PairNumberbox.module.css'
-
 const numberArray10 = Array.from({ length: 10 }, (_, i) => i + 1)
 
 interface PairNumberBoxProps {
@@ -36,11 +34,6 @@ const PairNumberBox = ({
     }
   }
 
-  const numberClasses = (number: number) =>
-    `${classes.number} ${
-      pairNumber.find((n1) => n1 === number) ? classes.active : ''
-    } ${maxPairNumber ? classes.disable : ''}`
-
   useEffect(() => {
     if (pairNumber.length === 1) {
       setMaxPairNumber(true)
@@ -53,16 +46,16 @@ const PairNumberBox = ({
   }, [pairNumber, maxTickets, setMaxPairNumber])
 
   return (
-    <div className={classes.numberBox}>
-      <div className={classes.label}>
+    <div className=''>
+      <div className=''>
         <span>Select Pair Numbers</span>
       </div>
-      <div className={classes.numberGird}>
+      <div className=''>
         {numberArray10.map((number) => (
           <div
             onClick={() => selectPairNumberHandler(number)}
             key={`pairNumber_${number}`}
-            className={numberClasses(number)}
+            className=''
           >
             {number}
           </div>
