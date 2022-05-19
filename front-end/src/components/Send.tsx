@@ -284,7 +284,7 @@ const Send: NextPage = () => {
           </span>
         </div> */}
       <button
-        className="mt-4 md:mt-0 btn btn-primary font-semibold hover:text-base-100 text-md rounded-lg flex-grow"
+        className='mt-4 md:mt-0 btn btn-primary font-semibold hover:text-base-100 text-md rounded-lg flex-grow'
         onClick={handleSend}
       >
         Buy LotteryTicket now with TORII
