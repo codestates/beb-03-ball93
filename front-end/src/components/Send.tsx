@@ -217,7 +217,7 @@ const Send: NextPage = () => {
       entrypoint.register.combination.length * 1000
     ).toString()
     const gasPrice = GasPrice.fromString('0.002uconst')
-    const txFee = calculateFee(500000, gasPrice)
+    const txFee = calculateFee(1300000, gasPrice)
 
     const amount: Coin[] = [
       {

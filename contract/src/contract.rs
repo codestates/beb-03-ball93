@@ -34,7 +34,7 @@ pub fn instantiate(
         combination_len: 6,
         jackpot_percentage_reward: 5,
         prize_rank_winner_percentage: vec![80, 10, 6, 3, 1],
-        price_per_ticket_to_register: Uint128::from(1u128), //????
+        price_per_ticket_to_register: Uint128::from(1000u128), //????
         safe_lock: false,
         // terrand_contract_address: deps.api.addr_canonicalize(&msg.terrand_contract_address)?,
         lottery_id: 1,
