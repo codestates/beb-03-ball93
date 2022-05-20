@@ -10,10 +10,11 @@ const TimerInput = ({ value, handleClick, handleChange }: inputProps) => {
   return (
     <div className='hidden z-6 mx-auto space-y-4 flex flex-col md:flex-row justify-center items-center md:space-y-0'>
       <input
-        className='text-xl md:text-2xl outline-none py-1 w-40 rounded-lg mr-4 '
+        className='text-lg md:text-xl outline-none py-1 w-40 rounded-lg mr-4 '
         name='Timer Input'
         type='number'
         placeholder='Enter No. of Days'
+        // value={value}
         value={value}
         onChange={handleChange}
         min={0}

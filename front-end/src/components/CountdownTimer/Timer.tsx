@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import TimerContainer from 'components/CountdownTimer/TimerContainer'
 import TimerInput from 'components/CountdownTimer/TimerInput'
+import lotteryDraw from 'utils/lotterydraw'
 
 const Timer = () => {
-  const [time, setTime] = useState<number>(7)
+  const [time, setTime] = useState<number>(1)
   const [newTime, setNewTime] = useState<number>(0)
   const [days, setDays] = useState<number>(0)
   const [hours, setHours] = useState<number>(0)
@@ -60,7 +61,10 @@ const Timer = () => {
   }
 
   return (
-    <div className=''>
+    <div className='mt-2'>
+      <span className='text-[#576272] font-black text-xs md:text-sm'>
+        JOIN LOTTERY {lotteryDraw()}
+      </span>
       <TimerContainer
         days={days}
         hours={hours}
@@ -68,6 +72,7 @@ const Timer = () => {
         seconds={seconds}
       />
       <TimerInput
+        // value={1}
         value={newTime}
         handleClick={handleClick}
         handleChange={handleChange}

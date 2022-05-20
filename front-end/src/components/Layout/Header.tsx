@@ -18,7 +18,7 @@ const Header = () => {
 
   return (
     <div className='flex justify-center items-center w-screen relative border-inherit rounded-b-3xl bg-white shadow-xl shadow-gray-200/30 py-4'>
-      <nav className='flex justify-between items-center max-w-screen-2xl w-full h-[58px] '>
+      <nav className='flex justify-between items-center max-w-screen-2xl w-full h-[58px]'>
         <div className='flex items-center transition duration-300 ease-in-out hover:scale-105 cursor-pointer'>
           <Link href='/lottery'>
             {PUBLIC_SITE_LOGO_URL.length > 0 ? (
@@ -39,7 +39,7 @@ const Header = () => {
         <div className='hidden lg:flex'>
           <Tab />
         </div>
-        <div className='flex mr-6'>
+        <div className='lg:w-1/6 flex mr-6'>
           <button
             className='btn btn-primary hover:-translate-y-0.5'
             onClick={handleConnect}

@@ -1,7 +1,7 @@
 import lotteryModel from 'models/lotteryModels'
 import { RiDeleteBin2Line } from 'react-icons/ri'
-
 import LotteryTicket from 'components/LotteryTicket/LotteryTicket'
+
 interface LotteryTicketItemProps {
   ticket: lotteryModel
   removeTicketHandler: (id: string) => void
@@ -12,22 +12,22 @@ const LotteryTicketItem = ({
   removeTicketHandler,
 }: LotteryTicketItemProps) => {
   return (
-    // <Box
-    //   sx={{
-    //     display: 'flex',
-    //     fontWeight: 600,
-    //     justifyContent: 'space-between',
-    //     borderRadius: '0.5rem',
-    //     ':nth-of-type(2n)': {
-    //       backgroundColor: '#f7f9fc',
-    //     },
-    //   }}
-    // >
-    <>
-      <LotteryTicket ticket={ticket} />
-      <button onClick={() => removeTicketHandler(ticket.id)}>야</button>
-      <RiDeleteBin2Line />
-    </>
+    <div>
+      <div className='p-5 bg-white rounded-lg flex items-center justify-between space-x-8'>
+        <div className='flex-1'>
+          <div className='h-4 w-48 bg-gray-300 rounded'>
+            <LotteryTicket ticket={ticket} />
+          </div>
+        </div>
+        <div>
+          <div className='w-24 h-6 rounded-lg bg-purple-300'>
+            <button onClick={() => removeTicketHandler(ticket.id)}>
+              <RiDeleteBin2Line />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

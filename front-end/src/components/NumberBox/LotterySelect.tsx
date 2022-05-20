@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import generateLottery from 'utils/generateLottery'
@@ -11,17 +11,20 @@ import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import Link from 'next/link'
 import Send from 'components/Send'
 import clsx from 'clsx'
+import NumberBall from './NumberBall'
 
 interface LotterySelectProps {
   payHandler: () => void
 }
 
 const LotterySelect = ({ payHandler }: LotterySelectProps) => {
-  const [lotteryNumber, setLotteryNumber] = useState<number[]>([])
-  const [maxNumber, setMaxNumber] = useState<boolean>(false)
+  const [lotteryNumber, setLotteryNumber] = useState<number[]>([
+    -1, -1, -1, -1, -1, -1,
+  ])
+  const [validMaxNumber, setValidMaxNumber] = useState<boolean>(false)
 
-  const [pairNumber, setPairNumber] = useState<number[]>([])
-  const [maxPairNumber, setMaxPairNumber] = useState<boolean>(false)
+  // const [pairNumber, setPairNumber] = useState<number[]>([])
+  // const [maxPairNumber, setMaxPairNumber] = useState<boolean>(false)
 
   const lotteryTicket = useSelector(
     (state: RootState) => state.lottery.lotteryInput
@@ -34,7 +37,8 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
 
   const maxTickets = lotteryTicket.length === 5 ? true : false
 
-  const isDisableButton = maxNumber && maxPairNumber && !maxTickets
+  // const isDisableButton = validMaxNumber && maxPairNumber && !maxTickets
+  const isDisableButton = validMaxNumber && !maxTickets
 
   const sumbitHandler = (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,15 +50,21 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
     }
 
     // Add ticket to Redux
-    if (maxNumber && maxPairNumber) {
+    // if (validMaxNumber && maxPairNumber) {
+    if (validMaxNumber) {
       dispatch(addLotteryTicket(lotteryTicket))
 
       // Reset
-      setLotteryNumber([])
-      setMaxNumber(false)
-      setPairNumber([])
-      setMaxPairNumber(false)
+      setLotteryNumber([-1, -1, -1, -1, -1, -1])
+      setValidMaxNumber(false)
+      // setPairNumber([])
+      // setMaxPairNumber(false)
     }
+  }
+  const deleteLotteryNumber = (index: number) => {
+    let currentNumber = [...lotteryNumber]
+    currentNumber.splice(index, 1, -1)
+    setLotteryNumber(currentNumber)
   }
 
   const randomTicketHandler = () => {
@@ -63,41 +73,42 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
   }
 
   return (
-    <div>
-      <div className='flex flex-row justify-center items-center space-x-6 font-bold text-slate-700 text-3xl'>
-        <span className='border-2 border-pink-300 outline outline-pink-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
-          {lotteryNumber[0]}
-        </span>
-        <span className='border-2 border-orange-300 outline outline-orange-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
-          {lotteryNumber[1]}
-        </span>
-        <span className='border-2 border-lime-300 outline outline-lime-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
-          {lotteryNumber[2]}
-        </span>
-        <span className='border-2 border-green-300 outline outline-green-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
-          {lotteryNumber[3]}
-        </span>
-        <span className='border-2 border-blue-300 outline outline-blue-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
-          {lotteryNumber[4]}
-        </span>
-        <span className='border-2 border-cyan-300 outline outline-cyan-500 outline-offset-2 outline-4 rounded-full w-14 h-14  flex items-center justify-center'>
-          {lotteryNumber[5]}
-        </span>
-      </div>
+    <div className=''>
+      <NumberBall
+        lotteryNumber={lotteryNumber}
+        deleteLotteryNumber={deleteLotteryNumber}
+      />
       <form onSubmit={sumbitHandler}>
         <NumberBox
           lotteryNumber={lotteryNumber}
           setLotteryNumber={setLotteryNumber}
-          maxNumber={maxNumber}
-          setMaxNumber={setMaxNumber}
+          validMaxNumber={validMaxNumber}
+          setValidMaxNumber={setValidMaxNumber}
           maxTickets={maxTickets}
         />
-        <button onClick={randomTicketHandler}></button>
+        <div className='flex flex-row space-x-2 justify-center items-center mb-2'>
+          <div className=''>
+            <button
+              onClick={randomTicketHandler}
+              disabled={maxTickets}
+              className='btn btn-secondary'
+            >
+              random
+            </button>
+          </div>
+          <div>
+            <button
+              type='submit'
+              disabled={!isDisableButton}
+              className='btn btn-secondary'
+            >
+              Add Ticket
+            </button>
+          </div>
+        </div>
       </form>
 
-      {maxTickets && (
-        <p style={{ textAlign: 'center' }}>You can only purchase up to 5.</p>
-      )}
+      {maxTickets && <p className=''>You can only purchase up to 5.</p>}
       <LotteryTicketList />
       <Send />
     </div>

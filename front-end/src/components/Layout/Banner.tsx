@@ -1,30 +1,29 @@
 import Link from 'next/link'
-import lotteryDraw from 'utils/lotterydraw'
 import { HiExternalLink } from 'react-icons/hi'
 import { BsTrophy } from 'react-icons/bs'
 
+const lotteryPrize: string = '3,240.00'
+
 const Banner = () => {
   return (
-    <div className='container flex flex-row justify-center bg-gray-100 rounded-md py-2 w-full'>
-      <BsTrophy className='animate-purse w-20 h-10 mx-2 my-3	text-cyan-500 ' />
-      <div className='flex flex-col justify-center space-y-1'>
-        <div className='text-left text-xl font-normal leading-none tracking-wide'>
-          <span
-            className='bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 
+    <div className='flex flex-col justify-center items-center space-y-1'>
+      <div className='flex flex-row space-x-2 pl-20'>
+        <span className='text-[#576272] font-black text-xs md:text-sm'>
+          YOU ARE THE NEXT ONE
+        </span>
+        <Link href='/docs'>
+          <a className='flex flex-row text-[#3892EB] items-center tracking-wide italic underline whitespace-nowrap font-bold text-xs'>
+            Learn more <HiExternalLink size='18' />
+          </a>
+        </Link>
+      </div>
+      <div className='text-left text-5xl md:text-7xl font-bold leading-none tracking-wide'>
+        <span
+          className='bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 
   via-purple-500 animate-gradient-xy'
-          >
-            Become the protagonist of a life-changing event
-          </span>
-        </div>
-        <div className='text-left text-stone-700'>
-          Get DecentralLotto now until {lotteryDraw()}
-          <Link href='/docs'>
-            <a className='text-[#66C1BD] underline whitespace-nowrap'>
-              &nbsp;Learn more
-              {/* <HiExternalLink /> */}
-            </a>
-          </Link>
-        </div>
+        >
+          ${lotteryPrize}
+        </span>
       </div>
     </div>
   )

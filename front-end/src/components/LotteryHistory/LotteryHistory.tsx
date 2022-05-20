@@ -2,16 +2,6 @@ import React, { useState } from 'react'
 import lotteryGameModel from 'models/lotteryGameModels'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 
-// import Paper from '@mui/material/Paper'
-// import {
-//   FormControl,
-//   InputLabel,
-//   Select,
-//   MenuItem,
-//   SelectChangeEvent,
-//   Box,
-// } from '@mui/material'
-
 interface LotteryHistoryProps {
   lotteryHistory: lotteryGameModel[]
 }
