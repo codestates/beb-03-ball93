@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import { Typography, Avatar } from '@mui/material'
-import { Box } from '@mui/material'
-import CircularProgress from '@mui/material/CircularProgress'
-import { Grid } from '@mui/material'
+// import { Typography, Avatar } from '@mui/material'
+// import { Box } from '@mui/material'
+// import CircularProgress from '@mui/material/CircularProgress'
+// import { Grid } from '@mui/material'
 
 import { RootState } from 'store/store'
 import { getPopupHistory } from 'actions/userAction'
@@ -46,7 +46,7 @@ const ProfileVIew = () => {
 
   return (
     <>
-      <Typography component={'h1'} variant={'h2'}>
+      {/* <Typography component={'h1'} variant={'h2'}>
         Personal Infomation
       </Typography>
       {!userInfo && <CircularProgress />}
@@ -115,7 +115,7 @@ const ProfileVIew = () => {
             </Grid>
           </Box>
         </>
-      )}
+      )} */}
     </>
   )
 }

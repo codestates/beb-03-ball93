@@ -9,7 +9,7 @@ import { userPopupAccount } from 'slices/userSlice'
 import lotteryModel from 'models/lotteryModels'
 import { createAlert } from './alertAction'
 
-import axios from 'axios'
+// import axios from 'axios'
 
 export const addLotteryTicket =
   (lotteryTicket: lotteryModel) => (dispatch: any, getState: any) => {
@@ -46,9 +46,9 @@ export const getLotteryHistory = () => async (dispatch: any, getState: any) => {
       },
     }
 
-    const { data } = await axios.get('/api/lottery/history', config)
+    // const { data } = await axios.get('/api/lottery/history', config)
 
-    dispatch(updateLotteryHistory(data))
+    // dispatch(updateLotteryHistory(data))
   } catch (error: any) {
     dispatch(lotteryRequestFinish())
     dispatch(createAlert(error.response.data.message))
@@ -72,11 +72,11 @@ export const playLottery = () => async (dispatch: any, getState: any) => {
       },
     }
 
-    const { data } = await axios.post('/api/lottery/play', body, config)
+    // const { data } = await axios.post('/api/lottery/play', body, config)
 
-    const updateBankAccount = data.account
+    // const updateBankAccount = data.account
 
-    dispatch(userPopupAccount(updateBankAccount))
+    // dispatch(userPopupAccount(updateBankAccount))
 
     localStorage.setItem(
       'userInfo',
@@ -84,13 +84,14 @@ export const playLottery = () => async (dispatch: any, getState: any) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        account: updateBankAccount,
+        // account: updateBankAccount,
+        account: '3wqdj1231j1jla',
         avatar: user.avatar ? user.avatar : '',
       })
     )
     dispatch(resetLotteryTickets())
     dispatch(lotteryRequestFinish())
-    return data.gameHistory[0]
+    // return data.gameHistory[0]
   } catch (error: any) {
     dispatch(lotteryRequestFinish())
     dispatch(createAlert(error.response.data.message))

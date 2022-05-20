@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-import { Typography, Box, Popover } from '@mui/material'
-import Radio from '@mui/material/Radio'
-import RadioGroup from '@mui/material/RadioGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormControl from '@mui/material/FormControl'
-import FormLabel from '@mui/material/FormLabel'
-import Container from '@mui/material/Container'
+// import { Typography, Box, Popover } from '@mui/material'
+// import Radio from '@mui/material/Radio'
+// import RadioGroup from '@mui/material/RadioGroup'
+// import FormControlLabel from '@mui/material/FormControlLabel'
+// import FormControl from '@mui/material/FormControl'
+// import FormLabel from '@mui/material/FormLabel'
+// import Container from '@mui/material/Container'
 
-import { PayPalButton } from 'react-paypal-button-v2'
+// import { PayPalButton } from 'react-paypal-button-v2'
 
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -42,21 +42,21 @@ const TransitionVIew = () => {
   })
 
   const popOver = (
-    <Popover
-      id={id}
-      open={open}
-      anchorEl={anchorEl}
-      onClose={handleClose}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-    >
-      <Typography sx={{ p: 2 }}>
-        Email: sb-kpxgl13820173@personal.example.com{' '}
-      </Typography>
-      <Typography sx={{ p: 2 }}>Password: Eurojackpot123 </Typography>
-    </Popover>
+    // <Popover
+    //   id={id}
+    //   open={open}
+    //   anchorEl={anchorEl}
+    //   onClose={handleClose}
+    //   anchorOrigin={{
+    //     vertical: 'bottom',
+    //     horizontal: 'left',
+    //   }}
+    // >
+    //   <Typography sx={{ p: 2 }}>
+    //     Email: sb-kpxgl13820173@personal.example.com{' '}
+    //   </Typography>
+    //   <Typography sx={{ p: 2 }}>Password: Eurojackpot123 </Typography>
+    // </Popover>
   )
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const TransitionVIew = () => {
 
   return (
     <div>
-      <Container
+      {/* <Container
         disableGutters
         maxWidth='sm'
         component='main'
@@ -200,7 +200,7 @@ const TransitionVIew = () => {
             <TransactionTable popupHistory={sortedPopupHistory} />
           )}
         </Box>
-      </Container>
+      </Container> */}
     </div>
   )
 }

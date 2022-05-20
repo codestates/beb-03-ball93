@@ -1,12 +1,12 @@
 import React from 'react'
 
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Paper from '@mui/material/Paper'
+// import Table from '@mui/material/Table'
+// import TableBody from '@mui/material/TableBody'
+// import TableCell from '@mui/material/TableCell'
+// import TableContainer from '@mui/material/TableContainer'
+// import TableHead from '@mui/material/TableHead'
+// import TableRow from '@mui/material/TableRow'
+// import Paper from '@mui/material/Paper'
 
 const WinningsTable = () => {
   const data = [
@@ -43,39 +43,40 @@ const WinningsTable = () => {
   ]
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
-        <TableHead>
-          <TableRow
-            sx={{
-              ':nth-of-type(1n)': {
-                backgroundColor: '#f7f9fc',
-              },
-            }}
-          >
-            <TableCell align='center'>Prize Tier</TableCell>
-            <TableCell align='center'>Winnings</TableCell>
-            <TableCell align='center'>Average Prize</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row) => (
-            <TableRow
-              key={row.winnings}
-              sx={{
-                ':nth-of-type(2n)': {
-                  backgroundColor: '#f7f9fc',
-                },
-              }}
-            >
-              <TableCell align='center'>{row.prizeTier}</TableCell>
-              <TableCell align='center'>{row.winnings}</TableCell>
-              <TableCell align='center'>{row.averagePrize}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <></>
+    // <TableContainer component={Paper}>
+    //   <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
+    //     <TableHead>
+    //       <TableRow
+    //         sx={{
+    //           ':nth-of-type(1n)': {
+    //             backgroundColor: '#f7f9fc',
+    //           },
+    //         }}
+    //       >
+    //         <TableCell align='center'>Prize Tier</TableCell>
+    //         <TableCell align='center'>Winnings</TableCell>
+    //         <TableCell align='center'>Average Prize</TableCell>
+    //       </TableRow>
+    //     </TableHead>
+    //     <TableBody>
+    //       {data.map((row) => (
+    //         <TableRow
+    //           key={row.winnings}
+    //           sx={{
+    //             ':nth-of-type(2n)': {
+    //               backgroundColor: '#f7f9fc',
+    //             },
+    //           }}
+    //         >
+    //           <TableCell align='center'>{row.prizeTier}</TableCell>
+    //           <TableCell align='center'>{row.winnings}</TableCell>
+    //           <TableCell align='center'>{row.averagePrize}</TableCell>
+    //         </TableRow>
+    //       ))}
+    //     </TableBody>
+    //   </Table>
+    // </TableContainer>
   )
 }
 

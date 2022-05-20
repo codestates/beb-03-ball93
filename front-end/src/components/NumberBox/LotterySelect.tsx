@@ -1,31 +1,30 @@
-import React, { useState } from 'react'
-
-import { Box, Button } from '@mui/material'
-import ShuffleOnIcon from '@mui/icons-material/ShuffleOn'
-
+import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
 import { v4 as uuidv4 } from 'uuid'
-
 import generateLottery from 'utils/generateLottery'
 import { RootState } from 'store/store'
 import NumberBox from 'components/NumberBox/NumberBox'
 import { addLotteryTicket } from 'actions/lotteryAction'
 import lotteryModel from 'models/lotteryModels'
 import PairNumberBox from 'components/NumberBox/PairNumberBox'
+import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import Link from 'next/link'
 import Send from 'components/Send'
+import clsx from 'clsx'
+import NumberBall from './NumberBall'
 
 interface LotterySelectProps {
   payHandler: () => void
 }
 
 const LotterySelect = ({ payHandler }: LotterySelectProps) => {
-  const [lotteryNumber, setLotteryNumber] = useState<number[]>([])
-  const [maxNumber, setMaxNumber] = useState<boolean>(false)
+  const [lotteryNumber, setLotteryNumber] = useState<number[]>([
+    -1, -1, -1, -1, -1, -1,
+  ])
+  const [validMaxNumber, setValidMaxNumber] = useState<boolean>(false)
 
-  const [pairNumber, setPairNumber] = useState<number[]>([])
-  const [maxPairNumber, setMaxPairNumber] = useState<boolean>(false)
+  // const [pairNumber, setPairNumber] = useState<number[]>([])
+  // const [maxPairNumber, setMaxPairNumber] = useState<boolean>(false)
 
   const lotteryTicket = useSelector(
     (state: RootState) => state.lottery.lotteryInput
@@ -38,7 +37,8 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
 
   const maxTickets = lotteryTicket.length === 5 ? true : false
 
-  const isDisableButton = maxNumber && maxPairNumber && !maxTickets
+  // const isDisableButton = validMaxNumber && maxPairNumber && !maxTickets
+  const isDisableButton = validMaxNumber && !maxTickets
 
   const sumbitHandler = (e: React.FormEvent) => {
     e.preventDefault()
@@ -50,15 +50,21 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
     }
 
     // Add ticket to Redux
-    if (maxNumber && maxPairNumber) {
+    // if (validMaxNumber && maxPairNumber) {
+    if (validMaxNumber) {
       dispatch(addLotteryTicket(lotteryTicket))
 
       // Reset
-      setLotteryNumber([])
-      setMaxNumber(false)
-      setPairNumber([])
-      setMaxPairNumber(false)
+      setLotteryNumber([-1, -1, -1, -1, -1, -1])
+      setValidMaxNumber(false)
+      // setPairNumber([])
+      // setMaxPairNumber(false)
     }
+  }
+  const deleteLotteryNumber = (index: number) => {
+    let currentNumber = [...lotteryNumber]
+    currentNumber.splice(index, 1, -1)
+    setLotteryNumber(currentNumber)
   }
 
   const randomTicketHandler = () => {
@@ -67,76 +73,44 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
   }
 
   return (
-    <div>
-      <div className='flex flex-row space-x-10'>
-        <div className='outline outline-offset-4 outline-pink-500 rounded-full w-8'>
-          {lotteryNumber[0]}
-        </div>
-        <div className='outline outline-offset-4 outline-orange-500 rounded-full w-8'>
-          {lotteryNumber[1]}
-        </div>
-        <div className='outline outline-offset-4 outline-lime-500 rounded-full w-8'>
-          {lotteryNumber[2]}
-        </div>
-        <div className='outline outline-offset-4 outline-green-500 rounded-full w-8'>
-          {lotteryNumber[3]}
-        </div>
-        <div className='outline outline-offset-4 outline-blue-500 rounded-full w-8'>
-          {lotteryNumber[4]}
-        </div>
-        <div className='outline outline-offset-4 outline-cyan-500 rounded-full w-8'>
-          {lotteryNumber[5]}
-        </div>
-      </div>
-      <Box padding='2rem'>
-        <form onSubmit={sumbitHandler}>
-          <NumberBox
-            lotteryNumber={lotteryNumber}
-            setLotteryNumber={setLotteryNumber}
-            maxNumber={maxNumber}
-            setMaxNumber={setMaxNumber}
-            maxTickets={maxTickets}
-          />
-          {/* <PairNumberBox
-          pairNumber={pairNumber}
-          setPairNumber={setPairNumber}
-          maxPairNumber={maxPairNumber}
-          setMaxPairNumber={setMaxPairNumber}
+    <div className=''>
+      <NumberBall
+        lotteryNumber={lotteryNumber}
+        deleteLotteryNumber={deleteLotteryNumber}
+      />
+      <form onSubmit={sumbitHandler}>
+        <NumberBox
+          lotteryNumber={lotteryNumber}
+          setLotteryNumber={setLotteryNumber}
+          validMaxNumber={validMaxNumber}
+          setValidMaxNumber={setValidMaxNumber}
           maxTickets={maxTickets}
-        /> */}
-          <Box
-            sx={{
-              display: 'flex',
-              margin: '0 1rem 2rem',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Button
+        />
+        <div className='flex flex-row space-x-2 justify-center items-center mb-2'>
+          <div className=''>
+            <button
               onClick={randomTicketHandler}
               disabled={maxTickets}
-              variant='outlined'
-              type='button'
-              color='secondary'
+              className='btn btn-secondary'
             >
-              <ShuffleOnIcon />
-            </Button>
-
-            <Button
-              variant='outlined'
+              random
+            </button>
+          </div>
+          <div>
+            <button
               type='submit'
-              color='secondary'
               disabled={!isDisableButton}
+              className='btn btn-secondary'
             >
               Add Ticket
-            </Button>
-          </Box>
-        </form>
+            </button>
+          </div>
+        </div>
+      </form>
 
-        {maxTickets && (
-          <p style={{ textAlign: 'center' }}>You can only purchase up to 5.</p>
-        )}
-        <Send />
-      </Box>
+      {maxTickets && <p className=''>You can only purchase up to 5.</p>}
+      <LotteryTicketList />
+      <Send />
     </div>
   )
 }

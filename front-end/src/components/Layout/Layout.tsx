@@ -2,9 +2,7 @@ import * as React from 'react'
 import { TNextLayout } from 'next'
 import Head from 'next/head'
 import Header from 'components/Layout/Header'
-import Banner from 'components/Layout/Banner'
 import Footer from 'components/Layout/Footer'
-import Countdown from 'components/Countdown'
 
 type TBasicLayout = {
   children: React.ReactNode
@@ -20,12 +18,10 @@ const Layout: TNextLayout<TBasicLayout> = ({ children }): JSX.Element => {
       </Head>
 
       <Header />
-      <main className='flex flex-1 p-2 justify-center w-full text-center font-normal tracking-normal bg-[url(/background.png)] bg-no-repeat bg-cover'>
-        <div className='relative max-w-3xl sm:w-full max-h-screen mt-12'>
-          <Banner />
-          <Countdown />
+      <main className='flex flex-1 justify-center w-full text-center font-normal tracking-normal xl:bg-[url(/background.png)] bg-no-repeat xl:bg-cover'>
+        <div className='flex flex-col max-w-3xl sm:w-full max-h-screen mt-4 bg-gray-50'>
           {children}
-          {/* <div className='absolute inset-y-1/2 bg-[url(/hero.png)] w-full h-3/5 bg-no-repeat bg-contain'></div> */}
+          {/* <div className='bg-[url(/hero.png)] w-full bg-no-repeat bg-contain'></div> */}
         </div>
       </main>
       <Footer />

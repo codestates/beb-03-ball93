@@ -1,5 +1,7 @@
 import { useState, useEffect, MouseEvent } from 'react'
 import type { NextPage } from 'next'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store/store'
 import { StdFee, Coin } from '@cosmjs/amino'
 import { calculateFee, GasPrice } from '@cosmjs/stargate'
 import WalletLoader from 'components/WalletLoader'
@@ -37,6 +39,13 @@ const Send: NextPage = () => {
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
 
+  const { lotteryNumberData } = useSelector((state: RootState) => ({
+    lotteryNumberData: Object.values(state.lottery.lotteryInput).map((el) =>
+      el.number.join('')
+    ),
+  }))
+  console.log(lotteryNumberData)
+
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
       return
@@ -58,7 +67,7 @@ const Send: NextPage = () => {
         setError(`Error! ${error.message}`)
         console.log('Error signingClient.getBalance(): ', error)
       })
-
+    // 여기서부터 TEST CASE 입니다!!
     // Get Contract Balance (컨트랙트 누적금액)
     signingClient
       .getBalance(contractAddress, PUBLIC_STAKING_DENOM)
@@ -201,22 +210,14 @@ const Send: NextPage = () => {
     const entrypoint = {
       register: {
         address: walletAddress,
-        combination: [
-          '456789',
-          '341235',
-          '123456',
-          '453216',
-          '987654',
-          '123456',
-          '123455',
-        ],
+        combination: lotteryNumberData,
       },
     }
     const setamount: string = (
       entrypoint.register.combination.length * 1000
     ).toString()
     const gasPrice = GasPrice.fromString('0.002uconst')
-    const txFee = calculateFee(400000, gasPrice)
+    const txFee = calculateFee(500000, gasPrice)
 
     const amount: Coin[] = [
       {
@@ -251,87 +252,10 @@ const Send: NextPage = () => {
 
   return (
     <WalletLoader loading={loading}>
-      {/* <p className='text-xl font-normal tracking-normal'>
-        Your wallet has {balance}
-      </p>
-
-      <div className='text-xl font-normal my-8 tracking-normal'>
-        Buy a lottery ticket with {PUBLIC_CHAIN_NAME}
-      </div>
-      <div className='flex w-full max-w-xl'>
-        <input
-          type='text'
-          id='recipient-address'
-          className='input input-bordered focus:input-primary input-lg rounded-full flex-grow font-mono text-center text-lg'
-          placeholder={`${PUBLIC_CHAIN_NAME} torii 받을 주소`}
-          onChange={(event) => setRecipientAddress(event.target.value)}
-          value={recipientAddress}
-        />
-      </div>
-      <div className='flex flex-col md:flex-row mt-4 text-2xl w-full max-w-xl justify-between'>
-        <div className='relative rounded-full shadow-sm md:mr-2'>
-          <input
-            type='number'
-            id='send-amount'
-            className='input input-bordered focus:input-primary input-lg w-full pr-24 rounded-full text-center font-mono text-lg '
-            placeholder='Amount...'
-            step='0.1'
-            onChange={(event) => setSendAmount(event.target.value)}
-            value={sendAmount}
-          />
-          <span className='absolute top-0 right-0 bottom-0 px-4 py-5 rounded-r-full bg-secondary text-base-100 text-sm'>
-            {convertFromMicroDenom(PUBLIC_STAKING_DENOM)}
-          </span>
-        </div> */}
-      <button
-        className="mt-4 md:mt-0 btn btn-primary font-semibold hover:text-base-100 text-md rounded-lg flex-grow"
-        onClick={handleSend}
-      >
-        Buy LotteryTicket now with TORII
+      <button type='button' className='btn-payment mt-10' onClick={handleSend}>
+        <img src={'/archway-logo.png'} width={32} className={'pr-2'} />
+        Pay with Archway
       </button>
-      {/* </div>
-      <div className='mt-4 flex flex-col w-full max-w-xl'>
-        {success.length > 0 && (
-          <div className='alert alert-success'>
-            <div className='flex-1 items-center'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                className='flex-shrink-0 w-6 h-6 mx-2 stroke-current flex-shrink-0'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'
-                ></path>
-              </svg>
-              <label className='flex-grow break-all'>{success}</label>
-            </div>
-          </div>
-        )}
-        {error.length > 0 && (
-          <div className='alert alert-error'>
-            <div className='flex-1 items-center'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                className='w-6 h-6 mx-2 stroke-current flex-shrink-0'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'
-                ></path>
-              </svg>
-              <label className='flex-grow break-all'>{error}</label>
-            </div>
-          </div>
-        )}
-      </div> */}
     </WalletLoader>
   )
 }
