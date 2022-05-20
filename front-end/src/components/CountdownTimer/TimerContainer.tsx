@@ -62,22 +62,14 @@ const TimerContainer = ({ days, hours, minutes, seconds }: timeProps) => {
   }
 
   return (
-    <div className='rounded-xl'>
-      <div className='grid grid-cols-2 md:flex md:items-center md:justify-center md:mt-2 rounded-xl'>
-        <TimerNumberBox num={days} unit='Days' flip={daysFlip} />
-        <span className=' hidden text-5xl -mt-8 md:inline-block md:text-7xl font-normal text-gray-50 '>
-          :
-        </span>
-        <TimerNumberBox num={hours} unit='Hours' flip={hoursFlip} />
-        <span className='hidden text-5xl -mt-8 md:inline-block md:text-7xl font-normal text-gray-50 '>
-          :
-        </span>
-        <TimerNumberBox num={minutes} unit='Minutes' flip={minutesFlip} />
-        <span className='hidden text-5xl -mt-8 md:inline-block md:text-7xl font-normal text-gray-50 '>
-          :
-        </span>
-        <TimerNumberBox num={seconds} unit='Seconds' flip={secondsFlip} />
-      </div>
+    <div className='flex items-center justify-center rounded-xl'>
+      <TimerNumberBox num={days} unit='Days' flip={daysFlip} />
+      <span className='text-lg w-2 h-10 font-normal text-[#222222]'>:</span>
+      <TimerNumberBox num={hours} unit='Hours' flip={hoursFlip} />
+      <span className='text-lg w-2 h-10 font-normal text-[#222222]'>:</span>
+      <TimerNumberBox num={minutes} unit='Minutes' flip={minutesFlip} />
+      <span className='text-lg w-2 h-10 font-normal text-[#222222]'>:</span>
+      <TimerNumberBox num={seconds} unit='Seconds' flip={secondsFlip} />
     </div>
   )
 }

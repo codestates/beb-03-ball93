@@ -2,11 +2,11 @@ import Tab from 'components/Layout/Tab'
 
 const Footer = () => {
   return (
-    <footer className='flex flex-col items-center justify-center w-full '>
+    <footer className='flex flex-col items-center justify-center w-full h-16 relative translate-y-full'>
       <div className='lg:hidden'>
         <Tab />
       </div>
-      <div className='flex flex-col items-center justify-center w-full h-12 lg:h-24 bg-[#EEF8F8]'>
+      <div className='flex flex-col items-center justify-center w-full lg:h-24 bg-[#EEF8F8]'>
         <div className='flex justify-center items-center w-full space-x-6 mt-12 lg:mt-0'>
           <a href='https://github.com/codestates/beb-03-ball93' target='_blank'>
             <svg

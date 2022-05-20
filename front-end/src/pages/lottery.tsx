@@ -1,20 +1,11 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store/store'
-// import {
-//   DialogContent,
-//   Modal,
-//   Button,
-//   CircularProgress,
-//   Typography,
-//   Dialog,
-// } from '@mui/material'
-// import { Box } from '@mui/system'
-// import CloseIcon from '@mui/icons-material/Close'
 import { playLottery } from 'actions/lotteryAction'
 import lotteryGameModel from 'models/lotteryGameModels'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
+import Banner from 'components/Layout/Banner'
 import Timer from 'components/CountdownTimer/Timer'
 
 const lottery = () => {
@@ -52,17 +43,21 @@ const lottery = () => {
 
   return (
     <div className='flex flex-col'>
-      <Timer />
-      <h1 className='text-3xl bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-500 pt-5'>
-        Guess you're in luck today! Just pick it!
+      <div className='flex-col justify-center items-center rounded-md pt-4 w-full'>
+        <Banner />
+        <Timer />
+      </div>
+      <h1 className='text-3xl md:text-5xl bg-clip-text text-transparent font-semibold leading-tight bg-gradient-to-r from-teal-400 to-blue-500 my-2 mb-6'>
+        Guess you're in luck today. <br />
+        Just pick it!
       </h1>
       <LotterySelect payHandler={payHandler} />
-      {loading && 'aa'}
+      {loading}
       {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />}
 
       {gameResult && <LotteryDetails lotteryGame={gameResult!} />}
 
-      <button onClick={handleClose}>close icon</button>
+      {/* <button onClick={handleClose}>close icon</button> */}
     </div>
   )
 }
