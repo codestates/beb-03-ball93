@@ -26,7 +26,7 @@ const WalletLoader = ({
 
   if (walletAddress === '') {
     return (
-      <div className='max-w-full'>
+      <div className='hidden lg:block max-w-full'>
         <div className='flex flex-wrap items-center justify-around md:max-w-4xl mt-6 sm:w-full'>
           <button
             className='p-6 mt-6 text-left border border-secondary hover:border-primary w-96 rounded-xl hover:text-primary focus:text-primary-focus'

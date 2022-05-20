@@ -1,3 +1,3 @@
 export default function lotteryDraw(): string {
-  return 'May 20'
+  return 'MAY 20'
 }
