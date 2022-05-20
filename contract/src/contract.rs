@@ -34,7 +34,7 @@ pub fn instantiate(
         combination_len: 6,
         jackpot_percentage_reward: 5,
         prize_rank_winner_percentage: vec![80, 10, 6, 3, 1],
-        price_per_ticket_to_register: Uint128::from(1000u128), //????
+        price_per_ticket_to_register: Uint128::from(1000u128), 
         safe_lock: false,
         // terrand_contract_address: deps.api.addr_canonicalize(&msg.terrand_contract_address)?,
         lottery_id: 1,
@@ -70,6 +70,8 @@ pub fn execute(
 pub fn execute_draw(deps: DepsMut, _env: Env, info: MessageInfo) -> StdResult<Response> {
     let state = read_state(deps.storage)?;
     let sender = deps.api.addr_canonicalize(info.sender.as_str())?;
+
+    
     // 관리자가 아니면 실행 x
     if sender != state.admin {
         return Err(StdError::generic_err("No Auth"));
@@ -405,7 +407,7 @@ pub fn execute_register(
         1 => {
             //코인 종류가 맞는지 & 티켓당가격이 맞는지 확인
             if info.funds[0].denom == state.denom_stable
-                && info.funds[0].amount == state.price_per_ticket_to_register
+                &&info.funds[0].amount == (state.price_per_ticket_to_register * Uint128::from(combination.len() as u128))
             {
                 Ok(info.funds[0].amount)
             } else {
