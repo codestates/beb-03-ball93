@@ -40,6 +40,8 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
   // const isDisableButton = validMaxNumber && maxPairNumber && !maxTickets
   const isDisableButton = validMaxNumber && !maxTickets
 
+  console.log(validMaxNumber)
+
   const sumbitHandler = (e: React.FormEvent) => {
     e.preventDefault()
     const lotteryTicket: lotteryModel = {
@@ -48,8 +50,6 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
       // pairNumber: pairNumber.sort((a, b) => a - b),
       id: uuidv4(),
     }
-
-    // Add ticket to Redux
     // if (validMaxNumber && maxPairNumber) {
     if (validMaxNumber) {
       dispatch(addLotteryTicket(lotteryTicket))
@@ -86,14 +86,14 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
           setValidMaxNumber={setValidMaxNumber}
           maxTickets={maxTickets}
         />
-        <div className='flex flex-row space-x-2 justify-center items-center mb-2'>
-          <div className=''>
+        <div className='flex flex-row space-x-2 justify-center items-center mb-2 relative z-50'>
+          <div>
             <button
               onClick={randomTicketHandler}
               disabled={maxTickets}
               className='btn btn-secondary'
             >
-              random
+              RANDOM
             </button>
           </div>
           <div>
@@ -102,13 +102,15 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
               disabled={!isDisableButton}
               className='btn btn-secondary'
             >
-              Add Ticket
+              ADD TICKET
             </button>
           </div>
         </div>
       </form>
 
-      {maxTickets && <p className=''>You can only purchase up to 5.</p>}
+      {maxTickets ||
+        (!isDisableButton && <p className=''>Please choose 6 numbers</p>)}
+      {maxTickets && <p className=''>You can only purchase up to 5 tickets</p>}
       <LotteryTicketList />
       <Send />
     </div>

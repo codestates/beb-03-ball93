@@ -83,7 +83,7 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require('daisyui')],
+  // plugins: [require('daisyui')],
   // daisyui: {
   //   themes: [require('./src/styles/daisyui-themes.json')],
   // },

@@ -44,7 +44,7 @@ const Send: NextPage = () => {
       el.number.join('')
     ),
   }))
-  console.log(lotteryNumberData)
+  // console.log(lotteryNumberData)
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {

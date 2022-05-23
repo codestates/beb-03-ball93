@@ -20,10 +20,11 @@ const LotteryTicketItem = ({
           </div>
         </div>
         <div>
-          <div className='w-24 h-6 rounded-lg bg-purple-300'>
-            <button onClick={() => removeTicketHandler(ticket.id)}>
-              <RiDeleteBin2Line />
-            </button>
+          <div
+            className='w-24 h-6 rounded-lg bg-purple-300 hover:cursor-pointer flex justify-center items-center'
+            onClick={() => removeTicketHandler(ticket.id)}
+          >
+            <RiDeleteBin2Line />
           </div>
         </div>
       </div>
