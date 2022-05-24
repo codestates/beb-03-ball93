@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Hash, HashSchema } from 'src/entities/hash.entity';
 import { Transaction, TransactionSchema } from 'src/entities/transaction.entity';
+import { GetData } from 'src/get-data/get_data';
 import { TransactionsResolver } from './transactions.resolver';
 import { TransactionsService } from './transactions.service';
 
