@@ -1,3 +1,4 @@
+import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
@@ -12,8 +13,7 @@ export class TransactionsService {
     @InjectModel(Transaction.name)
     private readonly transactionModel: Model<Transaction>,
     @InjectModel(Hash.name)
-    private readonly hashModel: Model<Hash>,
-  ) {}
+    private readonly hashModel: Model<Hash>,) {}
   private readonly DATA_URL =
     'https://rpc.torii-1.archway.tech/tx?hash=0xF0D02CF50B369BF1F32303E9737431126CCEEE970B8275A4B340EE9F3B816790&prove=true';
 
@@ -23,7 +23,6 @@ export class TransactionsService {
     const Tx_conver = [...Tx_data]
     const Tx_result = new this.transactionModel(Tx_conver);
     Tx_result.save();
-    console.log(Tx_data)
     const Hash = new this.hashModel(CreateHashInput);
     return Hash.save();
   }
