@@ -6,11 +6,11 @@ interface LotteryTicketProps {
 
 const LotteryTicket = ({ ticket }: LotteryTicketProps) => {
   return (
-    <div className='flex flex-row justify-center items-center space-x-4 font-bold bg-[#eff0f3] text-slate-700 text-xl'>
+    <div className='flex flex-row justify-center items-center space-x-4 font-bold bg-gray-50 bg-auto text-slate-700 text-xl'>
       {ticket.number.map((number, index) => (
         <div
           key={index}
-          className={`flex items-center justify-center rounded-full border-0 outline outline-offset-2 outline-3 w-4 h-4 md:w-12 md:h-5 hover:scale-110 transition      
+          className={`flex items-center justify-center bg-white rounded-full border-0 outline outline-offset-2 outline-3 w-4 h-4 md:w-12 md:h-5 hover:scale-110 transition relative z-50      
            ${
              index === 0
                ? 'border-pink-300 outline-pink-500'

@@ -7,13 +7,15 @@ interface LotteryTicketItemProps {
   removeTicketHandler: (id: string) => void
 }
 
+const flexWidthHeight = {}
+
 const LotteryTicketItem = ({
   ticket,
   removeTicketHandler,
 }: LotteryTicketItemProps) => {
   return (
     <div>
-      <div className='p-5 bg-white rounded-lg flex items-center justify-between space-x-8'>
+      <div className='p-5 bg-[#ffffffbc] rounded-lg flex items-center justify-between space-x-8'>
         <div className='flex-1'>
           <div className='h-4 w-48 bg-gray-300 rounded'>
             <LotteryTicket ticket={ticket} />

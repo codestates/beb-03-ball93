@@ -41,7 +41,7 @@ const NumberBox = ({
   }, [lotteryNumber, maxTickets, setValidMaxNumber])
 
   return (
-    <div className='p-4'>
+    <div className='p-4 relative z-50'>
       <div className='flex w-full justify-center cursor-pointer'>
         {/* <div className='flex items-center mr-4 text-[#576272] font-black text-sm md:text-base'>
           choose <br />
@@ -74,7 +74,7 @@ const NumberBox = ({
                     ? 'hover:skew-y-12 hover:scale-110' // 좀 커지고 y 비스듬히
                     : number === 9
                     ? 'origin-left hover:-rotate-45' //  반시계 들어올려짐
-                    : 'hover:rotate-90 hover:scale-75'
+                    : 'hover:rotate-90 hover:scale-75' // 시계 회전 후 축소
                 }`}
             >
               {number}

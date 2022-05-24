@@ -11,7 +11,6 @@ import {
   convertFromMicroDenom,
   convertDenomToMicroDenom,
 } from 'utils/conversion'
-import { string } from 'yup'
 
 const PUBLIC_CHAIN_NAME = process.env.NEXT_PUBLIC_CHAIN_NAME
 const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'uconst'

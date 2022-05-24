@@ -1,17 +1,14 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { v4 as uuidv4 } from 'uuid'
 import generateLottery from 'utils/generateLottery'
 import { RootState } from 'store/store'
 import NumberBox from 'components/NumberBox/NumberBox'
 import { addLotteryTicket } from 'actions/lotteryAction'
 import lotteryModel from 'models/lotteryModels'
-import PairNumberBox from 'components/NumberBox/PairNumberBox'
 import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
-import Link from 'next/link'
 import Send from 'components/Send'
-import clsx from 'clsx'
 import NumberBall from './NumberBall'
+import generateUUID from 'utils/generateUUID'
 
 interface LotterySelectProps {
   payHandler: () => void
@@ -40,7 +37,7 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
   // const isDisableButton = validMaxNumber && maxPairNumber && !maxTickets
   const isDisableButton = validMaxNumber && !maxTickets
 
-  console.log(validMaxNumber)
+  // console.log(validMaxNumber)
 
   const sumbitHandler = (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,8 +45,9 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
       number: lotteryNumber,
       // number: lotteryNumber.sort((a, b) => a - b),
       // pairNumber: pairNumber.sort((a, b) => a - b),
-      id: uuidv4(),
+      id: generateUUID(),
     }
+
     // if (validMaxNumber && maxPairNumber) {
     if (validMaxNumber) {
       dispatch(addLotteryTicket(lotteryTicket))
@@ -73,7 +71,7 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
   }
 
   return (
-    <div className=''>
+    <div>
       <NumberBall
         lotteryNumber={lotteryNumber}
         deleteLotteryNumber={deleteLotteryNumber}
