@@ -21,7 +21,6 @@ const Layout: TNextLayout<TBasicLayout> = ({ children }): JSX.Element => {
       <main className='flex flex-grow justify-center w-full min-h-full pb-16 text-center font-normal tracking-normal xl:bg-[url(/background.png)] bg-no-repeat xl:bg-cover'>
         <div className='flex flex-col max-w-3xl sm:w-full max-h-screen mt-4 bg-gray-50'>
           {children}
-          {/* <div className='bg-[url(/hero.png)] w-full bg-no-repeat bg-contain'></div> */}
         </div>
       </main>
       <Footer />

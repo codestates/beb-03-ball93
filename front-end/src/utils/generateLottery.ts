@@ -1,4 +1,4 @@
-import generateUUID from './generateUUID'
+import generateUUID from 'utils/generateUUID'
 
 const generateLottery = () => {
   let selectedNumber = []

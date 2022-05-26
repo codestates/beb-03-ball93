@@ -1,3 +1,5 @@
+import { atom, selector } from 'recoil'
+
 import {
   updateLotteryTickets,
   updateLotteryHistory,
@@ -11,32 +13,10 @@ import { createAlert } from 'recoils/alert'
 
 // import axios from 'axios'
 
-export const addLotteryTicket =
-  (lotteryTicket: lotteryType) => (dispatch: any, getState: any) => {
-    const currentLotteryTickets: lotteryType[] = getState().lottery.lotteryInput
-
-    // console.log('//////////')
-    // console.log(currentLotteryTickets)
-    // console.log(lotteryTicket)
-
-    const updatedLotteryTickets = [...currentLotteryTickets, lotteryTicket]
-
-    // console.log('******')
-    // console.log(updatedLotteryTickets)
-
-    dispatch(updateLotteryTickets(updatedLotteryTickets))
-  }
-
-export const removeLotteryTicket =
-  (id: string) => (dispatch: any, getState: any) => {
-    const currentLotteryTickets: lotteryType[] = getState().lottery.lotteryInput
-
-    const updatedLotteryTickets: lotteryType[] = currentLotteryTickets.filter(
-      (ticket) => ticket.id !== id
-    )
-
-    dispatch(updateLotteryTickets(updatedLotteryTickets))
-  }
+export const lotteryTicketsState = atom<lotteryType[]>({
+  key: 'lotteryTicketsState',
+  default: [],
+})
 
 export const getLotteryHistory = () => async (dispatch: any, getState: any) => {
   try {

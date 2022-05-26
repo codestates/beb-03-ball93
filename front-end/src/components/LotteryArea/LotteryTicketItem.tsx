@@ -1,13 +1,11 @@
-import lotteryModel from 'models/lotteryModels'
+import lotteryType from 'types/lotteryTypes'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import LotteryTicket from 'components/LotteryTicket/LotteryTicket'
 
 interface LotteryTicketItemProps {
-  ticket: lotteryModel
+  ticket: lotteryType
   removeTicketHandler: (id: string) => void
 }
-
-const flexWidthHeight = {}
 
 const LotteryTicketItem = ({
   ticket,

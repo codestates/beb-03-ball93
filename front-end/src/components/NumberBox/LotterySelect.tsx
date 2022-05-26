@@ -1,14 +1,13 @@
-import React, { useCallback, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
 import generateLottery from 'utils/generateLottery'
-import { RootState } from 'recoils/store'
 import NumberBox from 'components/NumberBox/NumberBox'
-import { addLotteryTicket } from 'recoils/lottery'
+import { lotteryTicketsState } from 'recoils/lottery'
 import lotteryType from 'types/lotteryTypes'
 import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import Send from 'components/Send'
 import NumberBall from './NumberBall'
 import generateUUID from 'utils/generateUUID'
+import { useRecoilState } from 'recoil'
 
 interface LotterySelectProps {
   payHandler: () => void
@@ -19,27 +18,26 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
     -1, -1, -1, -1, -1, -1,
   ])
   const [validMaxNumber, setValidMaxNumber] = useState<boolean>(false)
+  const [currentLotteryTickets, setCurrentLotteryTickets] =
+    useRecoilState(lotteryTicketsState)
+
+  const addLotteryTicket = (lotteryTicket: lotteryType) => {
+    setCurrentLotteryTickets([...currentLotteryTickets, lotteryTicket])
+  }
 
   // const [pairNumber, setPairNumber] = useState<number[]>([])
   // const [maxPairNumber, setMaxPairNumber] = useState<boolean>(false)
 
-  const lotteryTicket = useSelector(
-    (state: RootState) => state.lottery.lotteryInput
-  )
+  const payAmount = `${currentLotteryTickets.length * 2}.00 TORII`
+  const payButtonDisable = currentLotteryTickets.length === 0 ? true : false
 
-  const dispatch = useDispatch()
-
-  const payAmount = `${lotteryTicket.length * 2}.00 TORII`
-  const payButtonDisable = lotteryTicket.length === 0 ? true : false
-
-  const maxTickets = lotteryTicket.length === 5 ? true : false
+  const maxTickets = currentLotteryTickets.length === 5 ? true : false
 
   // const isDisableButton = validMaxNumber && maxPairNumber && !maxTickets
   const isDisableButton = validMaxNumber && !maxTickets
 
   // console.log(validMaxNumber)
 
-  // disable 설정 변경 ?
   const sumbitHandler = (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -52,7 +50,7 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
 
     // if (validMaxNumber && maxPairNumber) {
     if (validMaxNumber) {
-      dispatch(addLotteryTicket(lotteryTicket))
+      addLotteryTicket(lotteryTicket)
 
       // Reset
       setLotteryNumber([-1, -1, -1, -1, -1, -1])
@@ -71,7 +69,7 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
     //. 6개를 다 고른 후 random버튼 클릭 시 form submit 으로 인해 submitHandler가 실행되는 것을 막는다.
     e.preventDefault()
     const randomTicket = generateLottery()
-    dispatch(addLotteryTicket(randomTicket))
+    setCurrentLotteryTickets([...currentLotteryTickets, randomTicket])
   }
 
   return (

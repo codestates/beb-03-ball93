@@ -1,7 +1,6 @@
 import { useState, useEffect, MouseEvent } from 'react'
 import type { NextPage } from 'next'
 import { useSelector } from 'react-redux'
-import { RootState } from 'store/store'
 import { StdFee, Coin } from '@cosmjs/amino'
 import { calculateFee, GasPrice } from '@cosmjs/stargate'
 import WalletLoader from 'components/WalletLoader'
@@ -11,6 +10,8 @@ import {
   convertFromMicroDenom,
   convertDenomToMicroDenom,
 } from 'utils/conversion'
+import { useRecoilValue } from 'recoil'
+import { lotteryTicketsState } from 'recoils/lottery'
 
 const PUBLIC_CHAIN_NAME = process.env.NEXT_PUBLIC_CHAIN_NAME
 const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'uconst'
@@ -38,12 +39,10 @@ const Send: NextPage = () => {
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
 
-  const { lotteryNumberData } = useSelector((state: RootState) => ({
-    lotteryNumberData: Object.values(state.lottery.lotteryInput).map((el) =>
-      el.number.join('')
-    ),
-  }))
-  // console.log(lotteryNumberData)
+  const lotteryTickets = useRecoilValue(lotteryTicketsState)
+  const lotteryTicketsToSend = Object.values(lotteryTickets).map((el) =>
+    el.number.join('')
+  )
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
@@ -209,7 +208,7 @@ const Send: NextPage = () => {
     const entrypoint = {
       register: {
         address: walletAddress,
-        combination: lotteryNumberData,
+        combination: lotteryTicketsToSend,
       },
     }
     const setamount: string = (
@@ -251,7 +250,11 @@ const Send: NextPage = () => {
 
   return (
     <WalletLoader loading={loading}>
-      <button type='button' className='btn-payment mt-10' onClick={handleSend}>
+      <button
+        type='button'
+        className='btn-payment mt-10 relative z-50'
+        onClick={handleSend}
+      >
         <img src={'/archway-logo.png'} width={32} className={'pr-2'} />
         Pay with Archway
       </button>
