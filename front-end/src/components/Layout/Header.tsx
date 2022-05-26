@@ -17,8 +17,8 @@ const Header = () => {
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 
   return (
-    <div className='flex justify-center items-center w-screen relative border-inherit rounded-b-3xl bg-white shadow-xl shadow-gray-200/30 py-4'>
-      <nav className='flex justify-between items-center max-w-screen-2xl w-full h-[58px]'>
+    <div className='fixed top-0 z-50 flex justify-center items-center w-screen border-inherit rounded-b-3xl bg-white shadow-xl shadow-gray-200/30 py-4'>
+      <nav className='flex justify-between items-center max-w-screen-2xl w-full relative h-[58px]'>
         <div className='flex items-center transition duration-300 ease-in-out hover:scale-105 cursor-pointer'>
           <Link href='/lottery'>
             {PUBLIC_SITE_LOGO_URL.length > 0 ? (

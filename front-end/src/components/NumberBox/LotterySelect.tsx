@@ -86,7 +86,7 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
           setValidMaxNumber={setValidMaxNumber}
           maxTickets={maxTickets}
         />
-        <div className='flex flex-row space-x-2 justify-center items-center mb-2 relative z-50'>
+        <div className='flex flex-row space-x-2 justify-center items-center mb-2 relative z-30'>
           <div>
             <button
               onClick={randomTicketHandler}

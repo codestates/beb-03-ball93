@@ -252,7 +252,7 @@ const Send: NextPage = () => {
     <WalletLoader loading={loading}>
       <button
         type='button'
-        className='btn-payment mt-10 relative z-50'
+        className='btn-payment mt-10 relative z-30'
         onClick={handleSend}
       >
         <img src={'/archway-logo.png'} width={32} className={'pr-2'} />
