@@ -1,13 +1,9 @@
-import { setAlert, removeAlert } from 'slices/alertSlice'
+import { setAlert, removeAlert } from 'recoils/alertSlice'
 
-enum severity {
-  error = 'error',
-  success = 'success',
-  warning = 'warning',
-}
+type severity = 'error' | 'success' | 'warning'
 
 export const createAlert =
-  (message: string, alertType = severity.error, timeout: number = 5000) =>
+  (message: string, alertType: severity = 'error', timeout: number = 5000) =>
   (dispatch: any) => {
     const id = self.crypto.randomUUID()
 

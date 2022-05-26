@@ -1,5 +1,3 @@
-// import { Box, Typography } from '@mui/material'
-
 import WinningsTable from 'components/WinningsTable'
 
 const GameRule = () => {

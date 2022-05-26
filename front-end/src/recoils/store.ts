@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import alertSlice from 'slices/alertSlice'
-import lotterySlice from 'slices/lotterySlice'
-import userSlice from 'slices/userSlice'
+import alertSlice from 'recoils/alertSlice'
+import lotterySlice from 'recoils/lotterySlice'
+import userSlice from 'recoils/userSlice'
 
 export const store = configureStore({
   reducer: {

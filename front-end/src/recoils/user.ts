@@ -3,16 +3,12 @@ import {
   userRequestFinish,
   userPopupAccount,
   userPopupHistory,
-} from 'slices/userSlice'
-import { createAlert } from './alertAction'
+} from 'recoils/userSlice'
+import { createAlert } from './alert'
 
 import axios from 'axios'
 
-enum severity {
-  error = 'error',
-  success = 'success',
-  warning = 'warning',
-}
+// type severity = 'error' | 'success' | 'warning'
 
 export const popupAccount =
   (amountInput: number) => async (dispatch: any, getState: any) => {
@@ -49,10 +45,7 @@ export const popupAccount =
         })
       )
       dispatch(
-        createAlert(
-          'Your Account has been successfuly popup!',
-          severity.success
-        )
+        createAlert('Your Account has been successfuly popup!', 'success')
       )
     } catch (error: any) {
       dispatch(userRequestFinish())

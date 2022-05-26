@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import generateLottery from 'utils/generateLottery'
-import { RootState } from 'store/store'
+import { RootState } from 'recoils/store'
 import NumberBox from 'components/NumberBox/NumberBox'
-import { addLotteryTicket } from 'actions/lotteryAction'
-import lotteryModel from 'models/lotteryModels'
+import { addLotteryTicket } from 'recoils/lottery'
+import lotteryType from 'types/lotteryTypes'
 import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import Send from 'components/Send'
 import NumberBall from './NumberBall'
@@ -39,9 +39,11 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
 
   // console.log(validMaxNumber)
 
+  // disable 설정 변경 ?
   const sumbitHandler = (e: React.FormEvent) => {
     e.preventDefault()
-    const lotteryTicket: lotteryModel = {
+
+    const lotteryTicket: lotteryType = {
       number: lotteryNumber,
       // number: lotteryNumber.sort((a, b) => a - b),
       // pairNumber: pairNumber.sort((a, b) => a - b),
@@ -65,7 +67,9 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
     setLotteryNumber(currentNumber)
   }
 
-  const randomTicketHandler = () => {
+  const randomTicketHandler = (e: React.MouseEvent) => {
+    //. 6개를 다 고른 후 random버튼 클릭 시 form submit 으로 인해 submitHandler가 실행되는 것을 막는다.
+    e.preventDefault()
     const randomTicket = generateLottery()
     dispatch(addLotteryTicket(randomTicket))
   }

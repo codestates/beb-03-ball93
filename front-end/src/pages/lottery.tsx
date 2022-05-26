@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store/store'
-import { playLottery } from 'actions/lotteryAction'
-import lotteryGameModel from 'models/lotteryGameModels'
+import { RootState } from 'recoils/store'
+import { playLottery } from 'recoils/lottery'
+import lotteryGameType from 'types/lotteryGameTypes'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
 import Banner from 'components/Layout/Banner'
@@ -11,7 +11,7 @@ import Timer from 'components/CountdownTimer/Timer'
 const lottery = () => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState<boolean>(false)
-  const [gameResult, setGameResult] = useState<lotteryGameModel | null>(null)
+  const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
 
   // const screenWidth = window.innerWidth
   // console.log(screenWidth)

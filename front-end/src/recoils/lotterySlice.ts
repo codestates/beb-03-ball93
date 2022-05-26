@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import lotteryModel from 'models/lotteryModels'
-import lotteryGameModel from 'models/lotteryGameModels'
+import lotteryType from 'types/lotteryTypes'
+import lotteryGameType from 'types/lotteryGameTypes'
 export interface LotteryState {
-  lotteryInput: lotteryModel[]
-  lotteryHistory: lotteryGameModel[]
+  lotteryInput: lotteryType[]
+  lotteryHistory: lotteryGameType[]
   loading: boolean
 }
 
@@ -17,16 +17,13 @@ export const lotterySlice = createSlice({
   name: 'lottery',
   initialState,
   reducers: {
-    updateLotteryTickets: (state, action: PayloadAction<lotteryModel[]>) => {
+    updateLotteryTickets: (state, action: PayloadAction<lotteryType[]>) => {
       state.lotteryInput = action.payload
     },
     resetLotteryTickets: (state) => {
       state.lotteryInput = []
     },
-    updateLotteryHistory: (
-      state,
-      action: PayloadAction<lotteryGameModel[]>
-    ) => {
+    updateLotteryHistory: (state, action: PayloadAction<lotteryGameType[]>) => {
       state.lotteryHistory = action.payload
       state.loading = false
     },

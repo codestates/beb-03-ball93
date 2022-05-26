@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import alertModels from 'models/alertModels'
+import alertType from 'types/alertTypes'
 
 interface AlertState {
-  alert: alertModels[]
+  alert: alertType[]
 }
 
 const initialState: AlertState = {
@@ -13,7 +13,7 @@ export const alertSlice = createSlice({
   name: 'alert',
   initialState,
   reducers: {
-    setAlert: (state, action: PayloadAction<alertModels>) => {
+    setAlert: (state, action: PayloadAction<alertType>) => {
       state.alert.push(action.payload)
     },
     removeAlert: (state, action: PayloadAction<string>) => {

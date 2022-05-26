@@ -1,6 +1,6 @@
 import { convertFromMicroDenom } from 'utils/conversion'
 
-// cosmJS 및 Kepr 속성으로 Window 객체 상속
+// cosmJS 및 Keplr 속성으로 Window 객체 상속
 interface CosmosKeplrWindow extends Window {
   keplr: any
   getOfflineSigner: Function

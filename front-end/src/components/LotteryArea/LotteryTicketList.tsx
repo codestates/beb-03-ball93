@@ -1,8 +1,8 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store/store'
+import { RootState } from 'recoils/store'
 import LotteryTicketItem from 'components/LotteryArea/LotteryTicketItem'
-import { removeLotteryTicket } from 'actions/lotteryAction'
+import { removeLotteryTicket } from 'recoils/lottery'
 
 const LotteryTicketList = () => {
   const lotteryTicket = useSelector(

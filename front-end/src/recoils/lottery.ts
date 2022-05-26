@@ -4,29 +4,34 @@ import {
   lotteryRequestStart,
   lotteryRequestFinish,
   resetLotteryTickets,
-} from 'slices/lotterySlice'
-import { userPopupAccount } from 'slices/userSlice'
-import lotteryModel from 'models/lotteryModels'
-import { createAlert } from './alertAction'
+} from 'recoils/lotterySlice'
+import { userPopupAccount } from 'recoils/userSlice'
+import lotteryType from 'types/lotteryTypes'
+import { createAlert } from 'recoils/alert'
 
 // import axios from 'axios'
 
 export const addLotteryTicket =
-  (lotteryTicket: lotteryModel) => (dispatch: any, getState: any) => {
-    const currentLotteryTickets: lotteryModel[] =
-      getState().lottery.lotteryInput
+  (lotteryTicket: lotteryType) => (dispatch: any, getState: any) => {
+    const currentLotteryTickets: lotteryType[] = getState().lottery.lotteryInput
+
+    // console.log('//////////')
+    // console.log(currentLotteryTickets)
+    // console.log(lotteryTicket)
 
     const updatedLotteryTickets = [...currentLotteryTickets, lotteryTicket]
+
+    // console.log('******')
+    // console.log(updatedLotteryTickets)
 
     dispatch(updateLotteryTickets(updatedLotteryTickets))
   }
 
 export const removeLotteryTicket =
   (id: string) => (dispatch: any, getState: any) => {
-    const currentLotteryTickets: lotteryModel[] =
-      getState().lottery.lotteryInput
+    const currentLotteryTickets: lotteryType[] = getState().lottery.lotteryInput
 
-    const updatedLotteryTickets: lotteryModel[] = currentLotteryTickets.filter(
+    const updatedLotteryTickets: lotteryType[] = currentLotteryTickets.filter(
       (ticket) => ticket.id !== id
     )
 

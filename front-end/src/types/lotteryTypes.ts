@@ -1,7 +1,7 @@
-interface lotteryModel {
+interface lotteryType {
   number: number[]
   // pairNumber: number[]
   id: string
 }
 
-export default lotteryModel
+export default lotteryType

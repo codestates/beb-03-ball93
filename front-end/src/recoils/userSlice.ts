@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import userInfoModel from 'models/userInfoModels'
-import popupHistoryModels from 'models/popupHistory'
+import userInfoType from 'types/userInfoTypes'
+import popupHistoryType from 'types/popupHistoryTypes'
 
 interface UserState {
   isLogin: boolean | null
-  userInfo: userInfoModel | null
+  userInfo: userInfoType | null
   token: string | null
   loading: boolean
-  popupHistory: popupHistoryModels[]
+  popupHistory: popupHistoryType[]
 }
 
 // const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -35,10 +35,10 @@ const isLogin = true
 const initialState: UserState = {
   isLogin: isLogin,
   userInfo: {
-    name: 'chan',
-    email: 'asdadas@asdasd.com',
+    // name: 'chan',
+    // email: 'asdadas@asdasd.com',
     account: 1231231123132,
-    isAdmin: true,
+    // isAdmin: true,
     token: 'LPtoken',
     avatar: 'chanavatar',
   },
@@ -52,12 +52,12 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    userLogin: (state, action: PayloadAction<userInfoModel>) => {
+    userLogin: (state, action: PayloadAction<userInfoType>) => {
       state.userInfo = {
-        name: action.payload.name,
-        email: action.payload.email,
+        // name: action.payload.name,
+        // email: action.payload.email,
         account: action.payload.account,
-        isAdmin: action.payload.isAdmin,
+        // isAdmin: action.payload.isAdmin,
         avatar: action.payload.avatar,
       }
       state.isLogin = true
@@ -79,7 +79,7 @@ export const userSlice = createSlice({
       state.userInfo!.account = action.payload
       state.loading = false
     },
-    userPopupHistory: (state, action: PayloadAction<popupHistoryModels[]>) => {
+    userPopupHistory: (state, action: PayloadAction<popupHistoryType[]>) => {
       state.popupHistory = action.payload
       state.loading = false
     },
