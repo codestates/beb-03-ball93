@@ -1,7 +1,6 @@
 import { useState, useEffect, MouseEvent } from 'react'
 import type { NextPage } from 'next'
 import { useSelector } from 'react-redux'
-import { RootState } from 'store/store'
 import { StdFee, Coin } from '@cosmjs/amino'
 import { calculateFee, GasPrice } from '@cosmjs/stargate'
 import WalletLoader from 'components/WalletLoader'
@@ -11,7 +10,8 @@ import {
   convertFromMicroDenom,
   convertDenomToMicroDenom,
 } from 'utils/conversion'
-import { string } from 'yup'
+import { useRecoilValue } from 'recoil'
+import { lotteryTicketsState } from 'recoils/lottery'
 
 const PUBLIC_CHAIN_NAME = process.env.NEXT_PUBLIC_CHAIN_NAME
 const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'uconst'
@@ -39,12 +39,10 @@ const Send: NextPage = () => {
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
 
-  const { lotteryNumberData } = useSelector((state: RootState) => ({
-    lotteryNumberData: Object.values(state.lottery.lotteryInput).map((el) =>
-      el.number.join('')
-    ),
-  }))
-  // console.log(lotteryNumberData)
+  const lotteryTickets = useRecoilValue(lotteryTicketsState)
+  const lotteryTicketsToSend = Object.values(lotteryTickets).map((el) =>
+    el.number.join('')
+  )
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
@@ -88,7 +86,7 @@ const Send: NextPage = () => {
     // combination ( 유저가 구매한 로또 번호들)
     const qeury_msg1: Record<string, unknown> = {
       combination: {
-        lottery_id: 1,
+        lottery_id: 2,
         address: walletAddress,
       },
     }
@@ -105,7 +103,7 @@ const Send: NextPage = () => {
     // Balance (회차당 총상금)
     const qeury_msg2: Record<string, unknown> = {
       balance: {
-        lottery_id: 1,
+        lottery_id: 2,
       },
     }
     signingClient
@@ -121,7 +119,7 @@ const Send: NextPage = () => {
     // Winner (해당 회차 당첨자)
     const qeury_msg3: Record<string, unknown> = {
       winner: {
-        lottery_id: 1,
+        lottery_id: 2,
       },
     }
     signingClient
@@ -132,12 +130,13 @@ const Send: NextPage = () => {
       })
       .catch((error) => {
         setError(`Error! ${error.message}`)
+        console.log('--------- Winner ---------')
         console.log('Error signingClient.getBalance(): ', error)
       })
     // Jackpot Balance (해당 회차 등수별 받아야할 액수)
     const qeury_msg4: Record<string, unknown> = {
       jackpot_balance: {
-        lottery_id: 1,
+        lottery_id: 2,
       },
     }
     signingClient
@@ -150,26 +149,11 @@ const Send: NextPage = () => {
         setError(`Error! ${error.message}`)
         console.log('Error signingClient.getBalance(): ', error)
       })
-    // Jackpot Count (해당회차 랭킹별 당첨자수)
-    const qeury_msg5: Record<string, unknown> = {
-      jackpot_count: {
-        lottery_id: 1,
-      },
-    }
-    signingClient
-      .queryContractSmart(contractAddress, qeury_msg5)
-      .then((response: any) => {
-        console.log('--------- Jackpot Count ---------')
-        console.log(response)
-      })
-      .catch((error) => {
-        setError(`Error! ${error.message}`)
-        console.log('Error signingClient.getBalance(): ', error)
-      })
+
     // Count Ticket (해당회차 누적 티켓수)
     const qeury_msg6: Record<string, unknown> = {
       count_ticket: {
-        lottery_id: 1,
+        lottery_id: 2,
       },
     }
     signingClient
@@ -180,12 +164,13 @@ const Send: NextPage = () => {
       })
       .catch((error) => {
         setError(`Error! ${error.message}`)
+        console.log('--------- Count Ticket ---------')
         console.log('Error signingClient.getBalance(): ', error)
       })
     // Count User (해당회차 참여자수)
     const qeury_msg7: Record<string, unknown> = {
       count_user: {
-        lottery_id: 1,
+        lottery_id: 2,
       },
     }
     signingClient
@@ -196,6 +181,74 @@ const Send: NextPage = () => {
       })
       .catch((error) => {
         setError(`Error! ${error.message}`)
+        console.log('--------- Count User ---------')
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+
+    //컨트랙트 구성요소
+    const qeury_msg8: Record<string, unknown> = {
+      config: {},
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg8)
+      .then((response: any) => {
+        console.log('--------- config ---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('--------- config ---------')
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+
+    //회차당 당첨번호
+    const qeury_msg9: Record<string, unknown> = {
+      get_jackpot: { lottery_id: 2 },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg9)
+      .then((response: any) => {
+        console.log('--------jackpot_number---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('--------- config ---------')
+        console.log('jackpot_number')
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+    // Jackpot Count (해당회차 랭킹별 당첨자수)
+    const qeury_msg5: Record<string, unknown> = {
+      jackpot_count: {
+        lottery_id: 2,
+      },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg5)
+      .then((response: any) => {
+        console.log('--------- Jackpot Count ---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('--------- Jackpot Count ---------')
+        console.log('Error signingClient.getBalance(): ', error)
+      })
+
+    //회차당 랭킹별 당첨금액
+    const qeury_msg10: Record<string, unknown> = {
+      jackpot_balance: { lottery_id: 2 },
+    }
+    signingClient
+      .queryContractSmart(contractAddress, qeury_msg10)
+      .then((response: any) => {
+        console.log('--------jackpot_ranking_balance---------')
+        console.log(response)
+      })
+      .catch((error) => {
+        setError(`Error! ${error.message}`)
+        console.log('--------jackpot_ranking_balance---------')
+
         console.log('Error signingClient.getBalance(): ', error)
       })
 
@@ -210,7 +263,7 @@ const Send: NextPage = () => {
     const entrypoint = {
       register: {
         address: walletAddress,
-        combination: lotteryNumberData,
+        combination: lotteryTicketsToSend,
       },
     }
     const setamount: string = (
@@ -252,7 +305,11 @@ const Send: NextPage = () => {
 
   return (
     <WalletLoader loading={loading}>
-      <button type='button' className='btn-payment mt-10' onClick={handleSend}>
+      <button
+        type='button'
+        className='btn-payment mt-10 relative z-30'
+        onClick={handleSend}
+      >
         <img src={'/archway-logo.png'} width={32} className={'pr-2'} />
         Pay with Archway
       </button>

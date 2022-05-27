@@ -2,12 +2,13 @@ import Tab from 'components/Layout/Tab'
 
 const Footer = () => {
   return (
-    <footer className='flex flex-col items-center justify-center w-full h-16 relative translate-y-full'>
-      <div className='lg:hidden'>
+    <footer className='flex flex-col items-center justify-center w-full h-16 relative z-40'>
+      <div className='fixed bottom-0 lg:hidden'>
         <Tab />
       </div>
-      <div className='flex flex-col items-center justify-center w-full lg:h-24 bg-[#EEF8F8]'>
-        <div className='flex justify-center items-center w-full space-x-6 mt-12 lg:mt-0'>
+      {/* //? 어떻게 스크롤 맨아래로 내렸을 때만 보이게 하는가 ㅠㅠ */}
+      <div className='hidden lg:fixed lg:bottom-0 lg:flex flex-col items-center justify-center w-full bg-[#EEF8F8]'>
+        <div className='flex justify-center items-center w-full space-x-6 lg:mt-0'>
           <a href='https://github.com/codestates/beb-03-ball93' target='_blank'>
             <svg
               xmlns='http://www.w3.org/2000/svg'

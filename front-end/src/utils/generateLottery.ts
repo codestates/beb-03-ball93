@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import generateUUID from 'utils/generateUUID'
 
 const generateLottery = () => {
   let selectedNumber = []
@@ -22,7 +22,7 @@ const generateLottery = () => {
     number: selectedNumber,
     // number: selectedNumber.sort((a, b) => a - b),
     // pairNumber: selectedPairNumber.sort((a, b) => a - b),
-    id: uuidv4(),
+    id: generateUUID(),
   }
 }
 

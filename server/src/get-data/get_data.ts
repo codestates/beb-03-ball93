@@ -13,6 +13,7 @@ export class GetData {
     };
     const denom: string = 'utorii';
     await this.signClient
+      // .getChainId()
       .getBalance(contractAddress, denom)
       .then((res: any) => {
         const { amount, denom }: { amount: number; denom: string } = res;

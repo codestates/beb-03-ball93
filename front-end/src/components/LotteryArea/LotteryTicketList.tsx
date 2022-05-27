@@ -1,17 +1,17 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store/store'
 import LotteryTicketItem from 'components/LotteryArea/LotteryTicketItem'
-import { removeLotteryTicket } from 'actions/lotteryAction'
+import { lotteryTicketsState } from 'recoils/lottery'
+import { useRecoilState } from 'recoil'
 
 const LotteryTicketList = () => {
-  const lotteryTicket = useSelector(
-    (state: RootState) => state.lottery.lotteryInput
-  )
+  const [lotteryTickets, setLotteryTickets] =
+    useRecoilState(lotteryTicketsState)
 
-  const dispatch = useDispatch()
   const removeTicketHandler = (id: string) => {
-    dispatch(removeLotteryTicket(id))
+    const updatedLotteryTickets = lotteryTickets.filter(
+      (ticket) => id !== ticket.id
+    )
+    setLotteryTickets(updatedLotteryTickets)
   }
 
   return (
@@ -22,12 +22,12 @@ const LotteryTicketList = () => {
           <div className='absolute top-32 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000'></div>
           <div className='absolute -bottom-44 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000'></div>
           <div className='m-8 relative space-y-4'>
-            <span>{`${lotteryTicket.length} ticket(s)`}</span>
-            {lotteryTicket.map((ticket) => (
+            <span>{`${lotteryTickets.length} ticket(s)`}</span>
+            {lotteryTickets.map((ticket) => (
               <LotteryTicketItem
                 key={ticket.id}
                 ticket={ticket}
-                removeTicketHandler={removeTicketHandler}
+                removeTicketHandler={() => removeTicketHandler(ticket.id)}
               />
             ))}
           </div>

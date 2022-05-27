@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import lotteryGameModel from 'models/lotteryGameModels'
+import lotteryGameType from 'types/lotteryGameTypes'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 
 interface LotteryHistoryProps {
-  lotteryHistory: lotteryGameModel[]
+  lotteryHistory: lotteryGameType[]
 }
 
 const LotteryHistory = ({ lotteryHistory }: LotteryHistoryProps) => {
-  let sortedLottery: lotteryGameModel[] = []
+  let sortedLottery: lotteryGameType[] = []
 
   const [sortBy, setSortBy] = useState('new')
 

@@ -7,12 +7,12 @@ import React from 'react'
 // import TableRow from '@mui/material/TableRow'
 // import Paper from '@mui/material/Paper'
 
-import lotteryModel from 'models/lotteryModels'
+import lotteryType from 'types/lotteryTypes'
 import LotteryTableRow from './LotteryTableRow'
 
 interface LotteryTableProps {
-  playLottery: lotteryModel[]
-  resultLottery: lotteryModel
+  playLottery: lotteryType[]
+  resultLottery: lotteryType
 }
 
 const LotteryTable = ({ playLottery, resultLottery }: LotteryTableProps) => {

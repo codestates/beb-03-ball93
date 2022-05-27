@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store/store'
-import { playLottery } from 'actions/lotteryAction'
-import lotteryGameModel from 'models/lotteryGameModels'
+// import { useSelector, useDispatch } from 'react-redux'
+// import { RootState } from 'recoils/store'
+import { playLottery } from 'recoils/lottery'
+import lotteryGameType from 'types/lotteryGameTypes'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
 import Banner from 'components/Layout/Banner'
 import Timer from 'components/CountdownTimer/Timer'
 
 const lottery = () => {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const [open, setOpen] = useState<boolean>(false)
-  const [gameResult, setGameResult] = useState<lotteryGameModel | null>(null)
+  const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
 
   // const screenWidth = window.innerWidth
   // console.log(screenWidth)
@@ -20,25 +20,23 @@ const lottery = () => {
     setOpen(false)
   }
 
-  const { isLogin } = useSelector((state: RootState) => state.user)
-  const { loading } = useSelector((state: RootState) => state.lottery)
+  // const { isLogin } = useSelector((state: RootState) => state.user)
+  // const { loading } = useSelector((state: RootState) => state.lottery)
 
   const payHandler = async () => {
-    if (!isLogin) {
-      // navigate('/signin')
-      return
-    }
-
-    const resultGame: any = await dispatch(playLottery())
-
-    if (resultGame) {
-      setGameResult(resultGame)
-      setOpen(true)
-    }
-    if (!resultGame) {
-      setGameResult(null)
-      return
-    }
+    //   if (!isLogin) {
+    //     // navigate('/signin')
+    //     return
+    //   }
+    //   const resultGame: any = await dispatch(playLottery())
+    //   if (resultGame) {
+    //     setGameResult(resultGame)
+    //     setOpen(true)
+    //   }
+    //   if (!resultGame) {
+    //     setGameResult(null)
+    //     return
+    //   }
   }
 
   return (
@@ -52,8 +50,9 @@ const lottery = () => {
         Just pick it!
       </h1>
       <LotterySelect payHandler={payHandler} />
-      {loading}
-      {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />}
+      {/* {loading} */}
+      {/* {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
+      {gameResult && <LotteryDetails lotteryGame={gameResult!} />}
 
       {gameResult && <LotteryDetails lotteryGame={gameResult!} />}
 
