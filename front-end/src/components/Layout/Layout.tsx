@@ -19,7 +19,7 @@ const Layout: TNextLayout<TBasicLayout> = ({ children }): JSX.Element => {
 
       <Header />
       <main className='mt-20 flex flex-grow justify-center w-full min-h-full text-center font-normal tracking-normal xl:bg-[url(/background.png)] bg-no-repeat xl:bg-cover'>
-        <div className='flex flex-col max-w-3xl sm:w-full max-h-screen pb-12 bg-gray-50 rounded-md'>
+        <div className='flex flex-col max-w-3xl sm:w-full max-h-screen bg-gray-50 rounded-md'>
           {children}
         </div>
       </main>
