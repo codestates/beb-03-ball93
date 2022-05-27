@@ -8,7 +8,7 @@ This is a simple web3 lotto application built with [Next.js](https://nextjs.org/
 - [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 - [![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 - [![NextJS](https://img.shields.io/badge/NextJS-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-- [![RecoilJS](https://img.shields.io/badge/RecoilJS-blue?style=for-the-badge)](https://recoiljs.org)
+- [![RecoilJS](https://img.shields.io/badge/RecoilJS-blue.svg)](https://recoiljs.org)
 - [![CosmJS](https://img.shields.io/badge/COSMJS-orange.svg)](https://github.com/cosmos/cosmjs)
 - [![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
 - [![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
