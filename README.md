@@ -11,10 +11,10 @@ This is a simple web3 lotto application built with [Next.js](https://nextjs.org/
 - [![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
 - [![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 - [![GraphQL](https://img.shields.io/badge/-GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)](https://graphql.org)
-- [![CosmJS](https://img.shields.io/badge/cosmjs-orange.svg)](https://github.com/cosmos/cosmjs)
+- [![CosmJS](https://img.shields.io/badge/COSMJS-orange.svg)](https://github.com/cosmos/cosmjs)
 - [![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 - [![DigitalOcean](https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white)](https://www.digitalocean.com/)
-- [![Archway](https://img.shields.io/badge/Archway-yellow.svg)](https://archway.io/)
+- [![Archway](https://img.shields.io/badge/ARCHWAY-yellow.svg)](https://archway.io/)
 
 ## ✨ Key features
 
