@@ -1,5 +1,5 @@
 import dateFormat from 'utils/dateFormat'
-import lotteryGameType from 'types/lotteryGameTypes'
+import { lotteryGameType } from 'types/lotteryTypes'
 import LotteryTicket from 'components/LotteryTicket/LotteryTicket'
 import LotteryTable from './LotteryTable'
 

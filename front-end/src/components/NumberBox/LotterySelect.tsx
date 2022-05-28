@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import generateLottery from 'utils/generateLottery'
 import NumberBox from 'components/NumberBox/NumberBox'
 import { lotteryTicketsState } from 'recoils/lottery'
-import lotteryType from 'types/lotteryTypes'
-import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
-import Send from 'components/Send'
+import { lotteryType } from 'types/lotteryTypes'
 import NumberBall from './NumberBall'
 import generateUUID from 'utils/generateUUID'
 import { useRecoilState } from 'recoil'
@@ -107,12 +105,9 @@ const LotterySelect = ({ payHandler }: LotterySelectProps) => {
           </div>
         </div>
       </form>
-
       {maxTickets ||
         (!isDisableButton && <p className=''>Please choose 6 numbers</p>)}
       {maxTickets && <p className=''>You can only purchase up to 5 tickets</p>}
-      <LotteryTicketList />
-      <Send />
     </div>
   )
 }

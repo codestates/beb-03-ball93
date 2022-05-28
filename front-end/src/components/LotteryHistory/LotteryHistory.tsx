@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import lotteryGameType from 'types/lotteryGameTypes'
+import { lotteryGameType } from 'types/lotteryTypes'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 
 interface LotteryHistoryProps {

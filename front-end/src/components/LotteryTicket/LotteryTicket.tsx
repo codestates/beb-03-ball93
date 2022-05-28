@@ -1,4 +1,4 @@
-import lotteryType from 'types/lotteryTypes'
+import { lotteryType } from 'types/lotteryTypes'
 
 interface LotteryTicketProps {
   ticket: lotteryType

@@ -1,4 +1,4 @@
-import lotteryType from 'types/lotteryTypes'
+import { lotteryType } from 'types/lotteryTypes'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import LotteryTicket from 'components/LotteryTicket/LotteryTicket'
 

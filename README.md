@@ -17,7 +17,7 @@ This is a simple web3 lotto application built with [Next.js](https://nextjs.org/
 - [![DigitalOcean](https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white)](https://www.digitalocean.com/)
 - [![Archway](https://img.shields.io/badge/ARCHWAY-yellow.svg)](https://archway.io/)
 
-## ✨ Core Concepts of DecentralLotto\*\*
+## ✨ Core Concepts of DecentralLotto
 
 - **👪 Familiarity** : 로또는 전국민이 매주 즐기는 간편하고 쉬운 국민 게임임. 이러한 특성을 살려 밝고 단순한 UI구성과 CSS 애니메이션등을 활용 해 사용자에게 친숙함을 주려고 하였으며 keplr 지갑 로그인 및 단순한 버튼클릭 몇번 만으로 바로 로또 게임을 즐길 수 있게 구현하였음.
 - **🔒 Integrity** : 기존의 로또 시스템은 실시간 추첨도 아닐 뿐더러 번호 추첨방식에 있어서도 그 신뢰성에 계속적으로 의심이 제기되었음. 데이터 정확성 및 일관성을 보장하는 블록체인 기술은 기존 로또의 한계를 극복할 수 있도록 도움.

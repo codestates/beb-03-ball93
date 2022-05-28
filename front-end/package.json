@@ -1,6 +1,6 @@
 {
-  "name": "DecentralLotto",
-  "version": "0.4.1",
+  "name": "DecentralLotto_Frontend",
+  "version": "0.4.3",
   "private": true,
   "scripts": {
     "dev": "next dev",

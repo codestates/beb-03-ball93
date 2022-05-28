@@ -1,4 +1,4 @@
-import lotteryType from 'types/lotteryTypes'
+import { lotteryType } from 'types/lotteryTypes'
 
 const compareLotteryTicket = (arr1: number[], arr2: number[]) => {
   return arr1.filter((item) => arr2.includes(item))
