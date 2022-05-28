@@ -2,80 +2,40 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type Round {
   _id: String!
 
-  """User Avator"""
-  avator: String!
+  """회차"""
+  round: Float!
 
-  """User NickName"""
-  nickname: String!
+  """Winner"""
+  winner: String!
 
-  """User Wallet Address"""
-  address: String!
-  ltbalance: Float!
-  stakedtokenbalance: Float!
+  """당첨 번호"""
+  get_jackpot: String!
 
-  """User role"""
-  role: String!
+  """티켓 구매수"""
+  count_ticket: String!
+
+  """티켓 구매 유저수"""
+  count_user: String!
+
+  """랭킹별 당첨금액"""
+  jackpot_balance: String!
+
+  """랭킹별 당첨자수"""
+  jackpot_count: String!
 }
 
-type Hash {
+type Balance {
   _id: String!
-  hash: String!
-}
 
-type attributes {
-  key: String!
-  value: String!
-  index: Boolean!
+  """누적금액"""
+  balance: String!
 }
 
 type Query {
-  users: [User!]!
-  user(_id: String!): User!
-}
-
-type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(_id: String!): User!
-  createHash(createHash: CreateHashInput!): Hash!
-}
-
-input CreateUserInput {
-  """User Avator"""
-  avator: String = "https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png"
-
-  """User NickName"""
-  nickname: String!
-
-  """User Wallet Address"""
-  address: String!
-  ltbalance: Float!
-  stakedtokenbalance: Float!
-
-  """role of the user"""
-  role: String!
-}
-
-input UpdateUserInput {
-  """User Avator"""
-  avator: String = "https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png"
-
-  """User NickName"""
-  nickname: String
-
-  """User Wallet Address"""
-  address: String
-  ltbalance: Float
-  stakedtokenbalance: Float
-
-  """role of the user"""
-  role: String
-  _id: Float!
-}
-
-input CreateHashInput {
-  hash: String!
+  rounds: [Round!]!
+  round(round: Float!): Round!
+  balances: [Balance!]!
 }

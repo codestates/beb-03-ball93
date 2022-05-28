@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CommonModule } from './common/common.module';
-import { UsersModule } from './users/users.module';
-import { TransantionsModule } from './transactions/transactions.module';
-import { GetDataModule } from './get-data/get-data.module';
+import { RoundModule } from './round/round.module';
+import { BalanceModule } from './balance/balance.module';
 
 @Module({
-  imports: [CommonModule, UsersModule, TransantionsModule, GetDataModule],
+  imports: [CommonModule, RoundModule, BalanceModule],
   controllers: [],
   providers: [],
 })
