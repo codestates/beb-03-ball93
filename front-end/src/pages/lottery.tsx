@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
-// import { useSelector, useDispatch } from 'react-redux'
-// import { RootState } from 'recoils/store'
-import { playLottery } from 'recoils/lottery'
-import lotteryGameType from 'types/lotteryGameTypes'
+import { lotteryGameType } from 'types/lotteryTypes'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
 import Banner from 'components/Layout/Banner'
 import Timer from 'components/CountdownTimer/Timer'
+import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
+import SendTorii from 'components/SendTorii'
+import Toast from 'components/Toast'
 
 const lottery = () => {
-  // const dispatch = useDispatch()
   const [open, setOpen] = useState<boolean>(false)
   const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
+  const [success, setSuccess] = useState('')
+  const [error, setError] = useState('')
 
   // const screenWidth = window.innerWidth
   // console.log(screenWidth)
@@ -50,12 +51,12 @@ const lottery = () => {
         Just pick it!
       </h1>
       <LotterySelect payHandler={payHandler} />
+      {/* <Toast success={success} error={error} /> */}
+      <LotteryTicketList />
+      <SendTorii setSuccess={setSuccess} setError={setError} />
       {/* {loading} */}
       {/* {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
       {gameResult && <LotteryDetails lotteryGame={gameResult!} />}
-
-      {gameResult && <LotteryDetails lotteryGame={gameResult!} />}
-
       {/* <button onClick={handleClose}>close icon</button> */}
     </div>
   )

@@ -27,28 +27,54 @@ const WinningsTable = () => {
     },
   ]
 
-  console.log()
-
   return (
-    <div className='text-center'>
-      <table className='table-auto border-collapse w-full'>
-        <thead>
-          <tr>
-            <th className='border border-slate-200'>Prize Tier</th>
-            <th className='border border-slate-200'>Winnings</th>
-            <th className='border border-slate-200'>Average Prize</th>
-          </tr>
-        </thead>
-        <tbody>
-          {winningTableData.map((data, index) => (
-            <tr key={index}>
-              <td className='border border-slate-200'>{data.prizeTier}</td>
-              <td className='border border-slate-200'>{data.winnings}</td>
-              <td className='border border-slate-200'>{data.averagePrize}</td>
+    <div>
+      <h1 className='text-3xl pb-6'>Prize Table</h1>
+      <div className='relative overflow-x-auto md:w-10/12 mx-auto shadow-md sm:rounded-lg'>
+        <table className='w-full text-sm text-center text-gray-500 dark:text-gray-400'>
+          <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+            <tr>
+              <th scope='col' className='px-6 py-3'>
+                Prize Tier
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Winnings
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Average Prize
+              </th>
+              {/* <th scope='col' className='px-6 py-3'>
+                <span className='sr-only'>Edit</span>
+              </th> */}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {winningTableData?.map((data, index) => (
+              <tr
+                key={index}
+                className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
+              >
+                <th
+                  scope='row'
+                  className='px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap'
+                >
+                  {data.prizeTier}
+                </th>
+                <td className='px-6 py-4'>{data.winnings}</td>
+                <td className='px-6 py-4'>{data.averagePrize}</td>
+                {/* <td className='px-6 py-4 text-right'>
+              <a
+                href='#'
+                className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+              >
+                Edit
+              </a>
+            </td> */}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

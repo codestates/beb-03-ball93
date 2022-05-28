@@ -1,5 +1,5 @@
 import React from 'react'
-import lotteryModel from 'models/lotteryModels'
+import { lotteryType } from 'types/lotteryTypes'
 // import TableCell from '@mui/material/TableCell'
 // import TableRow from '@mui/material/TableRow'
 // import { Box } from '@mui/material'
@@ -8,8 +8,8 @@ import compareLottery from 'utils/compareLottery'
 
 interface LotteryTableRowProps {
   index: number
-  lottery: lotteryModel
-  resultLottery: lotteryModel
+  lottery: lotteryType
+  resultLottery: lotteryType
 }
 
 const LotteryTableRow = ({
@@ -19,19 +19,21 @@ const LotteryTableRow = ({
 }: LotteryTableRowProps) => {
   const hitNumbersArray = compareLottery(lottery, resultLottery)
 
-  const { matchNumber, matchPairNumber } = hitNumbersArray
+  const { matchNumber } = hitNumbersArray
+  // const { matchNumber, matchPairNumber } = hitNumbersArray
 
   const numberHit = (numberInput: number) => {
     return matchNumber.includes(numberInput)
   }
-  const pairNumberHit = (numberInput: number) => {
-    return matchPairNumber.includes(numberInput)
-  }
+  // const pairNumberHit = (numberInput: number) => {
+  //   return matchPairNumber.includes(numberInput)
+  // }
 
-  const hitsAmount =
-    matchPairNumber.length === 0
-      ? matchNumber.length
-      : `${matchNumber.length} + ${matchPairNumber.length}`
+  const hitsAmount = matchNumber.length
+  // const hitsAmount =
+  //   matchPairNumber.length === 0
+  //     ? matchNumber.length
+  //     : `${matchNumber.length} + ${matchPairNumber.length}`
 
   return (
     // <TableRow>
