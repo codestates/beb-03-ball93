@@ -7,6 +7,7 @@ import Timer from 'components/CountdownTimer/Timer'
 import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import SendTorii from 'components/SendTorii'
 import Toast from 'components/Toast'
+import Data from 'components/Data'
 
 const lottery = () => {
   const [open, setOpen] = useState<boolean>(false)
@@ -54,6 +55,7 @@ const lottery = () => {
       {/* <Toast success={success} error={error} /> */}
       <LotteryTicketList />
       <SendTorii setSuccess={setSuccess} setError={setError} />
+      <Data />
       {/* {loading} */}
       {/* {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
       {gameResult && <LotteryDetails lotteryGame={gameResult!} />}

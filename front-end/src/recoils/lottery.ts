@@ -20,7 +20,7 @@ export const lotteryTicketsState = atom<lotteryType[]>({
 
 export const lotteryRoundState = atom<lotteryRoundType>({
   key: `lotteryRoundState/${Math.random().toString(36).substring(2, 11)}`,
-  default: { id: 2 },
+  default: { id: 3 },
 })
 
 // export const getLotteryHistory = () => async (dispatch: any, getState: any) => {

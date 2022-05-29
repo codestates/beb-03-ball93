@@ -4,8 +4,7 @@ import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
 
 const Home: NextPage = () => {
-  const { walletAddress } = useSigningClient()
-
+  const { walletAddress, signingClient } = useSigningClient()
   return (
     <WalletLoader>
       <div className='container flex flex-col items-center justify-center'>

@@ -48,7 +48,7 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
       setWalletAddress(address)
 
       setLoading(false)
-    } catch (error) {
+    } catch (error: any) {
       setError(error)
     }
   }
