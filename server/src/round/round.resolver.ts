@@ -6,7 +6,7 @@ import { RoundService } from './round.service';
 export class RoundResolver {
   constructor(private readonly roundService: RoundService) {}
 
-  @Query(() => [Round], { name: 'rounds' })
+  @Query(() => [Round], { name: 'lottery_id' })
   findAll() {
     return this.roundService.findAll();
   }
