@@ -18,15 +18,15 @@ export class RoundService {
   findAll() {
     return this.roundModel.find().exec();
   }
-  async findOne(round: number) {
+  async findOne(lottery_id: number) {
     const selectRound = await this.roundModel
       .findOne({
-        round: round,
+        lottery_id: lottery_id,
       })
       .exec();
 
     if (!selectRound) {
-      throw new NotFoundException(` Round ${round} not found`);
+      throw new NotFoundException(` Round ${lottery_id} not found`);
     }
     return selectRound;
   }
