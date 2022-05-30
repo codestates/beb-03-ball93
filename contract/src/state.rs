@@ -11,12 +11,15 @@ pub struct State {
     pub admin: CanonicalAddr,                  //관리자
     pub denom_stable: String,                  //코인 종류???
     pub combination_len: u8,                   //조합 길이(로또)
-    pub jackpot_percentage_reward: u8,         //잭팟 비율 보상
+    // pub jackpot_percentage_reward: u8,         //잭팟 비율 보상
     pub price_per_ticket_to_register: Uint128, //등록할 티켓당 가격
     pub safe_lock: bool,
-    // pub terrand_contract_address: CanonicalAddr,
     pub lottery_id: u64, //로또 회차수
     pub prize_rank_winner_percentage: Vec<i32>,
+    pub jackpot_seed_reward:Uint128,
+    pub jackpot_seed_limit:u64,
+    pub jackpot_seed_lock:bool
+    // pub oracle_contract_address: CanonicalAddr, //oracle 컨트랙트주소
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -40,6 +43,12 @@ pub struct JackpotBalance {
     pub third: Uint128,
     pub fourth: Uint128,
     pub fifth: Uint128,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema,Hash)]
+pub struct Drand{
+    pub addr:String,
+    pub seed:String
 }
 
 //state 스토리지 저장하는 함수
@@ -169,8 +178,7 @@ pub fn lottery_winner_update(
     )
 }
 
-// 인덱싱으로 할 수 있을까...?
-//맵의 키는 binary 값으로 들어가야한다.??? &[u8]은 뭐지? vec type 도 아니고 array 도아닌데?
+
 
 // 컨트랙트 기본 설정
 pub const STATE: Item<State> = Item::new("state");
@@ -186,7 +194,7 @@ pub const TICKET_ADDRESS: Map<(&[u8], &[u8]), Vec<String>> = Map::new("ticekt_fo
 //TICKET_ADDRESS : (lottery_id.to_be_bytes(),address.as_slice()) -> vec[combination]
 
 pub const JACKPOT: Map<&[u8], JackpotNum> = Map::new("jackpot");
-//JACKPOT :lottery_id ->JackpotNum:{worker:CanonicalAddr,round : Uint128}
+//JACKPOT :lottery_id ->JackpotNum:{worker:CanonicalAddr,round : String}
 
 pub const LOTTERY_BALANCE: Map<&[u8], Uint128> = Map::new("lottery_Balance");
 //LOTTERY_AMOUNT = lottery_id,amount
@@ -196,7 +204,7 @@ pub const LOTTERY_WINNER: Map<&[u8], Vec<Winner>> = Map::new("lottery_winner");
 // addr:CanonicalAddr,
 //rank:i32
 // ticket:String
-//clain:bool
+//claim:bool
 // }
 
 pub const LOTTERY_JACKPOT_COUNT: Map<&[u8], Vec<Uint128>> = Map::new("lottery_jackpot_count");
@@ -204,7 +212,7 @@ pub const LOTTERY_JACKPOT_COUNT: Map<&[u8], Vec<Uint128>> = Map::new("lottery_ja
 
 //등수별 받아야할 액수
 pub const ROUND_JACKPOT_BALANCE: Map<&[u8], JackpotBalance> = Map::new("round_jackpot_balance");
-
+//ROUND_JACKPOT_BALANCE = //회차번호 -> JackpotBalance
 //JackpotBalance{
 //      first:Uint128,
 //      second:Uint128,
@@ -212,3 +220,5 @@ pub const ROUND_JACKPOT_BALANCE: Map<&[u8], JackpotBalance> = Map::new("round_ja
 //      fourth:Uint128,
 //      fifth:Uint128
 //  }
+
+pub const SEED_LIST:Map<&[u8],Vec<Drand>> = Map::new("seed_list");

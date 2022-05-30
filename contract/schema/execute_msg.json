@@ -3,13 +3,6 @@
   "title": "ExecuteMsg",
   "oneOf": [
     {
-      "type": "string",
-      "enum": [
-        "draw",
-        "safe_lock"
-      ]
-    },
-    {
       "type": "object",
       "required": [
         "register"
@@ -41,6 +34,42 @@
     {
       "type": "object",
       "required": [
+        "draw"
+      ],
+      "properties": {
+        "draw": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "collect_counter"
+      ],
+      "properties": {
+        "collect_counter": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "collect_balance"
+      ],
+      "properties": {
+        "collect_balance": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
         "claim"
       ],
       "properties": {
@@ -60,6 +89,38 @@
               "type": "integer",
               "format": "uint64",
               "minimum": 0.0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "safe_lock"
+      ],
+      "properties": {
+        "safe_lock": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "seed_generation"
+      ],
+      "properties": {
+        "seed_generation": {
+          "type": "object",
+          "required": [
+            "seed"
+          ],
+          "properties": {
+            "seed": {
+              "type": "string"
             }
           }
         }

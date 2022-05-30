@@ -2,23 +2,25 @@
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{
     to_binary, Addr, BankMsg, Binary, Coin, Decimal, Deps, DepsMut, Env, MessageInfo, Order,
-    Response, StdError, StdResult, Uint128,
+    Response, StdError, StdResult, Uint128
 };
-use cw2::set_contract_version;
 
-use crate::helpers::is_lower_hex;
-use crate::msg::{ConfigureResponse, ExecuteMsg, InstantiateMsg, QueryMsg};
+
+
+
+
+use crate::helpers::{is_lower_hex, make_drand, make_hash};
+use crate::msg::{ConfigureResponse, ExecuteMsg, InstantiateMsg, QueryMsg };
 use crate::state::{
     amount_update, lottery_winner_update, read_state, store_state, ticket_update, JackpotBalance,
     JackpotNum, State, Winner, COUNT_TICKET, COUNT_USER, JACKPOT, LOTTERY_BALANCE,
     LOTTERY_JACKPOT_COUNT, LOTTERY_WINNER, ROUND_JACKPOT_BALANCE, STATE, TICKET_ADDRESS,
-    TICKET_COMBINATION,
+    TICKET_COMBINATION, Drand, SEED_LIST,
 };
-use std::ops::{Add, Mul};
 
-// version info for migration info
-const CONTRACT_NAME: &str = "dotto";
-const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
+use std::ops::{Add, Mul, Sub};
+
+
 
 #[entry_point]
 pub fn instantiate(
@@ -28,18 +30,19 @@ pub fn instantiate(
     msg: InstantiateMsg,
 ) -> StdResult<Response> {
     let state = State {
-        // admin: deps.api.addr_canonicalize(&info.sender.as_str())?, //관리자
-        admin: deps.api.addr_canonicalize(&info.sender.as_str())?,
-        denom_stable: msg.denom_stable,
-        combination_len: 6,
-        jackpot_percentage_reward: 5,
-        prize_rank_winner_percentage: vec![80, 10, 6, 3, 1],
-        price_per_ticket_to_register: Uint128::from(1000u128), 
-        safe_lock: false,
-        // terrand_contract_address: deps.api.addr_canonicalize(&msg.terrand_contract_address)?,
-        lottery_id: 1,
+        admin: deps.api.addr_canonicalize(&info.sender.as_str())?, //관리자
+        denom_stable: msg.denom_stable, //코인 종류
+        combination_len: 6, //복권 조합 길이
+        jackpot_seed_reward:Uint128::from(10000u128), //난수생성 기여에 대한 보상
+        jackpot_seed_limit:5,
+        prize_rank_winner_percentage: vec![80, 10, 6, 3, 1], //승자 보상 비율
+        price_per_ticket_to_register: Uint128::from(10000u128), //티켓1개당 가격
+        safe_lock: false, 
+        jackpot_seed_lock:true,
+        lottery_id: 1, //회차번호
+        // terrand_contract_address: deps.api.addr_canonicalize(&msg.terrand_contract_address)?, //난수 컨트랙트 주소
     };
-    set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
+    
     STATE.save(deps.storage, &state)?;
 
     Ok(Response::default())
@@ -56,49 +59,383 @@ pub fn execute(
         ExecuteMsg::Register {
             address,
             combination,
-        } => execute_register(deps, info, address, combination),
+        } => execute_register(deps, info, address, combination), //복권 구매
         ExecuteMsg::Claim {
             address,
             lottery_id,
-        } => execute_claim(deps, _env, info, address, lottery_id),
-        ExecuteMsg::Draw => execute_draw(deps, _env, info),
-        ExecuteMsg::SafeLock => execute_safe_lock(deps, info), //구현 완료
+        } => execute_claim(deps, _env, info, address, lottery_id), //당첨금 지급
+        ExecuteMsg::Draw{} => execute_draw(deps, _env, info), //복권 추첨(관리자만 실행가능)
+        ExecuteMsg::CollectCounter{} => execute_collect_count(deps,info), //복권 당첨자 수 확인
+        ExecuteMsg::CollectBalance{} => execute_collect_balance(deps,info), //복권 당첨 랭킹 별 금액 조정
+        ExecuteMsg::SafeLock{} => execute_safe_lock(deps, info),  //추첨시 락걸어놔야함.(관리자만 실행가능)
+        ExecuteMsg::SeedGeneration {seed} =>execute_seed_generation(deps,info,seed),
+        // 난중에 7일지난 lottery_balance 을 회수할 수 있게 해주면 좋을듯?
     }
+}
+
+//ROUND_JACKPOT_BALANCE 업데이트
+pub fn execute_collect_balance(
+    deps:DepsMut,
+    info:MessageInfo
+) ->StdResult<Response>{
+    
+      let mut state = read_state(deps.storage)?;
+      let sender = deps.api.addr_canonicalize(info.sender.as_str())?;
+
+      if sender != state.admin {
+        return Err(StdError::generic_err("No Auth"));
+      }
+      if !state.safe_lock {
+        return Err(StdError::generic_err("Deactivated"));
+      }
+        // 이번 회차 총 모인 금액
+      let lottery_id_amount:Uint128 = LOTTERY_BALANCE.load(deps.storage, &state.lottery_id.to_be_bytes())?;
+
+  
+      let lottery_winner_count:Vec<Uint128> = LOTTERY_JACKPOT_COUNT.load(deps.storage, &state.lottery_id.to_be_bytes())?;
+      let mut jackpot_balance = JackpotBalance{
+          first :Uint128::new(0),
+          second :Uint128::new(0),
+          third :Uint128::new(0),
+          fourth :Uint128::new(0),
+          fifth :Uint128::new(0),
+      };
+      for i in 0..lottery_winner_count.len(){
+        let index = i;
+        if lottery_winner_count[index] == Uint128::new(0){
+            continue
+        }else{
+            match index{
+                0 => jackpot_balance.first = lottery_id_amount.mul(Decimal::percent(state.prize_rank_winner_percentage[0] as u64)) / lottery_winner_count[0],
+                1 => jackpot_balance.second = lottery_id_amount.mul(Decimal::percent(state.prize_rank_winner_percentage[1] as u64)) / lottery_winner_count[1],
+                2 => jackpot_balance.third = lottery_id_amount.mul(Decimal::percent(state.prize_rank_winner_percentage[2] as u64)) / lottery_winner_count[2],
+                3 => jackpot_balance.fourth = lottery_id_amount.mul(Decimal::percent(state.prize_rank_winner_percentage[3] as u64)) / lottery_winner_count[3],
+                4 =>jackpot_balance.fifth = lottery_id_amount.mul(Decimal::percent(state.prize_rank_winner_percentage[4] as u64)) / lottery_winner_count[4],
+                _ => ()
+            }
+        }
+      }
+
+      
+   
+      ROUND_JACKPOT_BALANCE.save(deps.storage,&state.lottery_id.to_be_bytes(),&jackpot_balance)?;
+      
+      state.lottery_id += 1 as u64;
+      state.safe_lock = false;
+      store_state(deps.storage, &state)?;
+      let res =  Response::new()
+      .add_attribute("action","collect_balance")
+      .add_attribute("round_jackpot_balance", format!("{:?}",jackpot_balance));
+      
+      Ok(res)
+}
+
+
+
+// LOTTERY_JACKPOT_COUNT 업데이트
+pub fn execute_collect_count(
+    deps:DepsMut,
+    
+    info:MessageInfo
+)->StdResult<Response>{
+
+    let state = read_state(deps.storage)?;
+    let sender = deps.api.addr_canonicalize(info.sender.as_str())?;
+    if sender != state.admin {
+        return Err(StdError::generic_err("No Auth"));
+    }
+    if !state.safe_lock {
+        return Err(StdError::generic_err("Deactivated"));
+    }
+
+    // 이번회차 구매한 목록
+    let all = TICKET_COMBINATION
+        .prefix(&state.lottery_id.to_be_bytes())
+        .range(deps.storage, None, None, Order::Ascending)
+        .collect::<StdResult<Vec<_>>>()
+        .unwrap();
+    //all = [combination,vec[address]];
+    let jackpot = JACKPOT.load(deps.storage, &state.lottery_id.to_be_bytes())?;
+    let winning_combination = jackpot.round;
+   
+    //몇등인지 파악하는 로직
+    for (combination, addr) in all.into_iter() {
+        let comb = combination.clone();
+        let comb_str = comb.as_str();
+        let winner_combination = winning_combination.clone();
+        let mut combination_match = 0;
+        for i in 0..comb_str.len() {
+            // 123456, 123456
+            if winner_combination.as_bytes()[i] == comb_str.as_bytes()[i] {
+                combination_match += 1;
+              
+            } else {
+                break;
+            }
+        }
+        match combination_match {
+            2 => {
+                for address in addr {
+                    lottery_winner_update(
+                        deps.storage,
+                        state.lottery_id,
+                        combination.to_string(),
+                        address,
+                        5,
+                    )?;
+                }
+            }
+            3 => {
+                for address in addr {
+                    lottery_winner_update(
+                        deps.storage,
+                        state.lottery_id,
+                        combination.to_string(),
+                        address,
+                        4,
+                    )?;
+                }
+            }
+            4 => {
+                for address in addr {
+                    lottery_winner_update(
+                        deps.storage,
+                        state.lottery_id,
+                        combination.to_string(),
+                        address,
+                        3,
+                    )?;
+                }
+            }
+            5 => {
+                for address in addr {
+                    lottery_winner_update(
+                        deps.storage,
+                        state.lottery_id,
+                        combination.to_string(),
+                        address,
+                        2,
+                    )?;
+                }
+            }
+            6 => {
+                for address in addr {
+                    lottery_winner_update(
+                        deps.storage,
+                        state.lottery_id,
+                        combination.to_string(),
+                        address,
+                        1,
+                    )?;
+                }
+            }
+            _ => ()
+        }
+    }
+
+    //랭킹 별 인원수 (인덱스별로 넣어야겠다.)
+    let mut lottery_winner_count:Vec<Uint128> = vec![Uint128::new(0),Uint128::new(0),Uint128::new(0),Uint128::new(0),Uint128::new(0)];
+
+   
+    let winner_checked = LOTTERY_WINNER.load(deps.storage, &state.lottery_id.to_be_bytes());
+    match winner_checked{
+        Ok(winner_list) => {
+            for winner in winner_list.into_iter() {  
+                match winner.rank{
+                    1|2|3|4|5 => lottery_winner_count[winner.rank as usize -1] += Uint128::new(1),
+                  //   2 => lottery_winner_count[1] += Uint128::new(1),
+                  //   3 => lottery_winner_count[2] += Uint128::new(1),
+                  //   4 => lottery_winner_count[3] += Uint128::new(1),
+                  //   5 => lottery_winner_count[4] += Uint128::new(1)
+                  _ => ()
+                }
+              }
+        },
+        Err(_err) =>{
+            let mut state = state.clone();
+            let balance = LOTTERY_BALANCE.load(deps.storage,&state.lottery_id.to_be_bytes())?;
+            let lottery_id = state.lottery_id +1;
+            LOTTERY_BALANCE.save(deps.storage,&lottery_id.to_be_bytes() , &balance)?;
+            state.safe_lock = false;
+            state.lottery_id += 1;
+            store_state(deps.storage, &state)?;
+        }
+    }
+
+    
+    
+
+    //Vec<Winner>를 돌면서 rank 별로 lottery_winner_count 셋팅
+ 
+    
+
+    LOTTERY_JACKPOT_COUNT.save(
+        deps.storage,
+        &state.lottery_id.to_be_bytes(),
+        &lottery_winner_count,
+    )?;
+    
+
+  
+    let res:Response = Response::new()
+    .add_attribute("action", "collect")
+    .add_attribute("rank_winner_count",format!("{:?}",lottery_winner_count));
+    
+    Ok(res)
+
+}
+
+//시드 생성 기여
+pub fn execute_seed_generation(
+    deps:DepsMut,
+    info:MessageInfo,
+    seed:String
+)->StdResult<Response>{
+    
+
+    let state:State = read_state(deps.storage)?;
+
+    //jackpot_seed_lock 이 걸려있으면 시드 생성 불가
+    if state.jackpot_seed_lock{
+        return Err(StdError::generic_err("Finished seed Generation"));
+    }
+    
+    //회차당 drand 한 값들
+    let drand_list:Vec<Drand> = SEED_LIST.load(deps.storage, &state.lottery_id.to_be_bytes())?;
+
+    
+    if state.jackpot_seed_limit > drand_list.len() as u64 {
+       
+        let addr = info.sender.to_string();
+        SEED_LIST.update(deps.storage,&state.lottery_id.to_be_bytes(),|exsits|->StdResult<Vec<Drand>>{
+            match exsits{
+                Some(mut list) => {
+                    let drand = make_drand(addr,seed);
+                    list.push(drand);
+                    Ok(list)
+                }
+                None =>{
+                    let mut list:Vec<Drand> = vec![];
+                    let drand = make_drand(addr,seed);
+                    list.push(drand);
+                    Ok(list)
+                }
+            }
+        })?;
+    }else if drand_list.len() as u64 == state.jackpot_seed_limit{
+        let addr = info.sender.to_string();
+        SEED_LIST.update(deps.storage,&state.lottery_id.to_be_bytes(),|exsits|->StdResult<Vec<Drand>>{
+            match exsits{
+                Some(mut list) => {
+                    let drand = make_drand(addr,seed);
+                    list.push(drand);
+                    Ok(list)
+                }
+                None =>{
+                    let mut list:Vec<Drand> = vec![];
+                    let drand = make_drand(addr,seed);
+                    list.push(drand);
+                    Ok(list)
+                }
+            }
+        })?;
+        let mut state = state.clone();
+        state.jackpot_seed_lock = true;
+        store_state(deps.storage, &state)?;
+    } 
+
+    let mut balance = LOTTERY_BALANCE.load(deps.storage, &state.lottery_id.to_be_bytes())?;
+    balance = balance.sub(state.jackpot_seed_reward);
+    LOTTERY_BALANCE.save(deps.storage, &state.lottery_id.to_be_bytes(), &balance)?;
+
+
+    let msg = BankMsg::Send {
+        to_address: info.sender.to_string(),
+        amount: vec![Coin {
+            denom: state.denom_stable,
+            amount: state.jackpot_seed_reward,
+        }],
+    };
+  
+    //과연 잘갈까??
+    let res = Response::new()
+        .add_message(msg)
+        .add_attribute("action", "seed_generate_plus");
+
+    Ok(res)
 }
 
 //복권 추첨
 pub fn execute_draw(deps: DepsMut, _env: Env, info: MessageInfo) -> StdResult<Response> {
     let state = read_state(deps.storage)?;
     let sender = deps.api.addr_canonicalize(info.sender.as_str())?;
-
+   
     
+        
+    if !state.safe_lock {
+        return Err(StdError::generic_err("Deactivated"));
+    }    
     // 관리자가 아니면 실행 x
     if sender != state.admin {
         return Err(StdError::generic_err("No Auth"));
     }
+   
 
-    // let msg = terrand::msg::QueryMsg::GetRandomness {
-    //     round: state.combination_len as u64,
+    //Logic when using Oracle
+    // let msg:GetRandomness = msg::GetRandomness{
+    //     round: state.combination_len as u64
     // };
     // let terrand_human = deps.api.addr_humanize(&state.terrand_contract_address)?;
     // let wasm = WasmQuery::Smart {
     //     contract_addr: terrand_human.to_string(),
     //     msg: to_binary(&msg)?,
     // };
-
-    // let res: terrand::msg::GetRandomResponse = deps.querier.query(&wasm.into())?;
+    // //오라클에서 데이터 읽어오기
+    // let res:GetRandomResponse = deps.querier.query(&wasm.into())?;
     // let randomness_hash = hex::encode(res.randomness.as_slice());
-
     // let n = randomness_hash
     //     .char_indices()
     //     .rev()
     //     .nth(state.combination_len as usize - 1)
     //     .map(|(i, _)| i)
     //     .unwrap();
-
     // // 이번회차 당첨번호
     // let winning_combination = &randomness_hash[n..];
-    let winning_combination = "123456";
+
+    //   로또 번호 추첨  (rust rand 패키지 사용)
+    // let mut prng = thread_rng();
+    
+    // let mut winning_combination = "".to_string();
+
+
+    // for _i in 0..state.combination_len{
+    //     let lottery_num:u32 = prng.gen_range(0..9);
+    //     let a = lottery_num.to_string();
+    //     winning_combination.push_str(&a);
+    // }        
+
+    //   let mut rng = StdRng::from_entropy();
+    //   let mut winning_combination = "".to_string();
+    //   for _i in 0..=5{
+//         let index = rng.gen_range(0..drand_list.len());
+//         let drand_seed = drand_list[index as usize].seed;
+//         let mut std_rng = StdRng::from_seed(drand_seed);
+        
+//         let combination = std_rng.gen_range(0..=9).to_string();
+//         winning_combination = winning_combination.add(&combination);
+//     }
+
+
+  //회차당 Seedlist -> 만약 20명이라면 20개의 list들을 해싱해서 combination에 저장 -> 
+  let seed_list:Vec<Drand> = SEED_LIST.load(deps.storage, &state.lottery_id.to_be_bytes())?;
+  let mut combination:String = "".to_string();
+  for item in seed_list{
+    let hash:String = make_hash(&item).to_string();
+    combination = combination.add(&hash);
+  }
+  let len = combination.len();
+  let winning_combination:&str = &combination[len-6..len];
+  
 
     let jackpot_num_save = JackpotNum {
         worker: sender.clone(),
@@ -110,152 +447,7 @@ pub fn execute_draw(deps: DepsMut, _env: Env, info: MessageInfo) -> StdResult<Re
         &state.lottery_id.to_be_bytes(),
         &jackpot_num_save,
     )?;
-
-    // 이번 회차 당첨번호 구조체
-    // let jackpot = JACKPOT.load(deps.storage, &state.lottery_id.to_be_bytes())?;
-    // let winner_list = vec![];
-
-    // 이번회차 구매한 목록
-    let all = TICKET_COMBINATION
-        .prefix(&state.lottery_id.to_be_bytes())
-        .range(deps.storage, None, None, Order::Ascending)
-        .collect::<StdResult<Vec<_>>>()
-        .unwrap();
-    //all = [combination,vec[address]];
-
-    //
-    for (combination, addr) in all.into_iter() {
-        let comb = combination.clone();
-        let comb_str = comb.as_str();
-        let winner_combination = winning_combination.clone();
-        let mut cnt = 0;
-        for i in 0..comb_str.len() {
-            // 123456, 123456
-            if winner_combination.as_bytes()[i] == comb_str.as_bytes()[i] {
-                cnt += 1;
-            } else {
-                break;
-            }
-        }
-        match cnt {
-            2 => {
-                for address in addr {
-                    lottery_winner_update(
-                        deps.storage,
-                        state.lottery_id,
-                        winner_combination.to_string(),
-                        address,
-                        5,
-                    )?;
-                }
-            }
-            3 => {
-                for address in addr {
-                    lottery_winner_update(
-                        deps.storage,
-                        state.lottery_id,
-                        winner_combination.to_string(),
-                        address,
-                        4,
-                    )?;
-                }
-            }
-            4 => {
-                for address in addr {
-                    lottery_winner_update(
-                        deps.storage,
-                        state.lottery_id,
-                        winner_combination.to_string(),
-                        address,
-                        3,
-                    )?;
-                }
-            }
-            5 => {
-                for address in addr {
-                    lottery_winner_update(
-                        deps.storage,
-                        state.lottery_id,
-                        winner_combination.to_string(),
-                        address,
-                        2,
-                    )?;
-                }
-            }
-            6 => {
-                for address in addr {
-                    lottery_winner_update(
-                        deps.storage,
-                        state.lottery_id,
-                        winner_combination.to_string(),
-                        address,
-                        1,
-                    )?;
-                }
-            }
-            _ => {}
-        }
-    }
-
-    //랭킹 별 인원수
-    let mut lottery_winner_count = vec![];
-    for _i in 1..=5 {
-        let winner_list = LOTTERY_WINNER.load(deps.storage, &state.lottery_id.to_be_bytes())?;
-        let len = winner_list.len();
-        lottery_winner_count.push(Uint128::new(len as u128));
-    }
-
-    LOTTERY_JACKPOT_COUNT.save(
-        deps.storage,
-        &state.lottery_id.to_be_bytes(),
-        &lottery_winner_count,
-    )?;
-    // 이번 회차 총 모인 금액
-    let lottery_id_amount = LOTTERY_BALANCE.load(deps.storage, &state.lottery_id.to_be_bytes())?;
-
-    let jackpot_balance = JackpotBalance {
-        first: Uint128::new(0),
-        second: Uint128::new(0),
-        third: Uint128::new(0),
-        fourth: Uint128::new(0),
-        fifth: Uint128::new(0),
-    };
-    for i in 0..lottery_winner_count.len() {
-        let result = lottery_winner_count[i].u128();
-        match result {
-            1 | 2 | 3 | 4 | 5 => {
-                ROUND_JACKPOT_BALANCE.update(
-                    deps.storage,
-                    &state.lottery_id.to_be_bytes(),
-                    |exsits| -> StdResult<JackpotBalance> {
-                        match exsits {
-                            None => {
-                                let mut balance = jackpot_balance.clone();
-                                balance.first = lottery_id_amount.mul(Decimal::percent(
-                                    state.prize_rank_winner_percentage[result as usize - 1] as u64,
-                                ));
-                                Ok(balance)
-                            }
-                            Some(jackpot) => {
-                                let mut balance = jackpot.clone();
-                                balance.first = lottery_id_amount.mul(Decimal::percent(
-                                    state.prize_rank_winner_percentage[result as usize - 1] as u64,
-                                ));
-                                Ok(balance)
-                            }
-                        }
-                    },
-                )
-            }?,
-
-            _ => return Err(StdError::generic_err("Not count")),
-        };
-    }
-
-    STATE.update(deps.storage, |mut state| -> StdResult<_> {
-        state.lottery_id += 1;
-        Ok(state)
-    })?;
+    
 
     Ok(Response::new()
         .add_attribute("action", "draw")
@@ -272,11 +464,7 @@ pub fn execute_claim(
     lottery_id: u64,
 ) -> StdResult<Response> {
     let state = read_state(deps.storage)?;
-    //state의 lock 이 걸려있는지 확인
-    if state.safe_lock {
-        return Err(StdError::generic_err("Deactivated"));
-    }
-
+ 
     //주소를 보냈는지 확인 없으면 info.sender
     let addr = match address {
         None => info.sender.clone(),
@@ -310,33 +498,32 @@ pub fn execute_claim(
     }
 
     let mut total_prize = Uint128::new(0);
-    let round_jackpot_balance =
-        ROUND_JACKPOT_BALANCE.load(deps.storage, &state.lottery_id.to_be_bytes())?;
+    let round_jackpot_balance:JackpotBalance = ROUND_JACKPOT_BALANCE.load(deps.storage, &lottery_id.to_be_bytes())?;
     for winner in address_and_winner {
         let rank = winner.rank;
-        match Some(rank) {
-            Some(1) => {
+        match rank {
+           1 => {
                 total_prize += round_jackpot_balance.first;
             }
-            Some(2) => {
+            2 => {
                 total_prize += round_jackpot_balance.second;
             }
-            Some(3) => {
+            3 => {
                 total_prize += round_jackpot_balance.third;
             }
-            Some(4) => {
+            4 => {
                 total_prize += round_jackpot_balance.fourth;
             }
-            Some(5) => {
+            5 => {
                 total_prize += round_jackpot_balance.fifth;
             }
-            _ => {}
+            _ => ()
         }
     }
     // Winner of LOTTERY_WINNER is same info.sender claim change
     LOTTERY_WINNER.update(
         deps.storage,
-        &state.lottery_id.to_be_bytes(),
+        &lottery_id.to_be_bytes(),
         |exsits| -> StdResult<Vec<Winner>> {
             match exsits {
                 None => return Err(StdError::generic_err("Not found")),
@@ -360,7 +547,7 @@ pub fn execute_claim(
             amount: total_prize,
         }],
     };
-
+  
     //과연 잘갈까??
     let res = Response::new()
         .add_message(msg)
@@ -471,9 +658,16 @@ pub fn execute_safe_lock(deps: DepsMut, info: MessageInfo) -> StdResult<Response
         return Err(StdError::generic_err("Unauthorized"));
     }
 
-    state.safe_lock = !state.safe_lock;
-    // store_state(deps.storage, &state)?;
+    state.safe_lock = true;
+    state.jackpot_seed_lock = false;
     store_state(deps.storage, &state)?;
+    let mut drand_list = vec![];
+    let drand = Drand{
+        addr:info.sender.to_string(),
+        seed:"복권추첨을 시작합니다.".to_string()
+    };
+    drand_list.push(drand);
+    SEED_LIST.save(deps.storage,&state.lottery_id.to_be_bytes(),&drand_list)?;
     Ok(Response::default())
 }
 
@@ -589,3 +783,4 @@ fn query_jackpot_count(deps: Deps, lottery_id: u64) -> StdResult<Vec<Uint128>> {
     };
     Ok(list)
 }
+
