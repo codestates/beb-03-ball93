@@ -17,6 +17,8 @@ export class BalanceService {
     const inputData = await this.balanceModel
       .findOneAndUpdate({ _id: id }, { balance: data }, { new: true })
       .exec();
+    console.log(data);
+
     console.log(inputData);
 
     return this.balanceModel.find().exec();

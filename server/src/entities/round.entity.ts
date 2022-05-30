@@ -33,5 +33,4 @@ export class Round {
   jackpot_count: string[];
 }
 
-
 export const RoundSchema = SchemaFactory.createForClass(Round);
