@@ -20,16 +20,16 @@ const WalletLoader = ({
     connectWallet,
     disconnect,
   } = useSigningClient()
-  // useEffect(() => {
-  //   setsigningCosmWasmClient({
-  //     walletAddress,
-  //     signingClient,
-  //     loading,
-  //     error,
-  //     connectWallet,
-  //     disconnect,
-  //   })
-  // }, [walletAddress, signingClient, loading, error, connectWallet, disconnect])
+  useEffect(() => {
+    setsigningCosmWasmClient({
+      walletAddress,
+      signingClient,
+      loading,
+      error,
+      connectWallet,
+      disconnect,
+    })
+  }, [walletAddress, signingClient, loading, error, connectWallet, disconnect])
 
   if (loading || clientLoading) {
     return (

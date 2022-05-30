@@ -11,7 +11,7 @@ const Tab = () => {
           <li key={idx}>
             <Link href={page.href}>
               <a
-                className={`rounded-lg px-4 py-2.5 duration-100 ease-in-out leading-6 hover:brightness-90 focus:outline-none dark:hover:brightness-125',
+                className={`rounded-lg px-4 py-2.5 duration-100 ease-in-out leading-6 hover:brightness-90 focus:outline-none dark:hover:brightness-125
                   ${
                     page.href === '/' + pathname.split('/')[1] &&
                     'bg-[#ffffffe7] text-[#66C1BD]'

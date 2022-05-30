@@ -19,7 +19,7 @@ let lottery_count: number = 1;
 export class GetRoundData {
   @InjectModel(Round.name)
   private readonly roundModel: Model<Round>;
-  @Cron('5 * * * * *', { name: 'GetRoundData' })
+  @Cron('* * 23 * * *', { name: 'GetRoundData' })
   // 1 구매 못하게 lock
   // 2 컨트랙트 실행 쿼리문 -> 마지막 lock 해제
   // 3 데이터 긁어오기
