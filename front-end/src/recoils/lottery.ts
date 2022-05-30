@@ -2,9 +2,9 @@ import { atom } from 'recoil'
 import {
   lotteryType,
   lotteryRoundType,
+  lotteryRoundContractType,
   lotteryDrawType,
 } from 'types/lotteryTypes'
-import lotteryDrawDate from 'utils/lotteryDrawDate'
 
 // import {
 //   updateLotteryTickets,
@@ -23,17 +23,80 @@ export const lotteryTicketsState = atom<lotteryType[]>({
   default: [],
 })
 
-export const lotteryRoundState = atom<lotteryRoundType>({
+export const lotteryRoundState = atom<lotteryRoundType[]>({
   key: `lotteryRoundState/${Math.random().toString(36).substring(2, 11)}`,
-  default: {
-    id: 3,
-    count_ticket: '',
-    count_user: '',
-    get_jackpot: [],
-    jackpot_balance: [],
-    jackpot_count: [],
-    winner: [],
-  },
+  default: [
+    {
+      roundId: 3,
+      ticketCounts: '',
+      userCounts: '',
+      winningNumber: '',
+      prizesByRank: {},
+      jackpotCount: [],
+      winners: [],
+    },
+    {
+      roundId: 4,
+      ticketCounts: '',
+      userCounts: '',
+      winningNumber: '',
+      prizesByRank: {},
+      jackpotCount: [],
+      winners: [],
+    },
+    {
+      roundId: 5,
+      ticketCounts: '',
+      userCounts: '',
+      winningNumber: '',
+      prizesByRank: {},
+      jackpotCount: [],
+      winners: [],
+    },
+  ],
+})
+export const lotteryRoundStateFromContract = atom<lotteryRoundContractType[]>({
+  key: `lotteryRoundStateFromContract/${Math.random()
+    .toString(36)
+    .substring(2, 11)}`,
+  default: [
+    {
+      roundId: 3,
+      ticketCounts: '',
+      userCounts: '',
+      winningNumber: '',
+      prizesByRank: {},
+      winnerCountsByRank: [],
+      totalPrizes: 0,
+      jackpotCount: [],
+      winners: [],
+      contractConfig: {},
+    },
+    {
+      roundId: 4,
+      ticketCounts: '',
+      userCounts: '',
+      winningNumber: '',
+      prizesByRank: {},
+      winnerCountsByRank: [],
+      totalPrizes: 0,
+      jackpotCount: [],
+      winners: [],
+      contractConfig: {},
+    },
+    {
+      roundId: 5,
+      ticketCounts: '',
+      userCounts: '',
+      winningNumber: '',
+      totalPrizes: 0,
+      prizesByRank: {},
+      winnerCountsByRank: [],
+      jackpotCount: [],
+      winners: [],
+      contractConfig: {},
+    },
+  ],
 })
 
 export const lotteryDrawState = atom<lotteryDrawType>({

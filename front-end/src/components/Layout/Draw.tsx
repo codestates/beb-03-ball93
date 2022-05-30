@@ -42,11 +42,6 @@ const Draw = ({ contDownSeconds }: any) => {
         <div className='floor'></div>
       </div>
       <style jsx>{`
-        .container {
-          background-color: #fef4ad;
-          animation: change-background 3s infinite linear;
-        }
-
         .wrapper {
           position: absolute;
           left: 50%;

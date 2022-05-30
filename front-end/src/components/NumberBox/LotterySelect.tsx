@@ -11,7 +11,7 @@ interface LotterySelectProps {
   payHandler: () => void
 }
 
-const LotterySelect = ({ payHandler }: LotterySelectProps) => {
+const LotterySelect = () => {
   const [lotteryNumber, setLotteryNumber] = useState<number[]>([
     -1, -1, -1, -1, -1, -1,
   ])

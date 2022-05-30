@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
-import fetchGraphQL from 'utils/fetchGraphQL'
 
 const Home: NextPage = () => {
   const { walletAddress, signingClient } = useSigningClient()

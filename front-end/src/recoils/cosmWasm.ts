@@ -17,12 +17,12 @@ export const signingCosmWasmClientState = atom<ISigningCosmWasmClientContext>({
 
 export const walletBalanceState = atom<string>({
   key: `walletBalanceState/${Math.random().toString(36).substring(2, 11)}`,
-  default: '',
+  default: 'TORII',
 })
 
 export const contractBalanceState = atom<string>({
   key: `contractBalanceState/${Math.random().toString(36).substring(2, 11)}`,
-  default: '',
+  default: 'TORII',
 })
 
 export const cosmWasmErrorState = atom<string>({

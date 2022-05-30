@@ -1,6 +1,6 @@
 .container {
   background-color: #fef4ad;
-  animation: change-background 2s infinite linear;
+  animation: change-background 3s infinite linear;
 }
 
 @keyframes change-background {
