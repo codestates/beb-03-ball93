@@ -47,8 +47,8 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
     const sendAmount: string = (
       entrypoint.register.combination.length * 1000
     ).toString()
-    const gasPrice = GasPrice.fromString('0.002utorii')
-    const txFee = calculateFee(400000, gasPrice)
+    const gasPrice = GasPrice.fromString('0.01utorii')
+    const txFee = calculateFee(1300000, gasPrice)
 
     const amount: Coin[] = [
       {
@@ -56,6 +56,7 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
         amount: sendAmount,
       },
     ]
+
     await signingClient
       ?.execute(
         walletAddress,
@@ -82,6 +83,22 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
         setError(`Error! ${error.message}`)
         console.log('Error: signingClient.execute(): ', error)
       })
+    // const queryMsg: Record<string, unknown> = {
+    //   combination: {
+    //     lottery_id: 2,
+    //     address: walletAddress,
+    //   },
+    // }
+    // await signingClient
+    //   ?.queryContractSmart(PUBLIC_CONTRACT_ADDRESS, queryMsg)
+    //   .then((response: any) => {
+    //     console.log('--------- Get User Lottery Numbers ---------')
+    //     console.log(response)
+    //   })
+    //   .catch((error) => {
+    //     setError(`Error! ${error.message}`)
+    //     console.log('Error getUserLotteryNumbers(): ', error)
+    //   })
   }
 
   return (

@@ -1,17 +1,17 @@
 import 'styles/globals.css'
-import Layout from 'components/Layout/Layout'
+import type { AppProps } from 'next/app'
 import { SigningCosmWasmProvider } from 'contexts/cosmwasm'
 import { RecoilRoot } from 'recoil'
-import type { AppProps } from 'next/app'
+import Layout from 'components/Layout/Layout'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <SigningCosmWasmProvider>
-      <Layout>
-        <RecoilRoot>
+      <RecoilRoot>
+        <Layout>
           <Component {...pageProps} />
-        </RecoilRoot>
-      </Layout>
+        </Layout>
+      </RecoilRoot>
     </SigningCosmWasmProvider>
   )
 }

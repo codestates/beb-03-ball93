@@ -1,9 +1,9 @@
-const WinningsTable = () => {
+const WinningsTable = ({ type }: { type: string }) => {
   const winningTableData = [
     {
       prizeTier: '1st (6 digits match)',
-      winnings: '1 in 95,344,200',
-      averagePrize: '34,573,468 TORRI',
+      winnings: '1 in 95,344,20',
+      averagePrize: '34,573,4 TORRI',
     },
     {
       prizeTier: '2nd (5 digits match)',
@@ -28,8 +28,8 @@ const WinningsTable = () => {
   ]
 
   return (
-    <div>
-      <h1 className='text-3xl pb-6'>Prize Table</h1>
+    <div className='relative z-40'>
+      <h1 className='text-3xl pb-6 text-white font-semibold'>Prize Table</h1>
       <div className='relative overflow-x-auto md:w-10/12 mx-auto shadow-md sm:rounded-lg'>
         <table className='w-full text-sm text-center text-gray-500 dark:text-gray-400'>
           <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
@@ -52,7 +52,18 @@ const WinningsTable = () => {
             {winningTableData?.map((data, index) => (
               <tr
                 key={index}
-                className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
+                className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 
+                ${
+                  type === 'day' && index == 0
+                    ? 'bg-cyan-100 text-lg'
+                    : type === 'sunset' && index == 1
+                    ? 'bg-cyan-100 text-lg'
+                    : type === 'dusk' && index == 2
+                    ? 'bg-cyan-100 text-lg '
+                    : type === 'night' && index == 3
+                    ? 'bg-cyan-100 text-lg'
+                    : ''
+                }`}
               >
                 <th
                   scope='row'

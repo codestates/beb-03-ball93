@@ -20,7 +20,10 @@ export class GetRoundData {
   @InjectModel(Round.name)
   private readonly roundModel: Model<Round>;
   @Cron('* * 23 * * *', { name: 'GetRoundData' })
+<<<<<<< HEAD
+=======
 
+>>>>>>> f71eaa4f26bdf04f6afd0248860d522c42281401
   // 1 구매 못하게 lock
   // 2 컨트랙트 실행 쿼리문 -> 마지막 lock 해제
   // 3 데이터 긁어오기

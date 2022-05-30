@@ -14,4 +14,14 @@ export interface lotteryGameType {
 
 export interface lotteryRoundType extends lotteryGameType {
   id: number
+  count_ticket: string
+  count_user: string
+  get_jackpot: []
+  jackpot_balance: []
+  jackpot_count: []
+  winner: []
+}
+
+export interface lotteryDrawType {
+  lotteryDrawDate: Date | null
 }

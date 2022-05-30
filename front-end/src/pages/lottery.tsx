@@ -7,12 +7,27 @@ import Timer from 'components/CountdownTimer/Timer'
 import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import SendTorii from 'components/SendTorii'
 import Toast from 'components/Toast'
+import FetchContract from 'components/FetchContract'
+import fetchGraphQL from 'utils/fetchGraphQL'
+import { lotteryRoundState } from 'recoils/lottery'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-const lottery = () => {
+const lottery = ({ data }: any) => {
   const [open, setOpen] = useState<boolean>(false)
   const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
+  // console.log(data)
+  const setLotteryRoundState = useSetRecoilState(lotteryRoundState)
+  setLotteryRoundState({
+    id: data.round.lottery_id,
+    count_ticket: data.round.count_ticket,
+    count_user: data.round.count_user,
+    get_jackpot: data.round.get_jackpot,
+    jackpot_balance: data.round.jackpot_balance,
+    jackpot_count: data.round.jackpot_count,
+    winner: data.round.winner,
+  })
 
   // const screenWidth = window.innerWidth
   // console.log(screenWidth)
@@ -54,12 +69,50 @@ const lottery = () => {
       {/* <Toast success={success} error={error} /> */}
       <LotteryTicketList />
       <SendTorii setSuccess={setSuccess} setError={setError} />
+      <FetchContract />
       {/* {loading} */}
       {/* {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
-      {gameResult && <LotteryDetails lotteryGame={gameResult!} />}
+      {/* {gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
       {/* <button onClick={handleClose}>close icon</button> */}
     </div>
   )
 }
 
 export default lottery
+
+export async function getStaticProps() {
+  const query = `
+  query{
+    round(lottery_id: 3){
+     lottery_id
+     winner{
+       addr
+       rank
+       ticket
+       claim
+     }
+     get_jackpot{
+       worker
+       round
+     }
+     count_ticket
+     count_user
+     jackpot_balance{
+       first
+       second
+       third
+       fourth
+       fifth
+   }
+     jackpot_count
+   }
+   }
+   `
+  const { data } = await fetchGraphQL(query)
+
+  return {
+    props: {
+      data,
+    },
+  }
+}

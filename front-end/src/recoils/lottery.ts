@@ -1,5 +1,10 @@
 import { atom } from 'recoil'
-import { lotteryType, lotteryRoundType } from 'types/lotteryTypes'
+import {
+  lotteryType,
+  lotteryRoundType,
+  lotteryDrawType,
+} from 'types/lotteryTypes'
+import lotteryDrawDate from 'utils/lotteryDrawDate'
 
 // import {
 //   updateLotteryTickets,
@@ -20,7 +25,20 @@ export const lotteryTicketsState = atom<lotteryType[]>({
 
 export const lotteryRoundState = atom<lotteryRoundType>({
   key: `lotteryRoundState/${Math.random().toString(36).substring(2, 11)}`,
-  default: { id: 2 },
+  default: {
+    id: 3,
+    count_ticket: '',
+    count_user: '',
+    get_jackpot: [],
+    jackpot_balance: [],
+    jackpot_count: [],
+    winner: [],
+  },
+})
+
+export const lotteryDrawState = atom<lotteryDrawType>({
+  key: `lotteryDrawState/${Math.random().toString(36).substring(2, 11)}`,
+  default: { lotteryDrawDate: null },
 })
 
 // export const getLotteryHistory = () => async (dispatch: any, getState: any) => {

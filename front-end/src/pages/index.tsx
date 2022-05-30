@@ -2,10 +2,10 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
+import fetchGraphQL from 'utils/fetchGraphQL'
 
 const Home: NextPage = () => {
-  const { walletAddress } = useSigningClient()
-
+  const { walletAddress, signingClient } = useSigningClient()
   return (
     <WalletLoader>
       <div className='container flex flex-col items-center justify-center'>

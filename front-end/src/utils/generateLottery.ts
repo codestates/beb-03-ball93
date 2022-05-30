@@ -10,13 +10,13 @@ const generateLottery = () => {
     // }
   }
 
-  let selectedPairNumber = []
-  while (selectedPairNumber.length < 1) {
-    let r = Math.floor(Math.random() * 10) + 1
-    if (selectedPairNumber.indexOf(r) === -1) {
-      selectedPairNumber.push(r)
-    }
-  }
+  // let selectedPairNumber = []
+  // while (selectedPairNumber.length < 1) {
+  //   let r = Math.floor(Math.random() * 10) + 1
+  //   if (selectedPairNumber.indexOf(r) === -1) {
+  //     selectedPairNumber.push(r)
+  //   }
+  // }
 
   return {
     number: selectedNumber,
