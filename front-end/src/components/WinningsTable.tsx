@@ -1,82 +1,92 @@
-import React from 'react'
-
-// import Table from '@mui/material/Table'
-// import TableBody from '@mui/material/TableBody'
-// import TableCell from '@mui/material/TableCell'
-// import TableContainer from '@mui/material/TableContainer'
-// import TableHead from '@mui/material/TableHead'
-// import TableRow from '@mui/material/TableRow'
-// import Paper from '@mui/material/Paper'
-
-const WinningsTable = () => {
-  const data = [
+const WinningsTable = ({ type }: { type: string }) => {
+  const winningTableData = [
     {
-      prizeTier: '1등 (6자리 일치)',
-      winnings: '1 in 95,344,200',
-      averagePrize: '34,573,468 TORRI',
+      prizeTier: '1st (6 digits match)',
+      winnings: '1 in 95,344,20',
+      averagePrize: '34,573,4 TORRI',
     },
     {
-      prizeTier: '2등 (5자리 일치)',
+      prizeTier: '2nd (5 digits match)',
       winnings: '1 in 5,959,013',
       averagePrize: '470,638 TORRI',
     },
     {
-      prizeTier: '3등 (4자리 일치)',
+      prizeTier: '3rd (4 digits match)',
       winnings: '1 in 3,405,150',
       averagePrize: '96,134 TORRI',
     },
     {
-      prizeTier: '4등 (3자리 일치)',
+      prizeTier: '4th (3 digits match)',
       winnings: '1 in 423,752',
       averagePrize: '4,072 TORRI',
     },
     {
-      prizeTier: '5등 (2자리 일치)',
-      winnings: '1 in 15,134',
-      averagePrize: '103 TORRI',
-    },
-    {
-      prizeTier: '보너스 (5자리 + PAIR 일치)',
+      prizeTier: '5th (2 digits match)',
       winnings: '1 in 15,134',
       averagePrize: '103 TORRI',
     },
   ]
 
   return (
-    <></>
-    // <TableContainer component={Paper}>
-    //   <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
-    //     <TableHead>
-    //       <TableRow
-    //         sx={{
-    //           ':nth-of-type(1n)': {
-    //             backgroundColor: '#f7f9fc',
-    //           },
-    //         }}
-    //       >
-    //         <TableCell align='center'>Prize Tier</TableCell>
-    //         <TableCell align='center'>Winnings</TableCell>
-    //         <TableCell align='center'>Average Prize</TableCell>
-    //       </TableRow>
-    //     </TableHead>
-    //     <TableBody>
-    //       {data.map((row) => (
-    //         <TableRow
-    //           key={row.winnings}
-    //           sx={{
-    //             ':nth-of-type(2n)': {
-    //               backgroundColor: '#f7f9fc',
-    //             },
-    //           }}
-    //         >
-    //           <TableCell align='center'>{row.prizeTier}</TableCell>
-    //           <TableCell align='center'>{row.winnings}</TableCell>
-    //           <TableCell align='center'>{row.averagePrize}</TableCell>
-    //         </TableRow>
-    //       ))}
-    //     </TableBody>
-    //   </Table>
-    // </TableContainer>
+    <div className='relative z-40'>
+      <h1 className='text-3xl pb-6 text-white font-semibold'>Prize Table</h1>
+      <div className='relative overflow-x-auto md:w-10/12 mx-auto shadow-md sm:rounded-lg'>
+        <table className='w-full text-sm text-center text-gray-500 dark:text-gray-400'>
+          <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+            <tr>
+              <th scope='col' className='px-6 py-3'>
+                Prize Tier
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Winnings
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Average Prize
+              </th>
+              {/* <th scope='col' className='px-6 py-3'>
+                <span className='sr-only'>Edit</span>
+              </th> */}
+            </tr>
+          </thead>
+          <tbody>
+            {winningTableData?.map((data, index) => (
+              <tr
+                key={index}
+                className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 
+                ${
+                  type === 'day' && index == 0
+                    ? 'bg-cyan-100 text-lg'
+                    : type === 'sunset' && index == 1
+                    ? 'bg-cyan-100 text-lg'
+                    : type === 'dusk' && index == 2
+                    ? 'bg-cyan-100 text-lg '
+                    : type === 'night' && index == 3
+                    ? 'bg-cyan-100 text-lg'
+                    : ''
+                }`}
+              >
+                <th
+                  scope='row'
+                  className='px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap'
+                >
+                  {data.prizeTier}
+                </th>
+                <td className='px-6 py-4'>{data.winnings}</td>
+                <td className='px-6 py-4'>{data.averagePrize}</td>
+                {/* <td className='px-6 py-4 text-right'>
+              <a
+                href='#'
+                className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+              >
+                Edit
+              </a>
+            </td> */}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   )
 }
 

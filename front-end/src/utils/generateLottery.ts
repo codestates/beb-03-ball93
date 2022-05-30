@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import generateUUID from 'utils/generateUUID'
 
 const generateLottery = () => {
   let selectedNumber = []
@@ -10,19 +10,19 @@ const generateLottery = () => {
     // }
   }
 
-  let selectedPairNumber = []
-  while (selectedPairNumber.length < 1) {
-    let r = Math.floor(Math.random() * 10) + 1
-    if (selectedPairNumber.indexOf(r) === -1) {
-      selectedPairNumber.push(r)
-    }
-  }
+  // let selectedPairNumber = []
+  // while (selectedPairNumber.length < 1) {
+  //   let r = Math.floor(Math.random() * 10) + 1
+  //   if (selectedPairNumber.indexOf(r) === -1) {
+  //     selectedPairNumber.push(r)
+  //   }
+  // }
 
   return {
     number: selectedNumber,
     // number: selectedNumber.sort((a, b) => a - b),
     // pairNumber: selectedPairNumber.sort((a, b) => a - b),
-    id: uuidv4(),
+    id: generateUUID(),
   }
 }
 

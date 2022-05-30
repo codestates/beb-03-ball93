@@ -1,10 +1,6 @@
-import LotteryHistoryView from 'views/LotteryHistoryView'
+// import LotteryHistoryView from 'views/LotteryHistoryView'
 
 const Account = () => {
-  return (
-    <div>
-      <LotteryHistoryView />
-    </div>
-  )
+  return <div>{/* <LotteryHistoryView /> */}</div>
 }
 export default Account

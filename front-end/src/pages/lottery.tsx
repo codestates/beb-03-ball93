@@ -1,17 +1,33 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store/store'
-import { playLottery } from 'actions/lotteryAction'
-import lotteryGameModel from 'models/lotteryGameModels'
+import { lotteryGameType } from 'types/lotteryTypes'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
 import Banner from 'components/Layout/Banner'
 import Timer from 'components/CountdownTimer/Timer'
+import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
+import SendTorii from 'components/SendTorii'
+import Toast from 'components/Toast'
+import FetchContract from 'components/FetchContract'
+import fetchGraphQL from 'utils/fetchGraphQL'
+import { lotteryRoundState } from 'recoils/lottery'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-const lottery = () => {
-  const dispatch = useDispatch()
+const lottery = ({ data }: any) => {
   const [open, setOpen] = useState<boolean>(false)
-  const [gameResult, setGameResult] = useState<lotteryGameModel | null>(null)
+  const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
+  const [success, setSuccess] = useState('')
+  const [error, setError] = useState('')
+  // console.log(data)
+  const setLotteryRoundState = useSetRecoilState(lotteryRoundState)
+  setLotteryRoundState({
+    id: data.round.lottery_id,
+    count_ticket: data.round.count_ticket,
+    count_user: data.round.count_user,
+    get_jackpot: data.round.get_jackpot,
+    jackpot_balance: data.round.jackpot_balance,
+    jackpot_count: data.round.jackpot_count,
+    winner: data.round.winner,
+  })
 
   // const screenWidth = window.innerWidth
   // console.log(screenWidth)
@@ -20,25 +36,23 @@ const lottery = () => {
     setOpen(false)
   }
 
-  const { isLogin } = useSelector((state: RootState) => state.user)
-  const { loading } = useSelector((state: RootState) => state.lottery)
+  // const { isLogin } = useSelector((state: RootState) => state.user)
+  // const { loading } = useSelector((state: RootState) => state.lottery)
 
   const payHandler = async () => {
-    if (!isLogin) {
-      // navigate('/signin')
-      return
-    }
-
-    const resultGame: any = await dispatch(playLottery())
-
-    if (resultGame) {
-      setGameResult(resultGame)
-      setOpen(true)
-    }
-    if (!resultGame) {
-      setGameResult(null)
-      return
-    }
+    //   if (!isLogin) {
+    //     // navigate('/signin')
+    //     return
+    //   }
+    //   const resultGame: any = await dispatch(playLottery())
+    //   if (resultGame) {
+    //     setGameResult(resultGame)
+    //     setOpen(true)
+    //   }
+    //   if (!resultGame) {
+    //     setGameResult(null)
+    //     return
+    //   }
   }
 
   return (
@@ -52,14 +66,53 @@ const lottery = () => {
         Just pick it!
       </h1>
       <LotterySelect payHandler={payHandler} />
-      {loading}
-      {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />}
-
-      {gameResult && <LotteryDetails lotteryGame={gameResult!} />}
-
+      {/* <Toast success={success} error={error} /> */}
+      <LotteryTicketList />
+      <SendTorii setSuccess={setSuccess} setError={setError} />
+      <FetchContract />
+      {/* {loading} */}
+      {/* {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
+      {/* {gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
       {/* <button onClick={handleClose}>close icon</button> */}
     </div>
   )
 }
 
 export default lottery
+
+export async function getStaticProps() {
+  const query = `
+  query{
+    round(lottery_id: 3){
+     lottery_id
+     winner{
+       addr
+       rank
+       ticket
+       claim
+     }
+     get_jackpot{
+       worker
+       round
+     }
+     count_ticket
+     count_user
+     jackpot_balance{
+       first
+       second
+       third
+       fourth
+       fifth
+   }
+     jackpot_count
+   }
+   }
+   `
+  const { data } = await fetchGraphQL(query)
+
+  return {
+    props: {
+      data,
+    },
+  }
+}

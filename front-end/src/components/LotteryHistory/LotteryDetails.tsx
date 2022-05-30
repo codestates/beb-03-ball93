@@ -1,5 +1,5 @@
 import dateFormat from 'utils/dateFormat'
-import lotteryGameModel from 'models/lotteryGameModels'
+import { lotteryGameType } from 'types/lotteryTypes'
 import LotteryTicket from 'components/LotteryTicket/LotteryTicket'
 import LotteryTable from './LotteryTable'
 
@@ -10,7 +10,7 @@ import LotteryTable from './LotteryTable'
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 // import Box from '@mui/material/Box'
 interface LotteryDetailsProps {
-  lotteryGame: lotteryGameModel
+  lotteryGame: lotteryGameType
 }
 
 const LotteryDetails = ({ lotteryGame }: LotteryDetailsProps) => {

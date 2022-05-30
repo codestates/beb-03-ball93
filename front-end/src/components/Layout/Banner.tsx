@@ -6,7 +6,7 @@ const lotteryPrize: string = '3,240.00'
 
 const Banner = () => {
   return (
-    <div className='flex flex-col justify-center items-center space-y-1'>
+    <div className='flex flex-col justify-center items-center space-y-1 pt-4'>
       <div className='flex flex-row space-x-2 pl-20'>
         <span className='text-[#576272] font-black text-xs md:text-sm'>
           YOU ARE THE NEXT ONE

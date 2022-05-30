@@ -41,18 +41,18 @@ const NumberBox = ({
   }, [lotteryNumber, maxTickets, setValidMaxNumber])
 
   return (
-    <div className='p-4'>
+    <div className='p-4 relative z-30'>
       <div className='flex w-full justify-center cursor-pointer'>
         {/* <div className='flex items-center mr-4 text-[#576272] font-black text-sm md:text-base'>
           choose <br />
           number
         </div> */}
-        <div className='grid grid-cols-5 gap-2 w-1/2 content-center bg-transparent rounded-lg'>
+        <div className='grid grid-cols-5 gap-2 w-64 md:w-1/2 content-center bg-transparent rounded-lg'>
           {numberArray10.map((number, index) => (
             <div
               key={index}
               onClick={() => selectNumberHandler(number)}
-              className={`transform transition duration-500 bg-white h-16 rounded-lg shadow-xl text-[#222222] text-2xl md:text-3xl font-bold flex justify-center items-center
+              className={`transform transition duration-500 bg-white h-10 md:h-16 rounded-lg shadow-xl text-[#222222] text-xl md:text-3xl font-bold flex justify-center items-center
                 ${
                   number === 0
                     ? 'origin-right hover:rotate-45' // 시계 들어올려짐
@@ -74,7 +74,7 @@ const NumberBox = ({
                     ? 'hover:skew-y-12 hover:scale-110' // 좀 커지고 y 비스듬히
                     : number === 9
                     ? 'origin-left hover:-rotate-45' //  반시계 들어올려짐
-                    : 'hover:rotate-90 hover:scale-75'
+                    : 'hover:rotate-90 hover:scale-75' // 시계 회전 후 축소
                 }`}
             >
               {number}

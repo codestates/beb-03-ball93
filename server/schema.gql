@@ -2,80 +2,74 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  _id: String!
-
-  """User Avator"""
-  avator: String!
-
-  """User NickName"""
-  nickname: String!
-
-  """User Wallet Address"""
-  address: String!
-  ltbalance: Float!
-  stakedtokenbalance: Float!
-
-  """User role"""
-  role: String!
+type Get_Jeckpot {
+  worker: String!
+  round: String!
 }
 
-type Hash {
-  _id: String!
-  hash: String!
+type Jackpot_Balance {
+  """1등"""
+  first: String!
+
+  """2등"""
+  second: String!
+
+  """3등"""
+  third: String!
+
+  """4등"""
+  fourth: String!
+
+  """5등"""
+  fifth: String!
 }
 
-type attributes {
-  key: String!
-  value: String!
-  index: Boolean!
+type Winner {
+  """주소"""
+  addr: String!
+
+  """등수"""
+  rank: Float!
+
+  """로또 번호"""
+  ticket: String!
+  claim: Boolean!
+}
+
+type Round {
+  _id: String!
+
+  """회차"""
+  lottery_id: Float!
+
+  """Winner"""
+  winner: [Winner!]!
+
+  """당첨 번호"""
+  get_jackpot: [Get_Jeckpot!]!
+
+  """티켓 구매수"""
+  count_ticket: String!
+
+  """티켓 구매 유저수"""
+  count_user: String!
+
+  """랭킹별 당첨금액"""
+  jackpot_balance: [Jackpot_Balance!]!
+
+  """랭킹별 당첨자수"""
+  jackpot_count: [String!]!
+}
+
+type Balance {
+  _id: String!
+
+  """누적금액"""
+  balance: String!
 }
 
 type Query {
-  users: [User!]!
-  user(_id: String!): User!
-}
-
-type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(_id: String!): User!
-  createHash(createHash: CreateHashInput!): Hash!
-}
-
-input CreateUserInput {
-  """User Avator"""
-  avator: String = "https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png"
-
-  """User NickName"""
-  nickname: String!
-
-  """User Wallet Address"""
-  address: String!
-  ltbalance: Float!
-  stakedtokenbalance: Float!
-
-  """role of the user"""
-  role: String!
-}
-
-input UpdateUserInput {
-  """User Avator"""
-  avator: String = "https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png"
-
-  """User NickName"""
-  nickname: String
-
-  """User Wallet Address"""
-  address: String
-  ltbalance: Float
-  stakedtokenbalance: Float
-
-  """role of the user"""
-  role: String
-  _id: Float!
-}
-
-input CreateHashInput {
-  hash: String!
+  lottery_id: [Round!]!
+  round(lottery_id: Float!): Round!
+  balances: [Balance!]!
 }
