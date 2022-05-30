@@ -43,7 +43,7 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
       },
     }
     const sendAmount: string = (
-      entrypoint.register.combination.length * 1000
+      entrypoint.register.combination.length * 10000
     ).toString()
     const gasPrice = GasPrice.fromString('0.002utorii')
     const txFee = calculateFee(1300000, gasPrice)
