@@ -15,7 +15,7 @@ export class GetBalanceData {
     //Get Balance
     const query_msg: Record<string, unknown> = {
       balance: {
-        lottery_id: 1,
+        lottery_id: 3,
       },
     };
     try {

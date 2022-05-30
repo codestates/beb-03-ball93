@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@cosmjs/cosmwasm-stargate": "^0.28.4",
+    "@cosmjs/proto-signing": "^0.28.4",
     "@cosmostation/cosmosjs": "^0.11.2",
     "@nestjs/apollo": "^10.0.11",
     "@nestjs/axios": "^0.0.7",
