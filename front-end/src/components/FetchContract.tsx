@@ -1,5 +1,5 @@
 import { useSigningClient } from 'contexts/cosmwasm'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   convertMicroDenomToDenom,
   convertFromMicroDenom,
@@ -13,6 +13,7 @@ import {
   cosmWasmErrorState,
   walletBalanceState,
 } from 'recoils/cosmWasm'
+import { userTicketsState } from 'recoils/user'
 import { useEffect, useState } from 'react'
 
 const FetchContract = () => {
@@ -25,16 +26,16 @@ const FetchContract = () => {
 
   const [loadedAt, setLoadedAt] = useState(new Date())
 
-  const lotteryTickets = useRecoilValue(lotteryTicketsState)
   // const { roundId } = useRecoilValue(lotteryRoundState)
   const roundId = 2
   const [balance, setBalance] = useRecoilState(walletBalanceState)
   const [contractBalance, setContractBalance] =
     useRecoilState(contractBalanceState)
-  const [lotteryRoundContract, setLotteryRoundContract] = useRecoilState(
+  const setLotteryRoundContract = useSetRecoilState(
     lotteryRoundStateFromContract
   )
-  const [error, setError] = useRecoilState(cosmWasmErrorState)
+  const setUserTickets = useSetRecoilState(userTicketsState)
+  const setError = useSetRecoilState(cosmWasmErrorState)
 
   useEffect(() => {
     const getWalletBalance = async () => {
@@ -85,6 +86,7 @@ const FetchContract = () => {
         .then((response: any) => {
           console.log('--------- Get User Lottery Numbers ---------')
           console.log(response)
+          setUserTickets(response)
         })
         .catch((error) => {
           setError(`Error! ${error.message}`)
