@@ -6,18 +6,6 @@ import {
   lotteryDrawType,
 } from 'types/lotteryTypes'
 
-// import {
-//   updateLotteryTickets,
-//   updateLotteryHistory,
-//   lotteryRequestStart,
-//   lotteryRequestFinish,
-//   resetLotteryTickets,
-// } from 'recoils/lotterySlice'
-// import { userPopupAccount } from 'recoils/userSlice'
-// import { createAlert } from 'recoils/alert'
-
-// import axios from 'axios'
-
 export const lotteryTicketsState = atom<lotteryType[]>({
   key: `lotteryTicketsState/${Math.random().toString(36).substring(2, 11)}`,
   default: [],

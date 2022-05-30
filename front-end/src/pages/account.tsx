@@ -4,16 +4,15 @@ import { useRecoilState } from 'recoil'
 import {
   lotteryRoundState,
   lotteryRoundStateFromContract,
-  lotteryTicketsState,
 } from 'recoils/lottery'
+import { userTicketsState } from 'recoils/user'
 
 const Account = () => {
   const [lotteryRound, setLotteryRound] = useRecoilState(lotteryRoundState)
   const [lotteryRoundContract, setLotteryRoundContract] = useRecoilState(
     lotteryRoundStateFromContract
   )
-  const [lotteryTickets, setLotteryTickets] =
-    useRecoilState(lotteryTicketsState)
+  const [userTickets, setUserTickets] = useRecoilState(userTicketsState)
   console.log(lotteryRound)
   console.log(lotteryRoundContract)
   // console.log(lotteryTickets)
@@ -35,6 +34,7 @@ const Account = () => {
   return (
     <div className='mt-10'>
       <p>{JSON.stringify(roundId)}</p>
+      <p>{JSON.stringify(userTickets)}</p>
       <p>{JSON.stringify(ticketCounts)}</p>
       <p>{JSON.stringify(userCounts)}</p>
       <p>{JSON.stringify(winningNumber)}</p>
