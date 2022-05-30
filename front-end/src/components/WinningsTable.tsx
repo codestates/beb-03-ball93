@@ -1,29 +1,43 @@
+import { useRecoilValue } from 'recoil'
+import { lotteryRoundState } from 'recoils/lottery'
+
 const WinningsTable = ({ type }: { type: string }) => {
+  const lotteryRound = useRecoilValue(lotteryRoundState)
+  const {
+    roundId,
+    ticketCounts,
+    userCounts,
+    winningNumber,
+    prizesByRank,
+    jackpotCount,
+    winners,
+  } = lotteryRound[0]
+
   const winningTableData = [
     {
       prizeTier: '1st (6 digits match)',
       winnings: '1 in 95,344,20',
-      averagePrize: '34,573,4 TORRI',
+      averagePrize: `${prizesByRank?.first} TORRI`,
     },
     {
       prizeTier: '2nd (5 digits match)',
       winnings: '1 in 5,959,013',
-      averagePrize: '470,638 TORRI',
+      averagePrize: `${prizesByRank?.second} TORRI`,
     },
     {
       prizeTier: '3rd (4 digits match)',
       winnings: '1 in 3,405,150',
-      averagePrize: '96,134 TORRI',
+      averagePrize: `${prizesByRank?.third} TORRI`,
     },
     {
       prizeTier: '4th (3 digits match)',
       winnings: '1 in 423,752',
-      averagePrize: '4,072 TORRI',
+      averagePrize: `${prizesByRank?.fourth} TORRI`,
     },
     {
       prizeTier: '5th (2 digits match)',
       winnings: '1 in 15,134',
-      averagePrize: '103 TORRI',
+      averagePrize: `${prizesByRank?.fifth} TORRI`,
     },
   ]
 

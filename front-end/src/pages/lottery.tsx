@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { lotteryGameType } from 'types/lotteryTypes'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
@@ -6,11 +6,10 @@ import Banner from 'components/Layout/Banner'
 import Timer from 'components/CountdownTimer/Timer'
 import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import SendTorii from 'components/SendTorii'
-import Toast from 'components/Toast'
 import FetchContract from 'components/FetchContract'
 import fetchGraphQL from 'utils/fetchGraphQL'
 import { lotteryRoundState } from 'recoils/lottery'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 
 const lottery = ({ data }: any) => {
   const [open, setOpen] = useState<boolean>(false)
@@ -18,41 +17,27 @@ const lottery = ({ data }: any) => {
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
   // console.log(data)
-  const setLotteryRoundState = useSetRecoilState(lotteryRoundState)
-  setLotteryRoundState({
-    id: data.round.lottery_id,
-    count_ticket: data.round.count_ticket,
-    count_user: data.round.count_user,
-    get_jackpot: data.round.get_jackpot,
-    jackpot_balance: data.round.jackpot_balance,
-    jackpot_count: data.round.jackpot_count,
-    winner: data.round.winner,
-  })
-
-  // const screenWidth = window.innerWidth
-  // console.log(screenWidth)
+  const setLotteryRound = useSetRecoilState(lotteryRoundState)
+  useEffect(() => {
+    setLotteryRound((lotteryRound) =>
+      lotteryRound.map((item) =>
+        item.roundId === data.round.lottery_id
+          ? {
+              ...item,
+              ticketCounts: data.round.count_ticket,
+              userCounts: data.round.count_user,
+              winningNumber: data.round.get_jackpot.round,
+              prizesByRank: data.round.jackpot_balance[0],
+              jackpotCount: data.round.jackpot_count,
+              winners: data.round.winner,
+            }
+          : item
+      )
+    )
+  }, [data])
 
   const handleClose = () => {
     setOpen(false)
-  }
-
-  // const { isLogin } = useSelector((state: RootState) => state.user)
-  // const { loading } = useSelector((state: RootState) => state.lottery)
-
-  const payHandler = async () => {
-    //   if (!isLogin) {
-    //     // navigate('/signin')
-    //     return
-    //   }
-    //   const resultGame: any = await dispatch(playLottery())
-    //   if (resultGame) {
-    //     setGameResult(resultGame)
-    //     setOpen(true)
-    //   }
-    //   if (!resultGame) {
-    //     setGameResult(null)
-    //     return
-    //   }
   }
 
   return (
@@ -65,7 +50,7 @@ const lottery = ({ data }: any) => {
         Guess you're in luck today. <br />
         Just pick it!
       </h1>
-      <LotterySelect payHandler={payHandler} />
+      <LotterySelect />
       {/* <Toast success={success} error={error} /> */}
       <LotteryTicketList />
       <SendTorii setSuccess={setSuccess} setError={setError} />

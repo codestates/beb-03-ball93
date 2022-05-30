@@ -12,14 +12,26 @@ export interface lotteryGameType {
   createdAt?: Date
 }
 
-export interface lotteryRoundType extends lotteryGameType {
-  id: number
-  count_ticket: string
-  count_user: string
-  get_jackpot: []
-  jackpot_balance: []
-  jackpot_count: []
-  winner: []
+export interface lotteryRoundType {
+  roundId: number
+  ticketCounts: string
+  userCounts: string
+  winningNumber: string
+  prizesByRank: {
+    first: string
+    second: string
+    third: string
+    fourth: string
+    fifth: string
+  }
+  jackpotCount: []
+  winners: []
+}
+
+export interface lotteryRoundContractType extends lotteryRoundType {
+  totalPrizes: number
+  winnerCountsByRank: string[]
+  contractConfig: {}
 }
 
 export interface lotteryDrawType {

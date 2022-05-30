@@ -44,7 +44,9 @@ const Header = () => {
             className='btn btn-primary hover:-translate-y-0.5'
             onClick={handleConnect}
           >
-            {walletAddress || 'Connect Wallet'}
+            {walletAddress
+              ? `Hello ${walletAddress.slice(7, 16)}`
+              : `Connect Wallet`}
           </button>
         </div>
       </nav>

@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from 'react'
 import { useSigningClient } from 'contexts/cosmwasm'
 import Loader from 'components/Loader'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { signingCosmWasmClientState } from 'recoils/cosmWasm'
 
 const WalletLoader = ({
