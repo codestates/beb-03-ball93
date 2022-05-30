@@ -3,14 +3,10 @@
   "title": "InstantiateMsg",
   "type": "object",
   "required": [
-    "denom_stable",
-    "terrand_contract_address"
+    "denom_stable"
   ],
   "properties": {
     "denom_stable": {
-      "type": "string"
-    },
-    "terrand_contract_address": {
       "type": "string"
     }
   }
