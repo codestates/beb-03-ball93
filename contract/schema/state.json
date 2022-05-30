@@ -6,12 +6,13 @@
     "admin",
     "combination_len",
     "denom_stable",
-    "jackpot_percentage_reward",
+    "jackpot_seed_limit",
+    "jackpot_seed_lock",
+    "jackpot_seed_reward",
     "lottery_id",
     "price_per_ticket_to_register",
     "prize_rank_winner_percentage",
-    "safe_lock",
-    "terrand_contract_address"
+    "safe_lock"
   ],
   "properties": {
     "admin": {
@@ -25,10 +26,16 @@
     "denom_stable": {
       "type": "string"
     },
-    "jackpot_percentage_reward": {
+    "jackpot_seed_limit": {
       "type": "integer",
-      "format": "uint8",
+      "format": "uint64",
       "minimum": 0.0
+    },
+    "jackpot_seed_lock": {
+      "type": "boolean"
+    },
+    "jackpot_seed_reward": {
+      "$ref": "#/definitions/Uint128"
     },
     "lottery_id": {
       "type": "integer",
@@ -47,9 +54,6 @@
     },
     "safe_lock": {
       "type": "boolean"
-    },
-    "terrand_contract_address": {
-      "$ref": "#/definitions/CanonicalAddr"
     }
   },
   "definitions": {
