@@ -11,7 +11,7 @@ export class Winner {
   rank: number;
   @Prop()
   @Field(() => String, { description: '로또 번호' })
-  tiket: string;
+  ticket: string;
   @Prop()
   @Field(() => Boolean)
   claim: boolean;
