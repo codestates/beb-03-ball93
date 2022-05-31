@@ -77,7 +77,7 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
         setLoadedAt(new Date())
         setLoading(false)
         setSuccess(message)
-        setUserTickets(lotteryTicketsToSend)
+        // setUserTickets(lotteryTicketsToSend)
         resetlotteryTickets()
       })
       .catch((error) => {

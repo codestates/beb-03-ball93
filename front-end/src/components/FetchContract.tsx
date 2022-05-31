@@ -5,6 +5,7 @@ import {
   convertFromMicroDenom,
 } from 'utils/conversion'
 import {
+  lotteryRoundState,
   lotteryRoundStateFromContract,
   lotteryTicketsState,
 } from 'recoils/lottery'
@@ -26,8 +27,8 @@ const FetchContract = () => {
 
   const [loadedAt, setLoadedAt] = useState(new Date())
 
-  // const { roundId } = useRecoilValue(lotteryRoundState)
-  const roundId = 2
+  const { roundId } = useRecoilValue(lotteryRoundState)
+  // const roundId = 2
   const [balance, setBalance] = useRecoilState(walletBalanceState)
   const [contractBalance, setContractBalance] =
     useRecoilState(contractBalanceState)

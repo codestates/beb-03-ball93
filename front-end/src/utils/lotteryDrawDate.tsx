@@ -5,9 +5,8 @@ const lotteryDrawDate = (): Date => {
   const drawHour = 6 //?
 
   // Test
-  // const drawHour = 5
+  // const drawHour = -14
   // const drawMinute = new Date().getUTCMinutes() - 59
-  // let date = new Date(drawYear, drawMonth, drawDate, drawHour, drawMinute)
 
   // EVERY DAY 9PM (UTC)
   let date = new Date(drawYear, drawMonth, drawDate, drawHour)
