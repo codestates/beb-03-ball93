@@ -1,9 +1,6 @@
 import { ReactNode, useEffect } from 'react'
 import { useSigningClient } from 'contexts/cosmwasm'
 import Loader from 'components/Loader'
-import { useSetRecoilState } from 'recoil'
-import { signingCosmWasmClientState } from 'recoils/cosmWasm'
-
 const WalletLoader = ({
   children,
   loading = false,
@@ -11,7 +8,6 @@ const WalletLoader = ({
   children: ReactNode
   loading?: boolean
 }) => {
-  const setsigningCosmWasmClient = useSetRecoilState(signingCosmWasmClientState)
   const {
     walletAddress,
     signingClient,
@@ -20,16 +16,6 @@ const WalletLoader = ({
     connectWallet,
     disconnect,
   } = useSigningClient()
-  useEffect(() => {
-    setsigningCosmWasmClient({
-      walletAddress,
-      signingClient,
-      loading,
-      error,
-      connectWallet,
-      disconnect,
-    })
-  }, [walletAddress, signingClient, loading, error, connectWallet, disconnect])
 
   if (loading || clientLoading) {
     return (

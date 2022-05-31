@@ -2,7 +2,10 @@ import * as React from 'react'
 import { TNextLayout } from 'next'
 import Head from 'next/head'
 import { useRecoilValue } from 'recoil'
-import { lotteryDrawState } from 'recoils/lottery'
+import {
+  lotteryDrawState,
+  lotteryRoundStateFromContract,
+} from 'recoils/lottery'
 import Header from 'components/Layout/Header'
 import Footer from 'components/Layout/Footer'
 import Draw from 'components/Layout/Draw'
@@ -15,6 +18,9 @@ type TBasicLayout = {
 
 const Layout: TNextLayout<TBasicLayout> = ({ children }): JSX.Element => {
   const { lotteryDrawDate } = useRecoilValue(lotteryDrawState)
+  const lotteryRound = useRecoilValue(lotteryRoundStateFromContract)
+
+  // console.log(lotteryRound[0].winningNumber)
 
   let now = new Date().getTime()
   let difference, newDays, newHours, newMinutes, newSeconds

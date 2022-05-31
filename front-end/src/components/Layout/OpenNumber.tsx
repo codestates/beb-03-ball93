@@ -1,4 +1,6 @@
-const OpenNumber = () => {
+const OpenNumber = ({ winningNumber }) => {
+  // const lotteryRoundContract = useRecoilValue(lotteryRoundStateFromContract)
+
   return (
     <>
       <div className='background background0'></div>
@@ -10,14 +12,14 @@ const OpenNumber = () => {
       <div className='background background6'></div>
       <div className='background background7'></div>
       <div className='criterion'>
-        <div className='text text0'>1</div>
-        <div className='text text1'>2</div>
-        <div className='text text2'>3</div>
-        <div className='text text3'>4</div>
-        <div className='text text4'>5</div>
-        <div className='text text5'>6</div>
-        <div className='text text6'>ㅎ</div>
-        <div className='text text7'>: )</div>
+        <div className='text text0'>{winningNumber[0]}</div>
+        <div className='text text1'>{winningNumber[1]}</div>
+        <div className='text text2'>{winningNumber[2]}</div>
+        <div className='text text3'>{winningNumber[3]}</div>
+        <div className='text text4'>{winningNumber[4]}</div>
+        <div className='text text5'>{winningNumber[5]}</div>
+        <div className='text text6'>ㅊ</div>
+        <div className='text text7'>ㅋ</div>
         <div className='frame frame0'></div>
         <div className='frame frame1'></div>
         <div className='frame frame2'></div>

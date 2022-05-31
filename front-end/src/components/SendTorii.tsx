@@ -4,8 +4,9 @@ import { calculateFee, GasPrice } from '@cosmjs/stargate'
 import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { convertFromMicroDenom } from 'utils/conversion'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
 import { lotteryTicketsState } from 'recoils/lottery'
+import { userTicketsState } from 'recoils/user'
 
 interface SendToriiProps {
   setSuccess: React.Dispatch<React.SetStateAction<string>>
@@ -25,6 +26,8 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
   const [loading, setLoading] = useState(false)
 
   const lotteryTickets = useRecoilValue(lotteryTicketsState)
+  const setUserTickets = useSetRecoilState(userTicketsState)
+
   const resetlotteryTickets = useResetRecoilState(lotteryTicketsState)
 
   const lotteryTicketsToSend = Object.values(lotteryTickets).map((el) =>
@@ -74,6 +77,7 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
         setLoadedAt(new Date())
         setLoading(false)
         setSuccess(message)
+        // setUserTickets(lotteryTicketsToSend)
         resetlotteryTickets()
       })
       .catch((error) => {
