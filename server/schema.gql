@@ -59,17 +59,12 @@ type Round {
 
   """랭킹별 당첨자수"""
   jackpot_count: [String!]!
-}
 
-type Balance {
-  _id: String!
-
-  """누적금액"""
+  """총금액"""
   balance: String!
 }
 
 type Query {
-  lottery_id: [Round!]!
+  rounds: [Round!]!
   round(lottery_id: Float!): Round!
-  balances: [Balance!]!
 }

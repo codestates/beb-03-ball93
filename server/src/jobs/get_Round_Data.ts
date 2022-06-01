@@ -1,7 +1,7 @@
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 import { Module } from '@nestjs/common';
 import { InjectModel, MongooseModule } from '@nestjs/mongoose';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { Model } from 'mongoose';
 import { Round, RoundSchema } from 'src/entities/round.entity';
 
@@ -19,7 +19,7 @@ let lottery_count: number = 1;
 export class GetRoundData {
   @InjectModel(Round.name)
   private readonly roundModel: Model<Round>;
-  @Cron('* * 23 * * *', { name: 'GetRoundData' })
+  @Cron('* * * * * *', { name: 'GetRoundData' })
   // 1 구매 못하게 lock
   // 2 컨트랙트 실행 쿼리문 -> 마지막 lock 해제
   // 3 데이터 긁어오기
@@ -33,6 +33,7 @@ export class GetRoundData {
     let count_user: any;
     let jackpot_balance: any;
     let jackpot_count: any;
+    let balance: any;
 
     const round_check: any = await this.roundModel
       .findOne({ lottery_id: lottery_count })
@@ -134,6 +135,20 @@ export class GetRoundData {
       console.log(err);
     }
 
+    // Get Balance
+    const qeury_msg7: Record<string, unknown> = {
+      balance: {
+        lottery_id: lottery_count,
+      },
+    };
+    try {
+      balance = await (
+        await cosmClient
+      ).queryContractSmart(contractAddress, qeury_msg7);
+    } catch (err) {
+      console.log(err);
+    }
+
     if (!round_check) {
       const round = new this.roundModel({
         lottery_id: lottery_count,
@@ -143,6 +158,7 @@ export class GetRoundData {
         count_user: count_user,
         jackpot_balance: jackpot_balance,
         jackpot_count: jackpot_count,
+        balance: balance,
       });
       await round.save();
       console.log(round);
