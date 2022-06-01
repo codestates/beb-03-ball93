@@ -1,3 +1,11 @@
+type severity = 'error' | 'success' | 'warning'
+
+export interface alertType {
+  message: string
+  id: string
+  alertType: severity
+}
+
 export interface lotteryType {
   number: number[]
   // pairNumber: number[]
@@ -36,4 +44,21 @@ export interface lotteryRoundContractType extends lotteryRoundType {
 
 export interface lotteryDrawType {
   lotteryDrawDate: Date | null
+}
+
+export interface popupHistoryType {
+  amount: number
+  paidAt: string
+  _id: string
+}
+
+export interface userType {
+  id: string
+  walletAddress: string
+}
+
+export interface userTicketType extends userType {
+  number: number[]
+  roundId: number
+  ticketCounts: string
 }

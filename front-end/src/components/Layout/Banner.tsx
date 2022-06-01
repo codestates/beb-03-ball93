@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { HiExternalLink } from 'react-icons/hi'
 import { BsTrophy } from 'react-icons/bs'
 import { useRecoilValue } from 'recoil'
-import { contractBalanceState } from 'recoils/cosmWasm'
-import { lotteryRoundStateFromContract } from 'recoils/lottery'
+import { contractBalanceState } from 'state/cosmWasm'
+import { lotteryRoundStateFromContract } from 'state/lottery'
 
 const Banner = () => {
   const lotteryRound = useRecoilValue(lotteryRoundStateFromContract)

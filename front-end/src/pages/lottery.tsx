@@ -8,7 +8,7 @@ import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import SendTorii from 'components/SendTorii'
 import FetchContract from 'components/FetchContract'
 import fetchGraphQL from 'utils/fetchGraphQL'
-import { lotteryRoundState } from 'recoils/lottery'
+import { lotteryRoundState } from 'state/lottery'
 import { useSetRecoilState } from 'recoil'
 
 const lottery = ({ data }: any) => {
@@ -16,25 +16,25 @@ const lottery = ({ data }: any) => {
   const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
-  // console.log(data)
+  console.log(data)
   const setLotteryRound = useSetRecoilState(lotteryRoundState)
-  useEffect(() => {
-    setLotteryRound((lotteryRound) =>
-      lotteryRound.map((item) =>
-        item.roundId === data.round.lottery_id
-          ? {
-              ...item,
-              ticketCounts: data.round.count_ticket,
-              userCounts: data.round.count_user,
-              winningNumber: data.round.get_jackpot.round,
-              prizesByRank: data.round.jackpot_balance[0],
-              jackpotCount: data.round.jackpot_count,
-              winners: data.round.winner,
-            }
-          : item
-      )
-    )
-  }, [data])
+  // useEffect(() => {
+  //   setLotteryRound((lotteryRound) =>
+  //     lotteryRound.map((item) =>
+  //       item.roundId === data.round.lottery_id
+  //         ? {
+  //             ...item,
+  //             ticketCounts: data.round.count_ticket,
+  //             userCounts: data.round.count_user,
+  //             winningNumber: data.round.get_jackpot.round,
+  //             prizesByRank: data.round.jackpot_balance[0],
+  //             jackpotCount: data.round.jackpot_count,
+  //             winners: data.round.winner,
+  //           }
+  //         : item
+  //     )
+  //   )
+  // }, [data])
 
   const handleClose = () => {
     setOpen(false)
@@ -66,33 +66,64 @@ const lottery = ({ data }: any) => {
 export default lottery
 
 export async function getStaticProps() {
+  // const query = `
+  // query{
+  //   round(lottery_id: 3){
+  //    lottery_id
+  //    winner{
+  //      addr
+  //      rank
+  //      ticket
+  //      claim
+  //    }
+  //    get_jackpot{
+  //      worker
+  //      round
+  //    }
+  //    count_ticket
+  //    count_user
+  //    jackpot_balance{
+  //      first
+  //      second
+  //      third
+  //      fourth
+  //      fifth
+  //  }
+  //    jackpot_count
+  //    balance
+  //  }
+  //  }
+  //  `
   const query = `
   query{
-    round(lottery_id: 3){
-     lottery_id
-     winner{
-       addr
-       rank
-       ticket
-       claim
-     }
-     get_jackpot{
-       worker
-       round
-     }
-     count_ticket
-     count_user
-     jackpot_balance{
-       first
-       second
-       third
-       fourth
-       fifth
-   }
-     jackpot_count
-   }
-   }
-   `
+    lottery_id{
+         lottery_id
+         winner{
+           addr
+           rank
+           ticket
+           claim
+         }
+         get_jackpot{
+           worker
+           round
+         }
+         count_ticket
+         count_user
+         jackpot_balance{
+           first
+           second
+           third
+           fourth
+           fifth
+       }
+         jackpot_count
+         balance
+       }
+       
+    }
+  }
+  `
   const { data } = await fetchGraphQL(query)
 
   return {

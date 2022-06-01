@@ -1,6 +1,5 @@
 // import LotteryHistoryView from 'views/LotteryHistoryView'
 
-import Carousel from 'components/Carousel'
 import { useRecoilValue } from 'recoil'
 import {
   lotteryRoundState,
