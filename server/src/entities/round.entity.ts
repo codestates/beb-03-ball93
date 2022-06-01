@@ -31,6 +31,9 @@ export class Round {
   @Prop()
   @Field(() => [String], { description: '랭킹별 당첨자수' })
   jackpot_count: string[];
+  @Prop()
+  @Field(() => String, { description: '총금액' })
+  balance: string;
 }
 
 export const RoundSchema = SchemaFactory.createForClass(Round);
