@@ -4,10 +4,10 @@ import {
 } from '@cosmjs/cosmwasm-stargate';
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing';
 import { calculateFee, GasPrice } from '@cosmjs/stargate';
-import { Interval } from '@nestjs/schedule';
+import { Cron, Interval } from '@nestjs/schedule';
 
 export class Admin_Lock {
-  @Interval('Admin_Lock', 600000)
+  @Cron('10 * * * * *')
   async handleCron(): Promise<any> {
     const contractAddress: string = process.env.CONTRACT_ADDRESS;
     const contractWallet: string = process.env.CONTRACT_WALLET;
@@ -50,24 +50,24 @@ export class Admin_Lock {
         entrypoint1,
         txFee,
       );
-      draw = await cosmwasmClient.execute(
-        contractWallet,
-        contractAddress,
-        entrypoint2,
-        txFee,
-      );
-      collect_counter = await cosmwasmClient.execute(
-        contractWallet,
-        contractAddress,
-        entrypoint3,
-        txFee,
-      );
-      collect_balance = await cosmwasmClient.execute(
-        contractWallet,
-        contractAddress,
-        entrypoint4,
-        txFee,
-      );
+      // draw = await cosmwasmClient.execute(
+      //   contractWallet,
+      //   contractAddress,
+      //   entrypoint2,
+      //   txFee,
+      // );
+      // collect_counter = await cosmwasmClient.execute(
+      //   contractWallet,
+      //   contractAddress,
+      //   entrypoint3,
+      //   txFee,
+      // );
+      // collect_balance = await cosmwasmClient.execute(
+      //   contractWallet,
+      //   contractAddress,
+      //   entrypoint4,
+      //   txFee,
+      // );
     } catch (err) {
       console.log(err);
     }
