@@ -7,7 +7,7 @@ import { calculateFee, GasPrice } from '@cosmjs/stargate';
 import { Cron, Interval } from '@nestjs/schedule';
 
 export class Admin_Lock {
-  @Cron('10 * * * * *')
+  @Cron('* * 23 * * *')
   async handleCron(): Promise<any> {
     const contractAddress: string = process.env.CONTRACT_ADDRESS;
     const contractWallet: string = process.env.CONTRACT_WALLET;
