@@ -110,6 +110,7 @@ type Query {
   rounds: [Round!]!
   round(lottery_id: Float!): Round!
   lotteryTickets: [LotteryTicket!]!
+  userTickets(walletAddress: String!): [LotteryTicket!]!
   lotteryTicket(walletAddress: String!): LotteryTicket!
 }
 

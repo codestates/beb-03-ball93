@@ -20,6 +20,11 @@ export class LotteryTicketResolver {
     return this.lotteryTicketService.findAll();
   }
 
+  @Query(() => [LotteryTicket], { name: 'userTickets' })
+  findTicketAll(@Args('walletAddress', { type: () => String }) walletAddress: string) {
+    return this.lotteryTicketService.findTicketAll(walletAddress);
+  }
+
   @Query(() => LotteryTicket, { name: 'lotteryTicket' })
   findOne(
     @Args('walletAddress', { type: () => String }) walletAddress: string,
