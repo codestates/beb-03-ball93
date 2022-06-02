@@ -12,14 +12,18 @@ export class UserService {
     private readonly userModel: Model<User>,
   ) {}
 
-  create(createUserInput: CreateUserInput) {
-    const isUserExist = this.userModel.exists({
-      userId: createUserInput.userId,
-      walletAddress: createUserInput.walletAddress,
-    });
-    console.log(isUserExist._mongooseOptions.lean);
+  async create(createUserInput: CreateUserInput) {
+    const isUserExist = await this.userModel
+      .find()
+      .where('users')
+      .or([
+        { userId: createUserInput.userId },
+        { walletAddress: createUserInput.walletAddress },
+      ]);
 
-    if (isUserExist) {
+    console.log(isUserExist);
+
+    if (isUserExist.length !== 0) {
       throw new NotFoundException(`User duplicate values check your Query!!`);
     }
 
