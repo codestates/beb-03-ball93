@@ -12,7 +12,21 @@ export class LotteryTicketService {
     private readonly lotteryTicketModel: Model<LotteryTicket>,
   ) {}
 
-  create(createLotteryTicketInput: CreateLotteryTicketInput) {
+  async create(createLotteryTicketInput: CreateLotteryTicketInput) {
+    const isLotteryTicketExist = await this.lotteryTicketModel
+      .find()
+      .where('lotterytickets')
+      .and([
+        { ticketId: createLotteryTicketInput.ticketId },
+        { userId: createLotteryTicketInput.userId },
+      ]);
+
+    if (isLotteryTicketExist.length !== 0) {
+      throw new NotFoundException(
+        `LotteryTicket duplicate values check your Query!!`,
+      );
+    }
+
     const lottery_Ticket = new this.lotteryTicketModel(
       createLotteryTicketInput,
     );
@@ -23,8 +37,8 @@ export class LotteryTicketService {
     return this.lotteryTicketModel.find().exec();
   }
 
-  findTicketAll(walletAddress: string) {
-    return this.lotteryTicketModel
+  async findTicketAll(walletAddress: string) {
+    return await this.lotteryTicketModel
       .find({ walletAddress: walletAddress })
       .exec();
   }
