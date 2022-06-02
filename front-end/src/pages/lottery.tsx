@@ -4,7 +4,7 @@ import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
 import Banner from 'components/Layout/Banner'
 import Timer from 'components/CountdownTimer/Timer'
-import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
+import LotteryCombinationList from 'components/LotteryArea/LotteryCombinationList'
 import SendTorii from 'components/SendTorii'
 import queryContract from 'components/queryContract'
 import queryGraphQL, { queryLotteryRounds } from 'utils/queryGraphQL'
@@ -13,6 +13,7 @@ import { useSetRecoilState } from 'recoil'
 import { useSigningClient } from 'contexts/cosmwasm'
 
 const lottery = ({ data, a }: any) => {
+  const { walletAddress } = useSigningClient()
   const [open, setOpen] = useState<boolean>(false)
   const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
   const [success, setSuccess] = useState('')
@@ -51,9 +52,9 @@ const lottery = ({ data, a }: any) => {
         Guess you're in luck today. <br />
         Just pick it!
       </h1>
-      <LotterySelect />
+      <LotterySelect walletAddress={walletAddress} />
       {/* <Toast success={success} error={error} /> */}
-      <LotteryTicketList />
+      <LotteryCombinationList />
       <SendTorii setSuccess={setSuccess} setError={setError} />
       <queryContract />
       {/* {loading} */}

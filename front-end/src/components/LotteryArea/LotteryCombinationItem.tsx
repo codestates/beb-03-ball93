@@ -1,23 +1,23 @@
 // import { lotteryTicketType } from 'state/types'
 import { RiDeleteBin2Line } from 'react-icons/ri'
-import LotteryTicket from 'components/LotteryTicket/LotteryTicket'
+import LotteryCombination from 'components/LotteryArea/LotteryCombination'
 
-interface LotteryTicketItemProps {
-  ticket: any
+interface LotteryCombinationItemProps {
+  combination: any
   // ticket: lotteryTicketType
   removeTicketHandler: (id: string) => void
 }
 
-const LotteryTicketItem = ({
-  ticket,
+const LotteryCombinationItem = ({
+  combination,
   removeTicketHandler,
-}: LotteryTicketItemProps) => {
+}: LotteryCombinationItemProps) => {
   return (
     <div>
       <div className='p-5 bg-[#ffffffbc] rounded-lg flex items-center justify-between space-x-8'>
         <div className='flex-1'>
           <div className='h-4 w-48 bg-gray-300 rounded'>
-            <LotteryTicket ticket={ticket} />
+            <LotteryCombination combination={combination} />
           </div>
         </div>
         <div>
@@ -33,4 +33,4 @@ const LotteryTicketItem = ({
   )
 }
 
-export default LotteryTicketItem
+export default LotteryCombinationItem

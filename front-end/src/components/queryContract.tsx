@@ -7,7 +7,7 @@ import {
 import {
   lotteryRoundState,
   lotteryRoundStateFromContract,
-  lotteryTicketsState,
+  lotteryTicketState,
 } from 'state/lottery'
 import {
   contractBalanceState,

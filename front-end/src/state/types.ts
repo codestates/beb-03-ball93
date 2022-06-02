@@ -8,7 +8,8 @@ export interface alertType {
 
 export interface lotteryTicketType {
   userId: string
-  ticketId: number
+  walletAddress: string
+  ticketId: string
   roundId: number
   number: string[]
   // pairNumber: number[]

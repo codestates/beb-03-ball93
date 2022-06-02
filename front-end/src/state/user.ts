@@ -1,7 +1,19 @@
 import { atom } from 'recoil'
-import { userTicketType } from 'state/types'
+import { userTicketsType, userType } from 'state/types'
 
-export const userTicketsState = atom<userTicketType[]>({
+export const userState = atom<userType>({
   key: `userTicketsState/${Math.random().toString(36).substring(2, 11)}`,
-  default: [],
+  default: {
+    userId: '',
+    walletAddress: '',
+  },
+})
+
+export const userTicketsState = atom<userTicketsType>({
+  key: `userTicketsState/${Math.random().toString(36).substring(2, 11)}`,
+  default: {
+    userId: '',
+    walletAddress: '',
+    tickets: [],
+  },
 })

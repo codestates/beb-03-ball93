@@ -5,7 +5,7 @@ import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { convertFromMicroDenom } from 'utils/conversion'
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
-import { lotteryTicketsState } from 'state/lottery'
+import { lotteryTicketState } from 'state/lottery'
 import { userTicketsState } from 'state/user'
 
 interface SendToriiProps {
@@ -25,14 +25,14 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
   const [loadedAt, setLoadedAt] = useState(new Date())
   const [loading, setLoading] = useState(false)
 
-  const lotteryTickets = useRecoilValue(lotteryTicketsState)
-  const setUserTickets = useSetRecoilState(userTicketsState)
+  const lotteryTicket = useRecoilValue(lotteryTicketState)
+  const setUserTicket = useSetRecoilState(userTicketsState)
 
-  const resetlotteryTickets = useResetRecoilState(lotteryTicketsState)
+  const resetlotteryTicket = useResetRecoilState(lotteryTicketState)
 
-  const lotteryTicketsToSend = Object.values(lotteryTickets).map((el) =>
-    el.number.join('')
-  )
+  // const lotteryTicketsToSend = Object.values(lotteryTicket).map((el) =>
+  //   el.number.join('')
+  // )
 
   const handleSend = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -85,7 +85,7 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
         setLoading(false)
         setSuccess(message)
         // setUserTickets(lotteryTicketsToSend)
-        resetlotteryTickets()
+        resetlotteryTicket()
       })
       .catch((error) => {
         setLoading(false)
@@ -96,16 +96,16 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
 
   return (
     <WalletLoader loading={loading}>
-      {lotteryTickets.length > 0 && (
-        <button
-          type='button'
-          className='btn-payment w-60 mx-auto relative z-30'
-          onClick={handleSend}
-        >
-          <img src={'/archway-logo.png'} width={32} className={'pr-2'} />
-          Pay with Archway
-        </button>
-      )}
+      {/* {lotteryTicket.number.length > 0 && ( */}
+      <button
+        type='button'
+        className='btn-payment w-60 mx-auto relative z-30'
+        onClick={handleSend}
+      >
+        <img src={'/archway-logo.png'} width={32} className={'pr-2'} />
+        Pay with Archway
+      </button>
+      {/* )} */}
     </WalletLoader>
   )
 }

@@ -3,7 +3,7 @@ import { connectKeplr } from 'utils/connectKeplr'
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate'
 
 export interface ISigningCosmWasmClientContext {
-  walletAddress: string
+  walletAddress: string | null
   signingClient: SigningCosmWasmClient | null
   loading: boolean
   error: any
