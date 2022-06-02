@@ -73,10 +73,16 @@ const Timer = () => {
 
   return (
     <div className='mt-2'>
-      <span className='text-[#576272] font-black text-xs md:text-sm'>
-        JOIN LOTTERY {displayDate}
-      </span>
-      <TimerContainer
+      <p className='text-[#576272] font-black text-lg md:text-3xl p-4'>
+        Seed Generate
+      </p>
+      <p
+        className='bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 
+  via-purple-500 animate-gradient-xy font-black text-lg md:text-4xl'
+      >
+        {displayDate}
+      </p>
+      {/* <TimerContainer
         days={days}
         hours={hours}
         minutes={minutes}
@@ -87,7 +93,7 @@ const Timer = () => {
         value={newTime}
         handleClick={handleClick}
         handleChange={handleChange}
-      />
+      /> */}
     </div>
   )
 }

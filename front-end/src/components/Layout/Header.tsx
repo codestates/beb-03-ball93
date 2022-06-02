@@ -2,19 +2,68 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import Link from 'next/link'
 import ThemeToggle from 'components/ThemeToggle'
 import Tab from 'components/Layout/Tab'
+import { useEffect, useState } from 'react'
+import queryGraphQL from 'utils/queryGraphQL'
+import Loader from 'components/Loader'
+import { useRecoilState } from 'recoil'
+import { lotteryTicketState } from 'state/lottery'
+import { userState } from 'state/user'
+import generateUUID from 'utils/generateUUID'
 
 const Header = () => {
-  const { walletAddress, connectWallet, disconnect } = useSigningClient()
+  const { walletAddress, signingClient, connectWallet, disconnect } =
+    useSigningClient()
+  const PUBLIC_SITE_LOGO_URL = process.env.NEXT_PUBLIC_SITE_LOGO_URL || ''
+  const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
+  const [user, setUser] = useRecoilState(userState)
+  const [lotteryTickets, setLotteryTickets] = useRecoilState(lotteryTicketState)
+  const [isLoading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (walletAddress) {
+      setLoading(true)
+      setUser({ userId: generateUUID(), walletAddress: walletAddress })
+      const queryUserTickets = `
+      query{
+        userTickets(walletAddress:"${walletAddress}"){
+          userId
+          walletAddress
+          ticketId
+          roundId
+          number
+          rank {
+            first
+            second
+            third
+            fourth
+            fifth
+          }
+          paid
+        }
+      }
+    `
+      const query = queryUserTickets
+      queryGraphQL(query).then((data) => {
+        setLotteryTickets(data.data.userTickets)
+        setLoading(false)
+      })
+    }
+  }, [walletAddress])
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center'>
+        <Loader />
+      </div>
+    )
+  }
   const handleConnect = () => {
-    if (walletAddress.length === 0) {
+    if (walletAddress?.length === 0) {
       connectWallet()
     } else {
       disconnect()
     }
   }
-
-  const PUBLIC_SITE_LOGO_URL = process.env.NEXT_PUBLIC_SITE_LOGO_URL || ''
-  const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 
   return (
     <div className='fixed top-0 z-50 flex justify-center items-center w-screen border-inherit rounded-b-3xl bg-white shadow-xl shadow-gray-200/30 py-4'>

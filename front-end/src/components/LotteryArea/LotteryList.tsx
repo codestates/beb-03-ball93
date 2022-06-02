@@ -1,17 +1,18 @@
 import React from 'react'
-import LotteryTicketItem from 'components/LotteryArea/LotteryTicketItem'
-import { lotteryTicketsState } from 'recoils/lottery'
+import LotteryItem from 'components/LotteryArea/LotteryItem'
+import { lotteryTicketState } from 'state/lottery'
 import { useRecoilState } from 'recoil'
 
-const LotteryTicketList = () => {
-  const [lotteryTickets, setLotteryTickets] =
-    useRecoilState(lotteryTicketsState)
+const LotteryList = () => {
+  const [lotteryTicket, setLotteryTicket] = useRecoilState(lotteryTicketState)
 
-  const removeTicketHandler = (id: string) => {
-    const updatedLotteryTickets = lotteryTickets.filter(
-      (ticket) => id !== ticket.id
+  const removeTicketHandler = (combination: string) => {
+    const newNumber = lotteryTicket.number.filter(
+      (number) => combination !== number
     )
-    setLotteryTickets(updatedLotteryTickets)
+    setLotteryTicket((prev) => {
+      return { ...prev, number: newNumber }
+    })
   }
 
   return (
@@ -22,14 +23,14 @@ const LotteryTicketList = () => {
           <div className='absolute top-32 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000'></div>
           <div className='absolute -bottom-44 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000'></div>
           <div className='m-8 relative space-y-4'>
-            {lotteryTickets.length > 0 && (
-              <span>{`${lotteryTickets.length} ticket(s)`}</span>
+            {lotteryTicket.number?.length > 0 && (
+              <span>{`${lotteryTicket.number?.length} ticket(s)`}</span>
             )}
-            {lotteryTickets.map((ticket) => (
-              <LotteryTicketItem
-                key={ticket.id}
-                ticket={ticket}
-                removeTicketHandler={() => removeTicketHandler(ticket.id)}
+            {lotteryTicket.number?.map((combination, index) => (
+              <LotteryItem
+                key={index}
+                combination={combination}
+                removeTicketHandler={() => removeTicketHandler(combination)}
               />
             ))}
           </div>
@@ -39,4 +40,4 @@ const LotteryTicketList = () => {
   )
 }
 
-export default LotteryTicketList
+export default LotteryList

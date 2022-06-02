@@ -1,6 +1,13 @@
 import { ReactNode, useEffect } from 'react'
 import { useSigningClient } from 'contexts/cosmwasm'
 import Loader from 'components/Loader'
+import { useState } from 'react'
+import queryGraphQL from 'utils/queryGraphQL'
+import { useRecoilState } from 'recoil'
+import { userState, userTicketsState } from 'state/user'
+import generateUUID from 'utils/generateUUID'
+import { userTicketsType, userType } from 'state/types'
+
 const WalletLoader = ({
   children,
   loading = false,
@@ -8,6 +15,12 @@ const WalletLoader = ({
   children: ReactNode
   loading?: boolean
 }) => {
+  const [data, setData] = useState(null)
+  const [isLoading, setLoading] = useState(false)
+  const [user, setUser] = useRecoilState<userType>(userState)
+  const [userTickets, setUserTickets] =
+    useRecoilState<userTicketsType>(userTicketsState)
+
   const {
     walletAddress,
     signingClient,
@@ -16,6 +29,47 @@ const WalletLoader = ({
     connectWallet,
     disconnect,
   } = useSigningClient()
+
+  useEffect(() => {
+    if (walletAddress) {
+      setLoading(true)
+
+      const queryUserTickets = `
+        query{
+          userTickets(walletAddress:"${walletAddress}"){
+            userId
+            walletAddress
+            ticketId
+            roundId
+            number
+            rank {
+              first
+              second
+              third
+              fourth
+              fifth
+            }
+          paid
+        }
+      }
+    `
+      const query = queryUserTickets
+      queryGraphQL(query).then((data) => {
+        setUser({ userId: generateUUID(), walletAddress: walletAddress })
+        setUserTickets({ ...user, tickets: [...data.data.userTickets] })
+        setLoading(false)
+      })
+      // console.log(userTickets)
+    }
+  }, [walletAddress])
+
+  // if (isLoading) {
+  //   return (
+  //     <div className='flex justify-center'>
+  //       <Loader />
+  //     </div>
+  //   )
+  // }
 
   if (loading || clientLoading) {
     return (

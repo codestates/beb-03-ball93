@@ -1,13 +1,11 @@
-import { lotteryType } from 'types/lotteryTypes'
+import { lotteryTicketType } from 'state/types'
 
-interface LotteryTicketProps {
-  ticket: lotteryType
-}
+const Lottery = ({ combination }: any) => {
+  const arrayCombination = combination.split('')
 
-const LotteryTicket = ({ ticket }: LotteryTicketProps) => {
   return (
     <div className='flex flex-row justify-center items-center space-x-4 font-bold bg-gray-50 bg-auto text-slate-700 text-xl'>
-      {ticket.number.map((number, index) => (
+      {arrayCombination.map((number: string, index: number) => (
         <div
           key={index}
           className={`flex items-center justify-center bg-white rounded-full border-0 outline outline-offset-2 outline-3 w-4 h-4 md:w-12 md:h-5 hover:scale-110 transition relative z-30      
@@ -34,4 +32,4 @@ const LotteryTicket = ({ ticket }: LotteryTicketProps) => {
   )
 }
 
-export default LotteryTicket
+export default Lottery

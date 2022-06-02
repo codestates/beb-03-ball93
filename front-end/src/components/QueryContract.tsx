@@ -5,35 +5,38 @@ import {
   convertFromMicroDenom,
 } from 'utils/conversion'
 import {
-  lotteryRoundState,
-  lotteryRoundStateFromContract,
-  lotteryTicketsState,
-} from 'recoils/lottery'
+  lotteryRoundsState,
+  lotteryRoundsStateFromContract,
+  lotteryTicketState,
+} from 'state/lottery'
 import {
   contractBalanceState,
   cosmWasmErrorState,
   walletBalanceState,
-} from 'recoils/cosmWasm'
-import { userTicketsState } from 'recoils/user'
+} from 'state/cosmWasm'
+import { userTicketsState } from 'state/user'
 import { useEffect, useState } from 'react'
 
-const FetchContract = () => {
+const QueryContract = () => {
   const { walletAddress, signingClient } = useSigningClient()
 
   const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'utorii'
   const PUBLIC_CONTRACT_ADDRESS =
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ||
     'archway1ngcd86tzyxws4yacw3nahrgmn07c6rzrc2jmdehgy65np9wcv35shffh5f'
+  const CW20_CONTRACT_ADDRESS =
+    process.env.NEXT_PUBLIC_CW20_CONTRACT_ADDRESS ||
+    'archway13whq5vk3fe8tp8anf903eezartyx70jf7pgqw7e043sleukl3lzq02r6ng'
 
   const [loadedAt, setLoadedAt] = useState(new Date())
 
-  const { roundId } = useRecoilValue(lotteryRoundState)
+  const { roundId } = useRecoilValue(lotteryRoundsState)
   // const roundId = 2
   const [balance, setBalance] = useRecoilState(walletBalanceState)
   const [contractBalance, setContractBalance] =
     useRecoilState(contractBalanceState)
   const setLotteryRoundContract = useSetRecoilState(
-    lotteryRoundStateFromContract
+    lotteryRoundsStateFromContract
   )
   const setUserTickets = useSetRecoilState(userTicketsState)
   const setError = useSetRecoilState(cosmWasmErrorState)
@@ -263,19 +266,38 @@ const FetchContract = () => {
           console.log('Error getContractConfig(): ', error)
         })
     }
-    getWalletBalance()
-    getContractBalance()
-    getUserLotteryNumbers()
-    getWinningNumbers()
-    getRoundWinners()
-    getTotalPrizes()
-    getPrizesByRank()
-    getTicketCounts()
-    getUserCounts()
-    getWinnerCountsByRank()
-    getContractConfig()
+    const getCW20Balance = () => {
+      const queryMsg: Record<string, unknown> = {
+        balance: {
+          address: walletAddress,
+        },
+      }
+      signingClient
+        ?.queryContractSmart(CW20_CONTRACT_ADDRESS, queryMsg)
+        .then((response: any) => {
+          console.log('--------- Get CW20 Balance ---------')
+          console.log(response)
+        })
+        .catch((error) => {
+          setError(`Error! ${error.message}`)
+          console.log(error)
+        })
+    }
+
+    // getWalletBalance()
+    // getContractBalance()
+    // getUserLotteryNumbers()
+    // getWinningNumbers()
+    // getRoundWinners()
+    // getTotalPrizes()
+    // getPrizesByRank()
+    // getTicketCounts()
+    // getUserCounts()
+    // getWinnerCountsByRank()
+    // getContractConfig()
+    getCW20Balance()
   }, [walletAddress, signingClient, loadedAt])
 
   return <div></div>
 }
-export default FetchContract
+export default QueryContract
