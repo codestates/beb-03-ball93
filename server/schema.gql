@@ -64,7 +64,117 @@ type Round {
   balance: String!
 }
 
+type Rank {
+  """1등"""
+  first: String!
+
+  """2등"""
+  second: String!
+
+  """3등"""
+  third: String!
+
+  """4등"""
+  fourth: String!
+
+  """5등"""
+  fifth: String!
+}
+
+type LotteryTicket {
+  _id: String!
+
+  """유저 ID"""
+  userId: String!
+
+  """지갑 주소"""
+  walletAddress: String!
+
+  """Ticket ID"""
+  ticketId: Float!
+
+  """Round ID"""
+  roundId: Float!
+
+  """구매한 로또 번호들"""
+  number: [String!]!
+
+  """등수들"""
+  rank: [Rank!]!
+
+  """지급 확인"""
+  paid: Boolean!
+}
+
 type Query {
   rounds: [Round!]!
   round(lottery_id: Float!): Round!
+  lotteryTickets: [LotteryTicket!]!
+  lotteryTicket(walletAddress: String!): LotteryTicket!
+}
+
+type Mutation {
+  createLotteryTicket(createTicket: CreateLotteryTicketInput!): LotteryTicket!
+  updateLotteryTicket(updateTicket: updateLotteryTicketInput!): LotteryTicket!
+}
+
+input CreateLotteryTicketInput {
+  """유저 ID"""
+  userId: String!
+
+  """지갑 주소"""
+  walletAddress: String!
+
+  """Ticket ID"""
+  ticketId: Float!
+
+  """Round ID"""
+  roundId: Float!
+
+  """구매한 로또 번호들"""
+  number: [String!]!
+
+  """등수들"""
+  rank: [CreateRank!]!
+
+  """지급 확인"""
+  paid: Boolean!
+}
+
+input CreateRank {
+  """1등"""
+  first: String!
+
+  """2등"""
+  second: String!
+
+  """3등"""
+  third: String!
+
+  """4등"""
+  fourth: String!
+
+  """5등"""
+  fifth: String!
+}
+
+input updateLotteryTicketInput {
+  """유저 ID"""
+  userId: String
+  walletAddress: String!
+
+  """Ticket ID"""
+  ticketId: Float
+
+  """Round ID"""
+  roundId: Float
+
+  """구매한 로또 번호들"""
+  number: [String!]
+
+  """등수들"""
+  rank: [CreateRank!]
+
+  """지급 확인"""
+  paid: Boolean
 }
