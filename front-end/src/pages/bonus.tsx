@@ -6,7 +6,7 @@ import Banner from 'components/Layout/Banner'
 import Timer2 from 'components/CountdownTimer/Timer2'
 import LotteryList from 'components/LotteryArea/LotteryList'
 import SendSeed from 'components/SendSeed'
-import queryContract from 'components/queryContract'
+import QueryContract from 'components/QueryContract'
 import queryGraphQL, { queryLotteryRounds } from 'utils/queryGraphQL'
 import { lotteryRoundsState } from 'state/lottery'
 import { useSetRecoilState } from 'recoil'
@@ -64,7 +64,7 @@ const lottery = ({ data, a }: any) => {
         className='text-center'
       ></textarea>
       <SendSeed setSuccess={setSuccess} setError={setError} seed={seed} />
-      <queryContract />
+      <QueryContract />
       {/* {loading} */}
       {/* {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
       {/* {gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}

@@ -14,6 +14,6 @@ export const navigation: TNavigation = {
     { name: 'Bonus', href: '/bonus' },
     { name: 'Swap', href: '/swap' },
     { name: 'Prizes', href: '/prizes' },
-    { name: 'Account', href: '/account' },
+    { name: 'MyPage', href: '/mypage' },
   ],
 }

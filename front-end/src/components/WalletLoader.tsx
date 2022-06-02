@@ -3,10 +3,10 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import Loader from 'components/Loader'
 import { useState } from 'react'
 import queryGraphQL from 'utils/queryGraphQL'
-import { lotteryTicketState } from 'state/lottery'
 import { useRecoilState } from 'recoil'
-import { userState } from 'state/user'
+import { userState, userTicketsState } from 'state/user'
 import generateUUID from 'utils/generateUUID'
+import { userTicketsType, userType } from 'state/types'
 
 const WalletLoader = ({
   children,
@@ -17,8 +17,9 @@ const WalletLoader = ({
 }) => {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(false)
-  const [user, setUser] = useRecoilState(userState)
-  const [lotteryTickets, setLotteryTickets] = useRecoilState(lotteryTicketState)
+  const [user, setUser] = useRecoilState<userType>(userState)
+  const [userTickets, setUserTickets] =
+    useRecoilState<userTicketsType>(userTicketsState)
 
   const {
     walletAddress,
@@ -32,8 +33,6 @@ const WalletLoader = ({
   useEffect(() => {
     if (walletAddress) {
       setLoading(true)
-      setUser({ userId: generateUUID(), walletAddress: walletAddress })
-      console.log(user)
 
       const queryUserTickets = `
         query{
@@ -56,10 +55,11 @@ const WalletLoader = ({
     `
       const query = queryUserTickets
       queryGraphQL(query).then((data) => {
-        setLotteryTickets(data.data.userTickets)
+        setUser({ userId: generateUUID(), walletAddress: walletAddress })
+        setUserTickets({ ...user, tickets: [...data.data.userTickets] })
         setLoading(false)
       })
-      // console.log(lotteryTickets)
+      // console.log(userTickets)
     }
   }, [walletAddress])
 

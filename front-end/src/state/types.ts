@@ -13,7 +13,7 @@ export interface lotteryTicketType {
   roundId: number
   number: string[]
   // pairNumber: number[]
-  rank: []
+  rank: number[]
   paid: boolean
 }
 
@@ -38,12 +38,11 @@ export interface lotteryRoundType {
     fifth: string
   }
   totalPrizes: number
-  jackpotCount: []
-  winners: []
+  winnerCountsByRank: string[]
+  winners: number[]
 }
 
 export interface lotteryRoundContractType extends lotteryRoundType {
-  winnerCountsByRank: string[]
   contractConfig: {}
 }
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { lotteryGameType } from 'state/types'
+import { lotteryGameType, lotteryRoundType } from 'state/types'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
 import Banner from 'components/Layout/Banner'
@@ -12,26 +12,53 @@ import { lotteryRoundsState } from 'state/lottery'
 import { useRecoilState } from 'recoil'
 import { useSigningClient } from 'contexts/cosmwasm'
 
-const lottery = ({ data, a }: any) => {
+const lottery = ({ data }: any) => {
   const { walletAddress } = useSigningClient()
   const [open, setOpen] = useState<boolean>(false)
   const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
-  const [success, setSuccess] = useState('')
-  const [error, setError] = useState('')
-  console.log(data.rounds)
-  const [lotteryRounds, setLotteryRounds] = useRecoilState(lotteryRoundsState)
+  const [success, setSuccess] = useState<string>('')
+  const [error, setError] = useState<string>('')
+  // console.log(data.rounds)
+  const [lotteryRounds, setLotteryRounds] =
+    useRecoilState<lotteryRoundType[]>(lotteryRoundsState)
+
   useEffect(() => {
-    // setLotteryRounds((lotteryRounds) => data.rounds.map((item) => {}))
+    data.rounds.map((item: any) => {
+      const round: lotteryRoundType = {
+        roundId: item.lottery_id,
+        ticketCounts: item.count_ticket,
+        userCounts: item.count_user,
+        winningNumber: item.get_jackpot[0].round,
+        prizesByRank: {
+          ...item.jackpot_balance[0],
+        },
+        totalPrizes: item.balance,
+        winnerCountsByRank: [...item.jackpot_count],
+        winners: [...item.winner],
+      }
+      setLotteryRounds((prev) => {
+        const temp = [...prev]
+        temp.push(round)
+        temp.sort((a, b) => {
+          return a.roundId - b.roundId
+        })
+        temp.filter(
+          (item, index, callback) =>
+            index === callback.findIndex((t) => t.roundId === item.roundId)
+        )
+        return temp
+      })
+    })
   }, [data])
 
-  const handleClose = () => {
-    setOpen(false)
-  }
+  const totalPrizes = lotteryRounds[lotteryRounds.length - 1]
+    ? lotteryRounds[lotteryRounds.length - 1].totalPrizes
+    : null
 
   return (
     <div className='flex flex-col'>
       <div className='flex-col justify-center items-center rounded-md pt-4 w-full'>
-        <Banner />
+        <Banner totalPrizes={totalPrizes} />
         <Timer />
       </div>
       <h1 className='text-3xl md:text-5xl bg-clip-text text-transparent font-semibold leading-tight bg-gradient-to-r from-teal-400 to-blue-500 my-2 mb-6'>
@@ -39,14 +66,9 @@ const lottery = ({ data, a }: any) => {
         Just pick it!
       </h1>
       <LotterySelect walletAddress={walletAddress} />
-      {/* <Toast success={success} error={error} /> */}
       <LotteryList />
       <SendTorii setSuccess={setSuccess} setError={setError} />
       <QueryContract />
-      {/* {loading} */}
-      {/* {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
-      {/* {gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
-      {/* <button onClick={handleClose}>close icon</button> */}
     </div>
   )
 }
@@ -54,8 +76,7 @@ const lottery = ({ data, a }: any) => {
 export default lottery
 
 export async function getStaticProps() {
-  const query = queryLotteryRounds
-  const { data } = await queryGraphQL(query)
+  const { data } = await queryGraphQL(queryLotteryRounds)
 
   return {
     props: {

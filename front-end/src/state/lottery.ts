@@ -36,7 +36,7 @@ export const lotteryRoundState = atom<lotteryRoundType>({
       fifth: '',
     },
     totalPrizes: 0,
-    jackpotCount: [],
+    winnerCountsByRank: [],
     winners: [],
   },
 })

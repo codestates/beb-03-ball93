@@ -54,25 +54,7 @@ export const mutationUser = `
     }
   }
 `
-// export const queryUserTickets = `
-//   query{
-//     lotteryTicket(walletAddress:${walletAddress}){
-//       userId
-//       walletAddress
-//       ticketId
-//       roundId
-//       number
-//       rank {
-//         first
-//         second
-//         third
-//         fourth
-//         fifth
-//       }
-//       paid
-//     }
-//   }
-// `
+
 export const createUserTicket = `
   mutation{
     createLotteryTicket(createTicket:{

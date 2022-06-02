@@ -5,11 +5,13 @@ import { useRecoilValue } from 'recoil'
 import { contractBalanceState } from 'state/cosmWasm'
 import { lotteryRoundsStateFromContract } from 'state/lottery'
 
-interface LotterySelectProps {
-  walletAddress: string
+interface BannerProps {
+  totalPrizes: number | null
 }
 
-const Banner = () => {
+const Banner = ({ totalPrizes }: BannerProps) => {
+  const displayPrizes = totalPrizes?.toLocaleString('en-US')
+
   return (
     <div className='flex flex-col justify-center items-center space-y-1 pt-4'>
       <div className='flex flex-row space-x-2 pl-20'>
@@ -27,7 +29,7 @@ const Banner = () => {
           className='bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 
   via-purple-500 animate-gradient-xy'
         >
-          {/* {totalPrizes === 0 ? 'TORII' : `${[totalPrizes]} TORII`} */}
+          {displayPrizes} TORII
         </span>
       </div>
     </div>

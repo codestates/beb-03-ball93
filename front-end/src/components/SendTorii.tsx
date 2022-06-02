@@ -26,6 +26,9 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
   const PUBLIC_RECIPIENT_ADDRESS =
     process.env.NEXT_PUBLIC_RECIPIENT_ADDRESS ||
     'archway158q2d9kj7dx0waap4fjk0u27hda3tztapyc7fp'
+  const CW20_CONTRACT_ADDRESS =
+    process.env.NEXT_PUBLIC_CW20_CONTRACT_ADDRESS ||
+    'archway13whq5vk3fe8tp8anf903eezartyx70jf7pgqw7e043sleukl3lzq02r6ng'
   const { walletAddress, signingClient } = useSigningClient()
   const [loadedAt, setLoadedAt] = useState(new Date())
   const [loading, setLoading] = useState(false)
@@ -37,12 +40,12 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
     setSuccess('')
     setError('')
     setLoading(true)
-    const entrypoint = {
-      register: {
-        address: walletAddress,
-        combination: lotteryTicket.number,
-      },
-    }
+    // const entrypoint = {
+    //   register: {
+    //     address: walletAddress,
+    //     combination: lotteryTicket.number,
+    //   },
+    // }
     // claim true => 당첨금 지급
     // const entrypoint = {
     //   claim: {
@@ -50,28 +53,48 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
     //     lottery_id: //,
     //   },
     // }
+    let msg = {
+      register: {
+        address: walletAddress,
+        combination: lotteryTicket.number,
+      },
+    }
+
     const sendAmount: string = (
-      entrypoint.register.combination.length * 10000
+      msg.register.combination.length * 10000
     ).toString()
+
+    const entrypoint: any = {
+      send: {
+        contract:
+          'archway1p5lzxqvzfxglclnlgg07tcsjc3t9g465m3j4meywg5t7dfltyx6sgnskhp',
+        amount: sendAmount,
+        msg: btoa(JSON.stringify(msg)),
+      },
+    }
+    // const sendAmount: string = (
+    //   entrypoint.register.combination.length * 10000
+    // ).toString()
     const gasPrice = GasPrice.fromString('0.002utorii')
     const txFee = calculateFee(1300000, gasPrice)
 
-    const amount: Coin[] = [
-      {
-        denom: PUBLIC_STAKING_DENOM,
-        amount: sendAmount,
-      },
-    ]
+    // const amount: Coin[] = [
+    //   {
+    //     denom: PUBLIC_STAKING_DENOM,
+    //     amount: sendAmount,
+    //   },
+    // ]
 
     await signingClient
-      ?.execute(
-        walletAddress,
-        PUBLIC_CONTRACT_ADDRESS,
-        entrypoint,
-        txFee,
-        '',
-        amount
-      )
+      ?.execute(walletAddress, CW20_CONTRACT_ADDRESS, entrypoint, txFee)
+      // ?.execute(
+      //   walletAddress,
+      //   PUBLIC_CONTRACT_ADDRESS,
+      //   entrypoint,
+      //   txFee,
+      //   '',
+      //   amount
+      // )
       .then((res) => {
         console.log('res', res)
 

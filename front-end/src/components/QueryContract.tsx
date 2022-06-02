@@ -24,6 +24,9 @@ const QueryContract = () => {
   const PUBLIC_CONTRACT_ADDRESS =
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ||
     'archway1ngcd86tzyxws4yacw3nahrgmn07c6rzrc2jmdehgy65np9wcv35shffh5f'
+  const CW20_CONTRACT_ADDRESS =
+    process.env.NEXT_PUBLIC_CW20_CONTRACT_ADDRESS ||
+    'archway13whq5vk3fe8tp8anf903eezartyx70jf7pgqw7e043sleukl3lzq02r6ng'
 
   const [loadedAt, setLoadedAt] = useState(new Date())
 
@@ -263,6 +266,24 @@ const QueryContract = () => {
           console.log('Error getContractConfig(): ', error)
         })
     }
+    const getCW20Balance = () => {
+      const queryMsg: Record<string, unknown> = {
+        balance: {
+          address: walletAddress,
+        },
+      }
+      signingClient
+        ?.queryContractSmart(CW20_CONTRACT_ADDRESS, queryMsg)
+        .then((response: any) => {
+          console.log('--------- Get CW20 Balance ---------')
+          console.log(response)
+        })
+        .catch((error) => {
+          setError(`Error! ${error.message}`)
+          console.log(error)
+        })
+    }
+
     // getWalletBalance()
     // getContractBalance()
     // getUserLotteryNumbers()
@@ -273,7 +294,8 @@ const QueryContract = () => {
     // getTicketCounts()
     // getUserCounts()
     // getWinnerCountsByRank()
-    getContractConfig()
+    // getContractConfig()
+    getCW20Balance()
   }, [walletAddress, signingClient, loadedAt])
 
   return <div></div>

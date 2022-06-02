@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import { userTicketsType, userType } from 'state/types'
+import { userTicketsType, userType, lotteryTicketType } from 'state/types'
 
 export const userState = atom<userType>({
   key: `userTicketsState/${Math.random().toString(36).substring(2, 11)}`,

@@ -1,42 +1,59 @@
 import { useRecoilValue } from 'recoil'
 import { lotteryRoundsState } from 'state/lottery'
 
-const WinningsTable = ({ type }: { type: string }) => {
-  const lotteryRound = useRecoilValue(lotteryRoundsState)
-  const {
-    roundId,
-    ticketCounts,
-    userCounts,
-    winningNumber,
-    prizesByRank,
-    jackpotCount,
-    winners,
-  } = lotteryRound[0]
+interface WinningsTableProps {
+  type: string
+  ticketCounts: string | null
+  winnerCountsByRank: string[] | null
+  prizesByRank: {
+    first: string
+    second: string
+    third: string
+    fourth: string
+    fifth: string
+  } | null
+}
 
+const WinningsTable = ({
+  type,
+  ticketCounts,
+  prizesByRank,
+  winnerCountsByRank,
+}: WinningsTableProps) => {
   const winningTableData = [
     {
       prizeTier: '1st (6 digits match)',
-      winnings: '1 in 95,344,20',
+      winnings: `${
+        winnerCountsByRank && winnerCountsByRank[0]
+      } in ${ticketCounts}`,
       averagePrize: `${prizesByRank?.first} TORRI`,
     },
     {
       prizeTier: '2nd (5 digits match)',
-      winnings: '1 in 5,959,013',
+      winnings: `${
+        winnerCountsByRank && winnerCountsByRank[1]
+      } in ${ticketCounts}`,
       averagePrize: `${prizesByRank?.second} TORRI`,
     },
     {
       prizeTier: '3rd (4 digits match)',
-      winnings: '1 in 3,405,150',
+      winnings: `${
+        winnerCountsByRank && winnerCountsByRank[2]
+      } in ${ticketCounts}`,
       averagePrize: `${prizesByRank?.third} TORRI`,
     },
     {
       prizeTier: '4th (3 digits match)',
-      winnings: '1 in 423,752',
+      winnings: `${
+        winnerCountsByRank && winnerCountsByRank[3]
+      } in ${ticketCounts}`,
       averagePrize: `${prizesByRank?.fourth} TORRI`,
     },
     {
       prizeTier: '5th (2 digits match)',
-      winnings: '1 in 15,134',
+      winnings: `${
+        winnerCountsByRank && winnerCountsByRank[4]
+      } in ${ticketCounts}`,
       averagePrize: `${prizesByRank?.fifth} TORRI`,
     },
   ]
