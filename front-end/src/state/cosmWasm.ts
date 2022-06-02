@@ -1,8 +1,12 @@
 import { atom } from 'recoil'
+import { balanceType } from 'state/types'
 
-export const walletBalanceState = atom<string>({
-  key: `walletBalanceState/${Math.random().toString(36).substring(2, 11)}`,
-  default: 'TORII',
+export const balanceState = atom<balanceType>({
+  key: `balanceState/${Math.random().toString(36).substring(2, 11)}`,
+  default: {
+    toriiBalance: null,
+    cw20Balance: null,
+  },
 })
 
 export const contractBalanceState = atom<string>({

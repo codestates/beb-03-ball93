@@ -64,3 +64,8 @@ export interface userType {
 export interface userTicketsType extends userType {
   tickets: lotteryTicketType[]
 }
+
+export interface balanceType {
+  toriiBalance: number | null
+  cw20Balance: number | null
+}

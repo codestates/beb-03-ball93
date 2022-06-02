@@ -12,7 +12,7 @@ import {
 import {
   contractBalanceState,
   cosmWasmErrorState,
-  walletBalanceState,
+  balanceState,
 } from 'state/cosmWasm'
 import { userTicketsState } from 'state/user'
 import { useEffect, useState } from 'react'
@@ -30,9 +30,9 @@ const QueryContract = () => {
 
   const [loadedAt, setLoadedAt] = useState(new Date())
 
-  const { roundId } = useRecoilValue(lotteryRoundsState)
+  // const { roundId } = useRecoilValue(lotteryRoundsState)
   // const roundId = 2
-  const [balance, setBalance] = useRecoilState(walletBalanceState)
+  const [balance, setBalance] = useRecoilState(balanceState)
   const [contractBalance, setContractBalance] =
     useRecoilState(contractBalanceState)
   const setLotteryRoundContract = useSetRecoilState(
@@ -283,7 +283,6 @@ const QueryContract = () => {
           console.log(error)
         })
     }
-
     // getWalletBalance()
     // getContractBalance()
     // getUserLotteryNumbers()
