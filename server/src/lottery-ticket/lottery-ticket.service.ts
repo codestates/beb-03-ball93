@@ -23,6 +23,12 @@ export class LotteryTicketService {
     return this.lotteryTicketModel.find().exec();
   }
 
+  findTicketAll(walletAddress: string) {
+    return this.lotteryTicketModel
+      .find({ walletAddress: walletAddress })
+      .exec();
+  }
+
   async findOne(walletAddress: string) {
     const lottery_Ticket = await this.lotteryTicketModel
       .findOne({ walletAddress: walletAddress })
