@@ -6,17 +6,18 @@ import Banner from 'components/Layout/Banner'
 import Timer from 'components/CountdownTimer/Timer'
 import LotteryTicketList from 'components/LotteryArea/LotteryTicketList'
 import SendTorii from 'components/SendTorii'
-import FetchContract from 'components/FetchContract'
-import fetchGraphQL from 'utils/fetchGraphQL'
+import queryContract from 'components/queryContract'
+import queryGraphQL, { queryLotteryRounds } from 'utils/queryGraphQL'
 import { lotteryRoundState } from 'state/lottery'
 import { useSetRecoilState } from 'recoil'
+import { useSigningClient } from 'contexts/cosmwasm'
 
-const lottery = ({ data }: any) => {
+const lottery = ({ data, a }: any) => {
   const [open, setOpen] = useState<boolean>(false)
   const [gameResult, setGameResult] = useState<lotteryGameType | null>(null)
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
-  console.log(data)
+  console.log(data, a)
   const setLotteryRound = useSetRecoilState(lotteryRoundState)
   // useEffect(() => {
   //   setLotteryRound((lotteryRound) =>
@@ -54,7 +55,7 @@ const lottery = ({ data }: any) => {
       {/* <Toast success={success} error={error} /> */}
       <LotteryTicketList />
       <SendTorii setSuccess={setSuccess} setError={setError} />
-      <FetchContract />
+      <queryContract />
       {/* {loading} */}
       {/* {!loading && gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
       {/* {gameResult && <LotteryDetails lotteryGame={gameResult!} />} */}
@@ -66,35 +67,8 @@ const lottery = ({ data }: any) => {
 export default lottery
 
 export async function getStaticProps() {
-  const query = `
-  query{
-    lottery_id{
-         lottery_id
-         winner{
-           addr
-           rank
-           ticket
-           claim
-         }
-         get_jackpot{
-           worker
-           round
-         }
-         count_ticket
-         count_user
-         jackpot_balance{
-           first
-           second
-           third
-           fourth
-           fifth
-       }
-         jackpot_count
-         balance
-       }
-    }
-  `
-  const { data } = await fetchGraphQL(query)
+  const query = queryLotteryRounds
+  const { data } = await queryGraphQL(query)
 
   return {
     props: {

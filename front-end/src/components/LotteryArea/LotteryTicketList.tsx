@@ -1,6 +1,6 @@
 import React from 'react'
 import LotteryTicketItem from 'components/LotteryArea/LotteryTicketItem'
-import { lotteryTicketsState } from 'recoils/lottery'
+import { lotteryTicketsState } from 'state/lottery'
 import { useRecoilState } from 'recoil'
 
 const LotteryTicketList = () => {

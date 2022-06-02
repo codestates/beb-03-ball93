@@ -1,6 +1,9 @@
 import { ReactNode, useEffect } from 'react'
 import { useSigningClient } from 'contexts/cosmwasm'
 import Loader from 'components/Loader'
+import { useState } from 'react'
+import queryGraphQL from 'utils/queryGraphQL'
+
 const WalletLoader = ({
   children,
   loading = false,
@@ -8,6 +11,9 @@ const WalletLoader = ({
   children: ReactNode
   loading?: boolean
 }) => {
+  const [data, setData] = useState(null)
+  const [isLoading, setLoading] = useState(false)
+
   const {
     walletAddress,
     signingClient,
@@ -16,6 +22,45 @@ const WalletLoader = ({
     connectWallet,
     disconnect,
   } = useSigningClient()
+
+  useEffect(() => {
+    if (walletAddress) {
+      setLoading(true)
+      const queryUserTickets = `
+    query{
+      lotteryTicket(walletAddress:"${walletAddress}"){
+        userId
+        walletAddress
+        ticketId
+        roundId
+        number
+        rank {
+          first
+          second
+          third
+          fourth
+          fifth
+        }
+        paid
+      }
+    }
+  `
+      const query = queryUserTickets
+      queryGraphQL(query).then((data) => {
+        setData(data.data)
+        setLoading(false)
+      })
+      console.log(data)
+    }
+  }, [walletAddress, signingClient])
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center'>
+        <Loader />
+      </div>
+    )
+  }
 
   if (loading || clientLoading) {
     return (

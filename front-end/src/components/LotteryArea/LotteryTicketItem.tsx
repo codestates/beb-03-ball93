@@ -1,9 +1,10 @@
-import { lotteryType } from 'state/types'
+// import { lotteryTicketType } from 'state/types'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import LotteryTicket from 'components/LotteryTicket/LotteryTicket'
 
 interface LotteryTicketItemProps {
-  ticket: lotteryType
+  ticket: any
+  // ticket: lotteryTicketType
   removeTicketHandler: (id: string) => void
 }
 

@@ -8,16 +8,16 @@ import {
   lotteryRoundState,
   lotteryRoundStateFromContract,
   lotteryTicketsState,
-} from 'recoils/lottery'
+} from 'state/lottery'
 import {
   contractBalanceState,
   cosmWasmErrorState,
   walletBalanceState,
-} from 'recoils/cosmWasm'
-import { userTicketsState } from 'recoils/user'
+} from 'state/cosmWasm'
+import { userTicketsState } from 'state/user'
 import { useEffect, useState } from 'react'
 
-const FetchContract = () => {
+const queryContract = () => {
   const { walletAddress, signingClient } = useSigningClient()
 
   const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'utorii'
@@ -278,4 +278,4 @@ const FetchContract = () => {
 
   return <div></div>
 }
-export default FetchContract
+export default queryContract

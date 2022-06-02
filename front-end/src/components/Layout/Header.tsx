@@ -2,9 +2,55 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import Link from 'next/link'
 import ThemeToggle from 'components/ThemeToggle'
 import Tab from 'components/Layout/Tab'
+import { useEffect, useState } from 'react'
+import queryGraphQL from 'utils/queryGraphQL'
+import Loader from 'components/Loader'
 
 const Header = () => {
   const { walletAddress, connectWallet, disconnect } = useSigningClient()
+  const PUBLIC_SITE_LOGO_URL = process.env.NEXT_PUBLIC_SITE_LOGO_URL || ''
+  const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
+  const [data, setData] = useState(null)
+  const [isLoading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (walletAddress) {
+      setLoading(true)
+      const queryUserTickets = `
+    query{
+      lotteryTicket(walletAddress:"${walletAddress}"){
+        userId
+        walletAddress
+        ticketId
+        roundId
+        number
+        rank {
+          first
+          second
+          third
+          fourth
+          fifth
+        }
+        paid
+      }
+    }
+  `
+      const query = queryUserTickets
+      queryGraphQL(query).then((data) => {
+        setData(data.data)
+        setLoading(false)
+      })
+      console.log(data)
+    }
+  }, [walletAddress])
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center'>
+        <Loader />
+      </div>
+    )
+  }
   const handleConnect = () => {
     if (walletAddress.length === 0) {
       connectWallet()
@@ -12,9 +58,6 @@ const Header = () => {
       disconnect()
     }
   }
-
-  const PUBLIC_SITE_LOGO_URL = process.env.NEXT_PUBLIC_SITE_LOGO_URL || ''
-  const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 
   return (
     <div className='fixed top-0 z-50 flex justify-center items-center w-screen border-inherit rounded-b-3xl bg-white shadow-xl shadow-gray-200/30 py-4'>

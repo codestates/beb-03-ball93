@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil'
-import { lotteryRoundState } from 'recoils/lottery'
+import { lotteryRoundState } from 'state/lottery'
 
 const WinningsTable = ({ type }: { type: string }) => {
   const lotteryRound = useRecoilValue(lotteryRoundState)

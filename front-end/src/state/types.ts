@@ -17,8 +17,8 @@ export interface lotteryTicketType {
 }
 
 export interface lotteryGameType {
-  playLottery?: lotteryType[]
-  resultLottery?: lotteryType
+  playLottery?: lotteryTicketType[]
+  resultLottery?: lotteryTicketType
   win?: number
   lotteryCost?: number
   createdAt?: Date

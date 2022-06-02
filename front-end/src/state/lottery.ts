@@ -1,12 +1,12 @@
 import { atom } from 'recoil'
 import {
-  lotteryType,
+  lotteryTicketType,
   lotteryRoundType,
   lotteryRoundContractType,
   lotteryDrawType,
 } from 'state/types'
 
-export const lotteryTicketsState = atom<lotteryType[]>({
+export const lotteryTicketsState = atom<lotteryTicketType[]>({
   key: `lotteryTicketsState/${Math.random().toString(36).substring(2, 11)}`,
   default: [],
 })

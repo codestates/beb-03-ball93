@@ -5,8 +5,8 @@ import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { convertFromMicroDenom } from 'utils/conversion'
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
-import { lotteryTicketsState } from 'recoils/lottery'
-import { userTicketsState } from 'recoils/user'
+import { lotteryTicketsState } from 'state/lottery'
+import { userTicketsState } from 'state/user'
 
 interface SendToriiProps {
   setSuccess: React.Dispatch<React.SetStateAction<string>>
@@ -45,6 +45,13 @@ const SendTorii = ({ setSuccess, setError }: SendToriiProps) => {
         combination: lotteryTicketsToSend,
       },
     }
+    // claim true => 당첨금 지급
+    // const entrypoint = {
+    //   claim: {
+    //     address: walletAddress,
+    //     lottery_id: //,
+    //   },
+    // }
     const sendAmount: string = (
       entrypoint.register.combination.length * 10000
     ).toString()
