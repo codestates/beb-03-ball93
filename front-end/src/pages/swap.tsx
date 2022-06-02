@@ -10,6 +10,7 @@ import { userTicketsState } from 'state/user'
 import Image from 'next/image'
 import { RiSettings3Fill } from 'react-icons/ri'
 import { AiOutlineDown } from 'react-icons/ai'
+import QueryContract from 'components/QueryContract'
 
 const style = {
   wrapper: `flex flex-col items-center justify-center mt-14`,
@@ -79,7 +80,7 @@ const swap = () => {
     // setError('')
     setLoading(true)
     const entrypoint = {
-      // doto
+      //  doto
       swap_for_doto: {
         amount: '100000',
       },
@@ -165,6 +166,7 @@ const swap = () => {
           <div onClick={handleSend} className={style.confirmButton}>
             Confirm
           </div>
+          <QueryContract />
         </div>
       </WalletLoader>
     </div>
