@@ -1,5 +1,5 @@
 const OpenNumber = ({ winningNumber }) => {
-  // const lotteryRoundContract = useRecoilValue(lotteryRoundStateFromContract)
+  // const lotteryRoundContract = useRecoilValue(lotteryRoundsStateFromContract)
 
   return (
     <>

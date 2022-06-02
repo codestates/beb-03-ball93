@@ -1,12 +1,15 @@
 // import LotteryHistoryView from 'views/LotteryHistoryView'
 
 import { useRecoilValue } from 'recoil'
-import { lotteryRoundState, lotteryRoundStateFromContract } from 'state/lottery'
+import {
+  lotteryRoundsState,
+  lotteryRoundsStateFromContract,
+} from 'state/lottery'
 import { userTicketsState } from 'state/user'
 
 const Account = () => {
-  const lotteryRound = useRecoilValue(lotteryRoundState)
-  const lotteryRoundContract = useRecoilValue(lotteryRoundStateFromContract)
+  const lotteryRound = useRecoilValue(lotteryRoundsState)
+  const lotteryRoundContract = useRecoilValue(lotteryRoundsStateFromContract)
   const userTickets = useRecoilValue(userTicketsState)
   console.log(lotteryRound)
   console.log(lotteryRoundContract)

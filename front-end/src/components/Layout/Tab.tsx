@@ -5,8 +5,8 @@ import { navigation } from 'components/Layout/navigation'
 const Tab = () => {
   const { pathname } = useRouter()
   return (
-    <div className='lg:flex lg:absolute lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 lg:dark:text-slate-200 lg:items-center'>
-      <ul className='btn btn-primary w-screen flex items-center justify-center lg:flex lg:w-80 lg:justify-between content-center lg:rounded-2xl px-3 py-2'>
+    <div className='lg:flex lg:max-w-md lg:absolute lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 lg:dark:text-slate-200 lg:items-center'>
+      <ul className='btn btn-primary w-screen flex items-center justify-center lg:flex mx-auto content-center lg:rounded-2xl px-3 py-2'>
         {navigation.pages.map((page, idx) => (
           <li key={idx}>
             <Link href={page.href}>

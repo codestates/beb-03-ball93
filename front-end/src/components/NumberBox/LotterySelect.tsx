@@ -10,10 +10,10 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import { userState } from 'state/user'
 
 interface LotterySelectProps {
-  walletAddress: string | null
+  walletAddress: string
 }
 
-const LotterySelect = () => {
+const LotterySelect = ({ walletAddress }: LotterySelectProps) => {
   const [lotteryNumber, setLotteryNumber] = useState<number[]>([
     -1, -1, -1, -1, -1, -1,
   ])
@@ -28,7 +28,7 @@ const LotterySelect = () => {
   }, [user])
 
   const addLotteryTicket = (lotteryNumber: string) => {
-    const newNumber = [...lotteryTicket.number, lotteryNumber]
+    const newNumber = [...(lotteryTicket.number || []), lotteryNumber]
     setlotteryTicket((prev) => {
       return { ...prev, number: newNumber }
     })
@@ -72,8 +72,6 @@ const LotterySelect = () => {
     e.preventDefault()
     const randomNumber = generateLottery()
     addLotteryTicket(randomNumber.number.join(''))
-
-    // setCurrentLotteryTickets([...currentLotteryTickets, randomTicket])
   }
 
   return (

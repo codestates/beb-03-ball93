@@ -5,8 +5,8 @@ import {
   convertFromMicroDenom,
 } from 'utils/conversion'
 import {
-  lotteryRoundState,
-  lotteryRoundStateFromContract,
+  lotteryRoundsState,
+  lotteryRoundsStateFromContract,
   lotteryTicketState,
 } from 'state/lottery'
 import {
@@ -17,7 +17,7 @@ import {
 import { userTicketsState } from 'state/user'
 import { useEffect, useState } from 'react'
 
-const queryContract = () => {
+const QueryContract = () => {
   const { walletAddress, signingClient } = useSigningClient()
 
   const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'utorii'
@@ -27,13 +27,13 @@ const queryContract = () => {
 
   const [loadedAt, setLoadedAt] = useState(new Date())
 
-  const { roundId } = useRecoilValue(lotteryRoundState)
+  const { roundId } = useRecoilValue(lotteryRoundsState)
   // const roundId = 2
   const [balance, setBalance] = useRecoilState(walletBalanceState)
   const [contractBalance, setContractBalance] =
     useRecoilState(contractBalanceState)
   const setLotteryRoundContract = useSetRecoilState(
-    lotteryRoundStateFromContract
+    lotteryRoundsStateFromContract
   )
   const setUserTickets = useSetRecoilState(userTicketsState)
   const setError = useSetRecoilState(cosmWasmErrorState)
@@ -263,19 +263,19 @@ const queryContract = () => {
           console.log('Error getContractConfig(): ', error)
         })
     }
-    getWalletBalance()
-    getContractBalance()
-    getUserLotteryNumbers()
-    getWinningNumbers()
-    getRoundWinners()
-    getTotalPrizes()
-    getPrizesByRank()
-    getTicketCounts()
-    getUserCounts()
-    getWinnerCountsByRank()
+    // getWalletBalance()
+    // getContractBalance()
+    // getUserLotteryNumbers()
+    // getWinningNumbers()
+    // getRoundWinners()
+    // getTotalPrizes()
+    // getPrizesByRank()
+    // getTicketCounts()
+    // getUserCounts()
+    // getWinnerCountsByRank()
     getContractConfig()
   }, [walletAddress, signingClient, loadedAt])
 
   return <div></div>
 }
-export default queryContract
+export default QueryContract

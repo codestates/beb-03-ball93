@@ -3,12 +3,13 @@ import { HiExternalLink } from 'react-icons/hi'
 import { BsTrophy } from 'react-icons/bs'
 import { useRecoilValue } from 'recoil'
 import { contractBalanceState } from 'state/cosmWasm'
-import { lotteryRoundStateFromContract } from 'state/lottery'
+import { lotteryRoundsStateFromContract } from 'state/lottery'
+
+interface LotterySelectProps {
+  walletAddress: string
+}
 
 const Banner = () => {
-  const lotteryRound = useRecoilValue(lotteryRoundStateFromContract)
-  const { totalPrizes } = lotteryRound[0]
-
   return (
     <div className='flex flex-col justify-center items-center space-y-1 pt-4'>
       <div className='flex flex-row space-x-2 pl-20'>
@@ -26,7 +27,7 @@ const Banner = () => {
           className='bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 
   via-purple-500 animate-gradient-xy'
         >
-          {totalPrizes === 0 ? 'TORII' : `${[totalPrizes]} TORII`}
+          {/* {totalPrizes === 0 ? 'TORII' : `${[totalPrizes]} TORII`} */}
         </span>
       </div>
     </div>

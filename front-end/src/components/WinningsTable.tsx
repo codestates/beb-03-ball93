@@ -1,8 +1,8 @@
 import { useRecoilValue } from 'recoil'
-import { lotteryRoundState } from 'state/lottery'
+import { lotteryRoundsState } from 'state/lottery'
 
 const WinningsTable = ({ type }: { type: string }) => {
-  const lotteryRound = useRecoilValue(lotteryRoundState)
+  const lotteryRound = useRecoilValue(lotteryRoundsState)
   const {
     roundId,
     ticketCounts,

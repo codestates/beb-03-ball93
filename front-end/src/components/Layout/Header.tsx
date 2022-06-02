@@ -47,7 +47,6 @@ const Header = () => {
         setLotteryTickets(data.data.userTickets)
         setLoading(false)
       })
-      console.log(lotteryTickets)
     }
   }, [walletAddress])
 
@@ -59,7 +58,7 @@ const Header = () => {
     )
   }
   const handleConnect = () => {
-    if (walletAddress.length === 0) {
+    if (walletAddress?.length === 0) {
       connectWallet()
     } else {
       disconnect()

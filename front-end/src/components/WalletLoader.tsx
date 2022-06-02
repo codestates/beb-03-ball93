@@ -63,13 +63,13 @@ const WalletLoader = ({
     }
   }, [walletAddress])
 
-  if (isLoading) {
-    return (
-      <div className='flex justify-center'>
-        <Loader />
-      </div>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className='flex justify-center'>
+  //       <Loader />
+  //     </div>
+  //   )
+  // }
 
   if (loading || clientLoading) {
     return (
