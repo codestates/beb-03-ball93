@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { lotteryGameType } from 'types/lotteryTypes'
+import { lotteryGameType } from 'state/types'
 import LotteryDetails from 'components/LotteryHistory/LotteryDetails'
 import LotterySelect from 'components/NumberBox/LotterySelect'
 import Banner from 'components/Layout/Banner'
@@ -66,34 +66,6 @@ const lottery = ({ data }: any) => {
 export default lottery
 
 export async function getStaticProps() {
-  // const query = `
-  // query{
-  //   round(lottery_id: 3){
-  //    lottery_id
-  //    winner{
-  //      addr
-  //      rank
-  //      ticket
-  //      claim
-  //    }
-  //    get_jackpot{
-  //      worker
-  //      round
-  //    }
-  //    count_ticket
-  //    count_user
-  //    jackpot_balance{
-  //      first
-  //      second
-  //      third
-  //      fourth
-  //      fifth
-  //  }
-  //    jackpot_count
-  //    balance
-  //  }
-  //  }
-  //  `
   const query = `
   query{
     lottery_id{
@@ -120,9 +92,7 @@ export async function getStaticProps() {
          jackpot_count
          balance
        }
-       
     }
-  }
   `
   const { data } = await fetchGraphQL(query)
 

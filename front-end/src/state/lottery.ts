@@ -4,7 +4,7 @@ import {
   lotteryRoundType,
   lotteryRoundContractType,
   lotteryDrawType,
-} from 'types/lotteryTypes'
+} from 'state/types'
 
 export const lotteryTicketsState = atom<lotteryType[]>({
   key: `lotteryTicketsState/${Math.random().toString(36).substring(2, 11)}`,
@@ -20,6 +20,7 @@ export const lotteryRoundState = atom<lotteryRoundType[]>({
       userCounts: '',
       winningNumber: '',
       prizesByRank: {},
+      totalPrizes: 0,
       jackpotCount: [],
       winners: [],
     },
@@ -29,6 +30,7 @@ export const lotteryRoundState = atom<lotteryRoundType[]>({
       userCounts: '',
       winningNumber: '',
       prizesByRank: {},
+      totalPrizes: 0,
       jackpotCount: [],
       winners: [],
     },
@@ -38,6 +40,7 @@ export const lotteryRoundState = atom<lotteryRoundType[]>({
       userCounts: '',
       winningNumber: '',
       prizesByRank: {},
+      totalPrizes: 0,
       jackpotCount: [],
       winners: [],
     },

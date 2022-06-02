@@ -16,3 +16,30 @@ const fetchGraphQL = async (text: any) => {
 }
 
 export default fetchGraphQL
+
+export const queryLotteryRounds = ``
+export const mutationUser = `
+  mutation{
+    user{
+      userId
+      walletAddress
+    }
+  }
+`
+export const queryUserTickets = `
+  query{
+    user{
+      userId
+      walletAddress
+    }
+    lotteryTickets{
+      ticketId{
+        ticketId: number
+        roundId: number
+        number: number[]
+        rank: []
+        paid: boolean
+      }
+    }
+  }
+`

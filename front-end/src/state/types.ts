@@ -6,10 +6,14 @@ export interface alertType {
   alertType: severity
 }
 
-export interface lotteryType {
-  number: number[]
+export interface lotteryTicketType {
+  userId: string
+  ticketId: number
+  roundId: number
+  number: string[]
   // pairNumber: number[]
-  id: string
+  rank: []
+  paid: boolean
 }
 
 export interface lotteryGameType {
@@ -32,12 +36,12 @@ export interface lotteryRoundType {
     fourth: string
     fifth: string
   }
+  totalPrizes: number
   jackpotCount: []
   winners: []
 }
 
 export interface lotteryRoundContractType extends lotteryRoundType {
-  totalPrizes: number
   winnerCountsByRank: string[]
   contractConfig: {}
 }
@@ -53,12 +57,10 @@ export interface popupHistoryType {
 }
 
 export interface userType {
-  id: string
+  userId: string
   walletAddress: string
 }
 
-export interface userTicketType extends userType {
-  number: number[]
-  roundId: number
-  ticketCounts: string
+export interface userTicketsType extends userType {
+  tickets: lotteryTicketType[]
 }

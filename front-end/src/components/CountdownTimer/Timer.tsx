@@ -3,7 +3,7 @@ import TimerContainer from 'components/CountdownTimer/TimerContainer'
 import TimerInput from 'components/CountdownTimer/TimerInput'
 import lotteryDrawDate from 'utils/lotteryDrawDate'
 import { useSetRecoilState } from 'recoil'
-import { lotteryDrawState } from 'recoils/lottery'
+import { lotteryDrawState } from 'state/lottery'
 
 const Timer = () => {
   const [time, setTime] = useState<number>(0)

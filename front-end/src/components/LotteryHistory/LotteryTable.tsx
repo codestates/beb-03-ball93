@@ -7,7 +7,7 @@ import React from 'react'
 // import TableRow from '@mui/material/TableRow'
 // import Paper from '@mui/material/Paper'
 
-import {lotteryType} from 'types/lotteryTypes'
+import {lotteryType} from 'state/types'
 import LotteryTableRow from './LotteryTableRow'
 
 interface LotteryTableProps {
