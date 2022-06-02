@@ -21,7 +21,9 @@ export class LotteryTicketResolver {
   }
 
   @Query(() => [LotteryTicket], { name: 'userTickets' })
-  findTicketAll(@Args('walletAddress', { type: () => String }) walletAddress: string) {
+  findTicketAll(
+    @Args('walletAddress', { type: () => String }) walletAddress: string,
+  ) {
     return this.lotteryTicketService.findTicketAll(walletAddress);
   }
 
@@ -40,5 +42,12 @@ export class LotteryTicketResolver {
       updateLotteryTicketInput.walletAddress,
       updateLotteryTicketInput,
     );
+  }
+
+  @Mutation(() => LotteryTicket)
+  removeLotteryTicket(
+    @Args('walletAddress', { type: () => String }) walletAddress: string,
+  ) {
+    return this.lotteryTicketService.remove(walletAddress);
   }
 }

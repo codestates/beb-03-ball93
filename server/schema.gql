@@ -106,17 +106,33 @@ type LotteryTicket {
   paid: Boolean!
 }
 
+type User {
+  _id: String!
+
+  """유저 ID"""
+  userId: String!
+
+  """지갑 주소"""
+  walletAddress: String!
+}
+
 type Query {
   rounds: [Round!]!
   round(lottery_id: Float!): Round!
   lotteryTickets: [LotteryTicket!]!
   userTickets(walletAddress: String!): [LotteryTicket!]!
   lotteryTicket(walletAddress: String!): LotteryTicket!
+  users: [User!]!
+  user(walletAddress: String!): User!
 }
 
 type Mutation {
   createLotteryTicket(createTicket: CreateLotteryTicketInput!): LotteryTicket!
   updateLotteryTicket(updateTicket: updateLotteryTicketInput!): LotteryTicket!
+  removeLotteryTicket(walletAddress: String!): LotteryTicket!
+  createUser(user: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(walletAddress: String!): User!
 }
 
 input CreateLotteryTicketInput {
@@ -178,4 +194,18 @@ input updateLotteryTicketInput {
 
   """지급 확인"""
   paid: Boolean
+}
+
+input CreateUserInput {
+  """유저 ID"""
+  userId: String!
+
+  """지갑 주소"""
+  walletAddress: String!
+}
+
+input UpdateUserInput {
+  """유저 ID"""
+  userId: String
+  walletAddress: String!
 }
