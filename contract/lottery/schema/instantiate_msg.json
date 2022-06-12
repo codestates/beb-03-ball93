@@ -3,9 +3,13 @@
   "title": "InstantiateMsg",
   "type": "object",
   "required": [
+    "cw20_contract_address",
     "denom_stable"
   ],
   "properties": {
+    "cw20_contract_address": {
+      "type": "string"
+    },
     "denom_stable": {
       "type": "string"
     }

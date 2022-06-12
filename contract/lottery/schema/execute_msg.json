@@ -11,14 +11,12 @@
         "register": {
           "type": "object",
           "required": [
+            "address",
             "combination"
           ],
           "properties": {
             "address": {
-              "type": [
-                "string",
-                "null"
-              ]
+              "type": "string"
             },
             "combination": {
               "type": "array",

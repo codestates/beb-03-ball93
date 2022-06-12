@@ -5,6 +5,7 @@
   "required": [
     "admin",
     "combination_len",
+    "cw20_contract_address",
     "denom_stable",
     "jackpot_seed_limit",
     "jackpot_seed_lock",
@@ -22,6 +23,9 @@
       "type": "integer",
       "format": "uint8",
       "minimum": 0.0
+    },
+    "cw20_contract_address": {
+      "$ref": "#/definitions/CanonicalAddr"
     },
     "denom_stable": {
       "type": "string"
